@@ -11,7 +11,7 @@
 
 **Belajarsip** is a platform to bring together instructors with students or knowledge seekers. Instructors can create classes and a schedule for delivery of materials. Meanwhile, student can find the class that suits what he wants.
 
-This repository server for Mobile version
+This repository serve for Mobile version
 
 ## Features
 
