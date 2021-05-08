@@ -40,5 +40,26 @@ This repository serve for Mobile version
 2. Clone the project
 
 ```bash
-https://github.com/sipamungkas/belajarsip-react-native.git
+$ git clone https://github.com/sipamungkas/belajarsip-react-native.git
 ```
+
+3. Move inside the directory and install and link dependency
+
+```bash
+$ cd belajarsip-react-native
+$ yarn install
+$ npx react-native link
+```
+
+4. Run program
+
+```bash
+$ npx react-native run-android // run in android
+$ npx react-native run-ios //run in ios
+```
+
+5. Build Apps
+
+- [Publishing for Google Play](https://reactnative.dev/docs/signed-apk-android)
+
+- [Publishing for Apple Store](https://reactnative.dev/docs/publishing-to-app-store)
