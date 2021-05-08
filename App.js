@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 
-import {Root} from 'native-base';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -12,13 +12,13 @@ const Stack = createStackNavigator();
 
 function App() {
   return (
-    <Root>
+    <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator headerMode={'none'}>
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </NavigationContainer>
-    </Root>
+    </PaperProvider>
   );
 }
 
