@@ -1,17 +1,20 @@
 import axios from 'axios';
 
-import {LOGIN, LOGOUT, SET_ERROR} from './actionTypes';
+import {LOGIN, LOGOUT, SET_ERROR, SET_LOADING} from './actionTypes';
 
 import {API_URL} from '@env';
 
-export function loginHandler(data) {
+export function loginHandler(username, password) {
   return dispatch => {
+    dispatch({
+      type: SET_LOADING,
+    });
     axios
-      .post(`${API_URL}/auth/login`, data)
+      .post(`${API_URL}/v1/auth/login`, {username, password})
       .then(res => {
         dispatch({
           type: LOGIN,
-          payload: res.data,
+          payload: res.data.data,
         });
       })
       .catch(err => {

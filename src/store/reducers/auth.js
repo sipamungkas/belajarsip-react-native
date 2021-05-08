@@ -13,6 +13,7 @@ export const authReducer = (state = initialState, action) => {
     case SET_LOADING: {
       return {
         ...state,
+        isError: false,
         isLoading: true,
       };
     }

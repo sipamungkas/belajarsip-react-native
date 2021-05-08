@@ -20,7 +20,10 @@ const styles = StyleSheet.create({
   },
 
   form: {marginTop: '20%', marginBottom: '20%'},
-  username: {marginBottom: '5%'},
+  username: {},
+  password: {
+    // marginTop: '3%',
+  },
   textInput: {
     borderRadius: 50,
   },
