@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
   loginText: {
     textAlign: 'center',
-    fontFamily: 'Kanit',
+    fontFamily: 'Kanit-Medium',
     fontSize: 32,
     fontStyle: 'normal',
     fontWeight: '500',

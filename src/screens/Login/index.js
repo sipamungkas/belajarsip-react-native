@@ -13,7 +13,7 @@ import {
 
 import GoogleIcon from '../../assets/icons/google-icon.svg';
 
-import styles from './style';
+import styles from './styles';
 
 function Login() {
   const [username, setUsername] = useState('');
