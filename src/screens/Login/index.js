@@ -21,13 +21,14 @@ function Login(props) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const emailRules = /^(([^<>()\\[\]\\.,;:\s@\"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/;
   const formMargin =
     orientation === 'PORTRAIT'
       ? (10 / 100) * Dimensions.get('window').height
       : (5 / 100) * Dimensions.get('window').height;
 
   const usernameHasErrors = () => {
-    return !username.includes('@') && username;
+    return username && !emailRules.test(username);
   };
 
   const passwordHasErrors = () => {
