@@ -12,12 +12,14 @@ export function loginHandler(username, password) {
     axios
       .post(`${API_URL}/v1/auth/login`, {username, password})
       .then(res => {
+        console.log(res);
         dispatch({
           type: LOGIN,
           payload: res.data.data,
         });
       })
       .catch(err => {
+        console.log(err);
         dispatch({
           type: SET_ERROR,
           payload: err,
