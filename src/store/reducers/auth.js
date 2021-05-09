@@ -4,7 +4,6 @@ const initialState = {
   user: {},
   isLoggedIn: false,
   isError: false,
-  isLoading: false,
   error: {},
 };
 
@@ -14,7 +13,6 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isError: false,
-        isLoading: true,
       };
     }
     case LOGIN:
@@ -23,14 +21,12 @@ export const authReducer = (state = initialState, action) => {
         user: action.payload,
         isLoggedIn: true,
         isError: false,
-        isLoading: false,
       };
     case SET_ERROR:
       return {
         ...state,
         error: action.payload,
         isError: true,
-        isLoading: false,
       };
     case LOGOUT:
       return {

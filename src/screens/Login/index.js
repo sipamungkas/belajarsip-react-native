@@ -3,7 +3,7 @@ import {ScrollView, View, Dimensions} from 'react-native';
 import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 
 import {useOrientation} from '../../components/useOrientation';
-import {connect, useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 import {loginHandler} from '../../store/actions/auth';
 
 import GoogleIcon from '../../assets/icons/google-icon.svg';
@@ -15,9 +15,6 @@ import styles from './styles';
 
 function Login(props) {
   const orientation = useOrientation();
-  // const {user} = useSelector(state => state.authReducer);
-  // console.log(props.authReducer);
-  // const formMargin = (5 / 100) * dimensions.screen.height;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -40,10 +37,12 @@ function Login(props) {
     if (passwordHasErrors() || usernameHasErrors() || !password || !username) {
       return;
     }
+
     props.onLoginHandler(username, password);
   };
 
-  const {isError, error, isLoading} = props.authReducer;
+  const {isError, error} = props.authReducer;
+  const isLoading = false;
 
   const helperTextDisplay = passwordHasErrors() ? 'flex' : 'none';
 
