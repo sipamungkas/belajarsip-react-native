@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: '5%',
   },
-
+  apiError: {fontSize: 16, marginBottom: 20, textAlign: 'center'},
   loginText: {
     textAlign: 'center',
     fontFamily: 'Kanit-Regular',
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  form: {marginTop: '20%', marginBottom: '20%'},
+  form: {},
   username: {},
   password: {
     // marginTop: '3%',

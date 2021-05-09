@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, View, Dimensions} from 'react-native';
 import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 
+import {useOrientation} from '../../components/useOrientation';
 import {connect} from 'react-redux';
 import {loginHandler} from '../../store/actions/auth';
 
@@ -13,9 +14,17 @@ import Color from '../../Color';
 import styles from './styles';
 
 function Login(props) {
+  const orientation = useOrientation();
+
+  // const formMargin = (5 / 100) * dimensions.screen.height;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const formMargin =
+    orientation === 'PORTRAIT'
+      ? (10 / 100) * Dimensions.get('window').height
+      : (5 / 100) * Dimensions.get('window').height;
 
   const usernameHasErrors = () => {
     return !username.includes('@') && username;
@@ -34,14 +43,17 @@ function Login(props) {
 
   const {isError, error, isLoading} = props.authReducer;
 
+  const helperTextDisplay = passwordHasErrors() ? 'flex' : 'none';
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.loginText}>Login</Text>
-      <View style={styles.form}>
-        <HelperText
-          type="error"
-          visible={isError}
-          style={{fontSize: 16, marginBottom: 20, textAlign: 'center'}}>
+      <View
+        style={{
+          ...styles.form,
+          marginVertical: formMargin,
+        }}>
+        <HelperText type="error" visible={isError} style={styles.apiError}>
           {error?.response?.data?.message ||
             error?.message ||
             'Username and password Can not be empty'}
@@ -79,7 +91,10 @@ function Login(props) {
             />
           }
         />
-        <HelperText type="error" visible={passwordHasErrors()}>
+        <HelperText
+          type="error"
+          visible={passwordHasErrors()}
+          style={{display: helperTextDisplay}}>
           {password.length < 8 ? 'Min Password Length is 8' : ''}
         </HelperText>
         <Text style={styles.forgotText}>Forgot Password?</Text>
