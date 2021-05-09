@@ -4,7 +4,7 @@ import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 import axios from 'axios';
 
 import {API_URL} from '@env';
-import {useOrientation} from '../../components/useOrientation';
+import {useOrientation} from '../../hooks/useOrientation';
 
 import GoogleIcon from '../../assets/icons/google-icon.svg';
 

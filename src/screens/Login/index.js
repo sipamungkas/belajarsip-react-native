@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ScrollView, View, Dimensions, TouchableOpacity} from 'react-native';
 import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 
-import {useOrientation} from '../../components/useOrientation';
+import {useOrientation} from '../../hooks/useOrientation';
 import {connect} from 'react-redux';
 import {loginHandler} from '../../store/actions/auth';
 
