@@ -130,7 +130,7 @@ function Login(props) {
         <Text style={{...styles.newUsertext, marginTop: formMargin}}>
           New User?
           <Text
-            onPress={() => props.navigation.navigate('Login')}
+            onPress={() => props.navigation.navigate('Register')}
             style={styles.registerText}>
             {' '}
             Register
