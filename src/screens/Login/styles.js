@@ -45,6 +45,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
     color: 'black',
   },
+  newUsertext: {
+    alignSelf: 'center',
+    fontFamily: 'Kanit-Regular',
+    color: '#ADA9BB',
+    fontStyle: 'normal',
+    fontWeight: '500',
+  },
+  registerText: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '500',
+    color: Color.PRIMARY,
+  },
 });
 
 export default styles;

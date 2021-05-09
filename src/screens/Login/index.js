@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, View, Dimensions} from 'react-native';
+import {ScrollView, View, Dimensions, TouchableOpacity} from 'react-native';
 import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 
 import {useOrientation} from '../../components/useOrientation';
@@ -22,7 +22,7 @@ function Login(props) {
   const emailRules = /^(([^<>()\\[\]\\.,;:\s@\"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/;
   const formMargin =
     orientation === 'PORTRAIT'
-      ? (10 / 100) * Dimensions.get('window').height
+      ? (8 / 100) * Dimensions.get('window').height
       : (5 / 100) * Dimensions.get('window').height;
 
   const usernameHasErrors = () => {
@@ -54,11 +54,13 @@ function Login(props) {
           ...styles.form,
           marginVertical: formMargin,
         }}>
-        <HelperText type="error" visible={isError} style={styles.apiError}>
-          {error?.response?.data?.message ||
-            error?.message ||
-            'Username and password Can not be empty'}
-        </HelperText>
+        {isError && (
+          <HelperText type="error" visible={isError} style={styles.apiError}>
+            {error?.response?.data?.message ||
+              error?.message ||
+              'Username and password Can not be empty'}
+          </HelperText>
+        )}
         <TextInput
           style={[styles.username]}
           label="Usermame or Email"
@@ -124,6 +126,17 @@ function Login(props) {
         loading={isLoading}>
         <Text style={styles.btnText}>Login with google</Text>
       </Button>
+      <TouchableOpacity onPress={() => console.log('register')}>
+        <Text style={{...styles.newUsertext, marginTop: formMargin}}>
+          New User?
+          <Text
+            onPress={() => props.navigation.navigate('Login')}
+            style={styles.registerText}>
+            {' '}
+            Register
+          </Text>
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
