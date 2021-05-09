@@ -1,21 +1,16 @@
 import React, {useState} from 'react';
 import {ScrollView, View, Dimensions, TouchableOpacity} from 'react-native';
-import {
-  TextInput,
-  Text,
-  Button,
-  HelperText,
-  Portal,
-  Modal,
-  ActivityIndicator,
-} from 'react-native-paper';
+import {TextInput, Text, Button, HelperText} from 'react-native-paper';
+import axios from 'axios';
 
+import {API_URL} from '@env';
 import {useOrientation} from '../../components/useOrientation';
 
 import GoogleIcon from '../../assets/icons/google-icon.svg';
 
 import Color from '../../Color';
 import CustomTextInput from '../../components/CustomTextInput';
+import CustomModal from '../../components/CustomModal';
 
 import styles from './styles';
 
@@ -27,6 +22,7 @@ function Register(props) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState();
+  const [success, setSuccess] = useState();
 
   const emailRules = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/;
   const formMargin =
@@ -51,14 +47,29 @@ function Register(props) {
   };
 
   const onRegisterHandler = () => {
-    formValidationErrors();
-    console.log(username, email, password, confirmPassword);
+    setLoading(true);
+    if (formValidationErrors()) {
+      setLoading(false);
+      return;
+    }
+    // setSuccess(true);
+    axios
+      .post(`${API_URL}/v1/auth/register`, {username, email, password})
+      .then(res => {
+        setSuccess(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setSuccess(false);
+        setLoading(false);
+        setError(err);
+      });
   };
 
   const formValidationErrors = () => {
     if (!username || !email || !password || !confirmPassword) {
       setError({message: 'Please fill out all required fields!'});
-      return;
+      return true;
     }
     if (
       usernameHasErrors() ||
@@ -66,21 +77,42 @@ function Register(props) {
       passwordHasErrors() ||
       confirmPassHassErrors()
     ) {
+      setError({});
       return true;
     }
-    setError({});
     return false;
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <CustomModal
+        visible={isLoading}
+        type={'loading'}
+        message={'Please wait...'}
+      />
+      <CustomModal
+        visible={success?.success || false}
+        type={'success'}
+        message={success?.message || 'Account Created'}
+        callbackComponent={
+          <TouchableOpacity
+            onPress={() => {
+              setSuccess(false);
+              props.navigation.navigate('Login');
+            }}>
+            <Text style={styles.callbackComponent}>Login Your Account</Text>
+          </TouchableOpacity>
+        }
+      />
       <Text style={styles.loginText}>Register</Text>
       <View
         style={{
           ...styles.form,
           marginVertical: formMargin,
         }}>
-        <HelperText style={styles.errors}>{error?.message}</HelperText>
+        <HelperText style={styles.errors}>
+          {error?.response?.data?.message || error?.message}
+        </HelperText>
         <CustomTextInput
           label="Username"
           type="text"
@@ -132,7 +164,6 @@ function Register(props) {
           {isLoading ? 'Loading....' : 'Register'}
         </Text>
       </Button>
-
       <Button
         mode="contained"
         icon={GoogleIcon}

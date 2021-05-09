@@ -68,6 +68,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  callbackComponent: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
 });
 
 export default styles;

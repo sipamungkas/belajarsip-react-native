@@ -96,13 +96,6 @@ export default function CustomTextInput(props) {
               colors: {primary: Color.PRIMARY},
               roundness: 10,
             }}
-            right={
-              <TextInput.Icon
-                name={!show ? EyeIcon : EyeSlashIcon}
-                onPress={() => setShow(!show)}
-                forceTextInputFocus={false}
-              />
-            }
           />
           <HelperText
             type="error"
