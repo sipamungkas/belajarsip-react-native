@@ -59,6 +59,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Color.PRIMARY,
   },
+  modal: {
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  errors: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 10,
+  },
 });
 
 export default styles;

@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
 import {ScrollView, View, Dimensions, TouchableOpacity} from 'react-native';
-import {TextInput, Text, Button, HelperText} from 'react-native-paper';
+import {
+  TextInput,
+  Text,
+  Button,
+  HelperText,
+  Portal,
+  Modal,
+  ActivityIndicator,
+} from 'react-native-paper';
 
 import {useOrientation} from '../../components/useOrientation';
 
@@ -17,8 +25,8 @@ function Register(props) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState();
 
   const emailRules = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/;
   const formMargin =
@@ -43,15 +51,16 @@ function Register(props) {
   };
 
   const onRegisterHandler = () => {
+    formValidationErrors();
     console.log(username, email, password, confirmPassword);
   };
 
   const formValidationErrors = () => {
+    if (!username || !email || !password || !confirmPassword) {
+      setError({message: 'Please fill out all required fields!'});
+      return;
+    }
     if (
-      username ||
-      email ||
-      password ||
-      confirmPassword ||
       usernameHasErrors() ||
       emailHasErrors() ||
       passwordHasErrors() ||
@@ -59,6 +68,7 @@ function Register(props) {
     ) {
       return true;
     }
+    setError({});
     return false;
   };
 
@@ -70,6 +80,7 @@ function Register(props) {
           ...styles.form,
           marginVertical: formMargin,
         }}>
+        <HelperText style={styles.errors}>{error?.message}</HelperText>
         <CustomTextInput
           label="Username"
           type="text"
@@ -108,7 +119,6 @@ function Register(props) {
           value={confirmPassword}
           setValue={setConfirmPassword}
         />
-        <Text style={styles.forgotText}>Forgot Password?</Text>
       </View>
       <Button
         mode="contained"
@@ -116,7 +126,8 @@ function Register(props) {
         uppercase={false}
         theme={{roundness: 10}}
         onPress={onRegisterHandler}
-        disabled={formValidationErrors() ? true : false}>
+        // disabled={formValidationErrors() ? true : false}
+      >
         <Text style={([styles.btnText], {color: 'white'})}>
           {isLoading ? 'Loading....' : 'Register'}
         </Text>
@@ -130,7 +141,7 @@ function Register(props) {
         theme={{roundness: 10}}
         disabled={isLoading}
         loading={isLoading}>
-        <Text style={styles.btnText}>Login with google</Text>
+        <Text style={styles.btnText}>register with google</Text>
       </Button>
       <TouchableOpacity>
         <Text style={{...styles.newUsertext, marginTop: formMargin}}>
@@ -142,6 +153,15 @@ function Register(props) {
           </Text>
         </Text>
       </TouchableOpacity>
+      {/* <Portal>
+        <Modal visible={isLoading} dismissable={false} style={styles.modal}>
+          <ActivityIndicator
+            animating={isLoading}
+            size={'large'}
+            color={Color.PRIMARY}
+          />
+        </Modal>
+      </Portal> */}
     </ScrollView>
   );
 }
