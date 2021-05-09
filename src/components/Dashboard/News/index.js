@@ -43,7 +43,7 @@ export default function News(props) {
   return (
     <Swiper style={styles.wrapper} showsButtons={false}>
       {props.data.map((item, index) => (
-        <View style={styles.slide}>
+        <View key={item.id} style={styles.slide}>
           <ImageBackground
             source={NewsImage}
             imageStyle={{borderRadius: 12}}
