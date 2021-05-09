@@ -5,8 +5,7 @@ import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 import {useOrientation} from '../../components/useOrientation';
 
 import GoogleIcon from '../../assets/icons/google-icon.svg';
-import EyeIcon from '../../assets/icons/eye-icon.svg';
-import EyeSlashIcon from '../../assets/icons/eye-slash-icon.svg';
+
 import Color from '../../Color';
 import CustomTextInput from '../../components/CustomTextInput';
 
@@ -133,7 +132,7 @@ function Register(props) {
         loading={isLoading}>
         <Text style={styles.btnText}>Login with google</Text>
       </Button>
-      <TouchableOpacity onPress={() => console.log('register')}>
+      <TouchableOpacity>
         <Text style={{...styles.newUsertext, marginTop: formMargin}}>
           Already have an account?{' '}
           <Text

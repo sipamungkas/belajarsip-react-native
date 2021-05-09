@@ -126,7 +126,7 @@ function Login(props) {
         loading={isLoading}>
         <Text style={styles.btnText}>Login with google</Text>
       </Button>
-      <TouchableOpacity onPress={() => console.log('register')}>
+      <TouchableOpacity>
         <Text style={{...styles.newUsertext, marginTop: formMargin}}>
           New User?
           <Text
