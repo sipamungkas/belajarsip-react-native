@@ -10,6 +10,7 @@ import {
 } from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {connect} from 'react-redux';
 
 import Login from './src/screens/Login';
 import Register from './src/screens/Register';
@@ -134,64 +135,54 @@ function TabNavigator() {
   );
 }
 
-function App() {
+function App(props) {
+  const {isLoggedIn} = props.authReducer;
+
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Home"
-          headerMode="none"
-          // screenOptions={{
-          //   headerStyle: {
-          //     backgroundColor: Color.PRIMARY,
-          //     height: 75,
-          //     borderBottomLeftRadius: 20,
-          //     borderBottomRightRadius: 25,
-          //   },
-          //   headerTintColor: '#fff',
-          //   headerTitleStyle: {
-          //     fontWeight: 'bold',
-          //   },
-          //   animationEnabled: true,
-          //   headerLeft: props => (
-          //     <Ionicons
-          //       style={{marginLeft: 10}}
-          //       name="chevron-back"
-          //       color="white"
-          //       size={30}
-          //       onPress={() => {
-          //         console.log(props);
-          //       }}
-          //     />
-          //   ),
-          // }}
-        >
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={TabNavigator}
-            options={({route}) => ({
-              headerTitle: getHeaderTitle(route),
-              headerRight: () => getHeaderRight(route),
-            })}
-          />
+        <Stack.Navigator headerMode="none">
+          {isLoggedIn ? (
+            <>
+              <Stack.Screen
+                name="Home"
+                component={TabNavigator}
+                options={({route}) => ({
+                  headerTitle: getHeaderTitle(route),
+                  headerRight: () => getHeaderRight(route),
+                })}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="Register"
+                component={Register}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+const ConnectedLogin = connect(mapStateToProps)(App);
+
+export default ConnectedLogin;

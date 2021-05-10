@@ -22,7 +22,6 @@ function Profile(props) {
   console.log(user);
   const onLogoutHandler = () => {
     props.onLogoutHandler();
-    props.navigation.navigate('Login');
   };
   return (
     <View>
