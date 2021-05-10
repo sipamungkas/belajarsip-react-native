@@ -34,7 +34,6 @@ export default function AvailableClassList(props) {
     setCurrentPage(currentPage - 1);
   };
   const nextPageHandler = () => {
-    console.log(currentPage);
     if (currentPage === totalPage) {
       return;
     }
