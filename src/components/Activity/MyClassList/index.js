@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import MyClassItem from '../MyClassItem';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,7 +34,12 @@ export default function MyClassList(props) {
           justifyContent: 'center',
           marginTop: '2%',
         }}>
-        <Text style={{fontSize: 12}}>view all</Text>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('ActivityMyClass');
+          }}>
+          <Text style={{fontSize: 12}}>view all</Text>
+        </TouchableOpacity>
         <Ionicons name="chevron-forward" size={20} />
       </View>
     </View>

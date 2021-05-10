@@ -9,7 +9,7 @@ import styles from './styles';
 export default function ActivityStudent(props) {
   return (
     <ScrollView style={styles.container}>
-      <MyClassList />
+      <MyClassList {...props} />
       <AvailableClassList />
     </ScrollView>
   );

@@ -16,10 +16,12 @@ import Register from './src/screens/Register';
 import DashboardStudent from './src/screens/Dashboard/Student';
 import DashboardHeader from './src/components/Dashboard/Header';
 import Activity from './src/screens/Activity';
+import ActivityMyClass from './src/screens/MyClass';
 
 import Color from './src/Color';
 
 const Stack = createStackNavigator();
+const ActivityStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function getHeaderTitle(route) {
@@ -59,6 +61,41 @@ function getHeaderRight(route) {
   }
 }
 
+function ActivityNavigator() {
+  return (
+    <ActivityStack.Navigator
+      initialRouteName="ActivityHome"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: Color.PRIMARY,
+          height: 75,
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 25,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        animationEnabled: true,
+      }}>
+      <ActivityStack.Screen
+        name="ActivityHome"
+        component={Activity}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <ActivityStack.Screen
+        name="ActivityMyClass"
+        component={ActivityMyClass}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </ActivityStack.Navigator>
+  );
+}
+
 function TabNavigator() {
   return (
     <Tab.Navigator
@@ -87,7 +124,7 @@ function TabNavigator() {
         inactiveTintColor: 'rgba(173, 169, 187, 1)',
       }}>
       <Tab.Screen name="Dashboard" component={DashboardStudent} />
-      <Tab.Screen name="Activity" component={Activity} />
+      <Tab.Screen name="Activity" component={ActivityNavigator} />
       <Tab.Screen name="Chat" component={DashboardStudent} />
       <Tab.Screen name="Profile" component={DashboardStudent} />
     </Tab.Navigator>
@@ -112,6 +149,17 @@ function App() {
               fontWeight: 'bold',
             },
             animationEnabled: true,
+            headerLeft: props => (
+              <Ionicons
+                style={{marginLeft: 10}}
+                name="chevron-back"
+                color="white"
+                size={30}
+                onPress={() => {
+                  console.log(props);
+                }}
+              />
+            ),
           }}>
           <Stack.Screen
             name="Login"
