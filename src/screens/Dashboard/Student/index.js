@@ -1,5 +1,7 @@
-import React from 'react';
-import {ScrollView, Text} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView} from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 import News from '../../../components/Dashboard/News';
 import MyClass from '../../../components/Dashboard/MyClass';
@@ -7,6 +9,22 @@ import MyClass from '../../../components/Dashboard/MyClass';
 import styles from './styles';
 
 export default function DashboardStudent(props) {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [tab, setTab] = useState(2);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    console.warn('A date has been picked: ', moment(date).format('YYYY-MM-DD'));
+    hideDatePicker();
+  };
+
   const newsData = [
     {
       id: 1,
@@ -32,8 +50,14 @@ export default function DashboardStudent(props) {
 
   return (
     <ScrollView style={styles.container}>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
       <News data={newsData} />
-      <MyClass data={classData} />
+      <MyClass data={classData} showDatePicker={showDatePicker} />
     </ScrollView>
   );
 }

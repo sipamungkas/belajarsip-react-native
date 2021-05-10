@@ -10,24 +10,33 @@ export default StyleSheet.create({
     backgroundColor: Color.BACKGROUND,
     padding: '3%',
   },
-  item: {
+  containerTitle: {
     flexDirection: 'row',
-    paddingHorizontal: 5,
     justifyContent: 'space-between',
-    alignItems: 'center',
-    alignContent: 'center',
-    minHeight: 30,
-    height: hp(10),
-    borderRadius: 10,
-    // backgroundColor: 'goldenrod',
+    marginBottom: hp(2),
   },
-  time: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 13,
+  containerTitleText: {
+    fontFamily: 'Kanit-Regular',
+    fontSize: 18,
     fontStyle: 'normal',
-    fontWeight: '500',
+    fontWeight: '400',
+    color: 'rgba(1, 6, 32, 1)',
   },
-  title: {
-    textAlign: 'left',
+  containerSubtitle: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    color: 'rgba(77, 80, 91, 1)',
+  },
+  tabs: {
+    flexDirection: 'row',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  tabItem: {
+    marginHorizontal: 5,
   },
 });
