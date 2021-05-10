@@ -12,6 +12,8 @@ import axios from 'axios';
 import Color from '../../Color';
 
 import styles from './styles';
+
+import Header from '../../components/Header';
 import Item from '../../components/Activity/MyClassItem';
 
 import {API_URL} from '@env';
@@ -85,8 +87,10 @@ export default function MyClass() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
+      <Header back title="My Class" />
       <FlatList
+        style={styles.container}
         ListHeaderComponent={<HeaderList />}
         data={myClasses}
         renderItem={renderItem}

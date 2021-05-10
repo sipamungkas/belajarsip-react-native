@@ -40,8 +40,10 @@ export default function Header(props) {
       return (
         <View style={styles.container}>
           <StatusBar backgroundColor={Color.PRIMARY} />
-          {back && <Ionicons name="chevron-back" size={30} color="white" />}
-          <Text style={styles.title}>{title}</Text>
+          <View style={styles.main}>
+            {back && <Ionicons name="chevron-back" size={30} color="white" />}
+            <Text style={styles.title}>{title}</Text>
+          </View>
         </View>
       );
   }

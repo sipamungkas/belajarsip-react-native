@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import {View, ScrollView, StatusBar} from 'react-native';
 
+import Header from '../../components/Header';
 import MyClassList from '../../components/Activity/MyClassList/index';
 import AvailableClassList from '../../components/Activity/AvailableClassList';
 
@@ -8,9 +9,16 @@ import styles from './styles';
 
 export default function ActivityStudent(props) {
   return (
-    <ScrollView style={styles.container}>
-      <MyClassList {...props} />
-      <AvailableClassList />
-    </ScrollView>
+    <View>
+      <Header title="Activity" />
+      <ScrollView
+        contentContainerStyle={[
+          styles.container,
+          {paddingBottom: StatusBar.currentHeight + 115},
+        ]}>
+        <MyClassList {...props} />
+        <AvailableClassList />
+      </ScrollView>
+    </View>
   );
 }
