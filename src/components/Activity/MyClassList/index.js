@@ -1,12 +1,37 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import MyClassItem from '../MyClassItem';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {ActivityIndicator} from 'react-native-paper';
+
+import {API_URL} from '@env';
 
 import styles from './styles';
+import Color from '../../../Color';
+import axios from 'axios';
 
 export default function MyClassList(props) {
+  const [myCourses, setMyCourses] = useState();
+  const [info, setInfo] = useState({});
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiQnVyaGFuIFVwZGF0ZWEiLCJyb2xlX2lkIjoyLCJpYXQiOjE2MjA2NjE0ODUsImV4cCI6MTYyMDc0Nzg4NSwiaXNzIjoiQkVMQUpBUlNJUCJ9.6yArS41aouxWaBt1kq2FSL-pmxDmrV77oqBX4ZYcgj0';
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/v1/courses/my-class?limit=3`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        setMyCourses(res.data.data);
+        setInfo(res.data.info);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [token]);
+
   return (
     <View>
       <Text style={styles.title}>My class</Text>
@@ -23,10 +48,19 @@ export default function MyClassList(props) {
         </View>
         <View style={{width: 20}}></View>
       </View>
+      {!myCourses && (
+        <ActivityIndicator animating={true} color={Color.PRIMARY} />
+      )}
+      {myCourses?.length === 0 && (
+        <View>
+          <Text style={{textAlign: 'center', marginTop: 10}}>
+            You dont have any class
+          </Text>
+        </View>
+      )}
+      {myCourses?.length > 0 &&
+        myCourses.map(item => <MyClassItem key={item.id} course={item} />)}
 
-      <MyClassItem />
-      <MyClassItem />
-      <MyClassItem />
       <View
         style={{
           flexDirection: 'row',

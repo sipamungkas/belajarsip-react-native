@@ -20,7 +20,7 @@ const data = StyleSheet.create({
   },
   score: {
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 30,
+    fontSize: 25,
     fontStyle: 'normal',
     fontWeight: '700',
     color: 'rgba(81, 231, 43, 1)',

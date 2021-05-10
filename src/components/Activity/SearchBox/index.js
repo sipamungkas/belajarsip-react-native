@@ -8,12 +8,17 @@ import Color from '../../../Color';
 import styles from './styles';
 
 export default function SearchBox(props) {
+  const [thisSearch, setThisSearch] = useState('');
   const [catFilter, setCatFilter] = useState();
   const [levelFilter, setLevelFilter] = useState();
   const [priceFilter, setPriceFilter] = useState();
   const [showCat, setShowCat] = useState(false);
   const [showLevel, setShowLevel] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
+
+  const searchHandler = () => {
+    props.setSearch(thisSearch);
+  };
 
   return (
     <View>
@@ -22,14 +27,15 @@ export default function SearchBox(props) {
           style={styles.search}
           placeholder="Quick Search"
           inputStyle={{fontSize: 12}}
-          //   onChangeText={''}
-          //   value={'searchQuery'}
+          onChangeText={text => setThisSearch(text)}
+          value={thisSearch}
         />
         <Button
           mode="contained"
           color={Color.PRIMARY}
           style={{height: '100%', flexDirection: 'row', alignItems: 'center'}}
-          uppercase={false}>
+          uppercase={false}
+          onPress={() => searchHandler()}>
           <Text style={{fontSize: 12}}>Search</Text>
         </Button>
       </View>
@@ -39,9 +45,9 @@ export default function SearchBox(props) {
           onDismiss={() => setShowCat(false)}
           anchor={
             <Text onPress={() => setShowCat(true)} style={styles.filterItem}>
-              {catFilter === 'category-az'
+              {props.sort === 'category-az'
                 ? 'Category A-Z'
-                : !catFilter
+                : !props.sort
                 ? 'Category'
                 : 'Category Z-A'}
               <Ionicons name="chevron-down" />
@@ -49,14 +55,14 @@ export default function SearchBox(props) {
           }>
           <Menu.Item
             onPress={() => {
-              setCatFilter('category-az');
+              props.setSort('category-az');
               setShowCat(false);
             }}
             title="Category A-Z"
           />
           <Menu.Item
             onPress={() => {
-              setCatFilter('category-za');
+              props.setSort('category-za');
               setShowCat(false);
             }}
             title="Category Z-A"
@@ -67,9 +73,9 @@ export default function SearchBox(props) {
           onDismiss={() => setShowLevel(false)}
           anchor={
             <Text onPress={() => setShowLevel(true)} style={styles.filterItem}>
-              {levelFilter === 'level-az'
+              {props.sort === 'level-az'
                 ? 'Level A-Z'
-                : !levelFilter
+                : !props.sort
                 ? 'Level'
                 : 'Level Z-A'}
               <Ionicons name="chevron-down" />
@@ -77,14 +83,14 @@ export default function SearchBox(props) {
           }>
           <Menu.Item
             onPress={() => {
-              setLevelFilter('level-az');
+              props.setSort('level-az');
               setShowLevel(false);
             }}
             title="Level A-Z"
           />
           <Menu.Item
             onPress={() => {
-              setLevelFilter('level-za');
+              props.setSort('level-za');
               setShowLevel(false);
             }}
             title="Level Z-A"
@@ -95,9 +101,9 @@ export default function SearchBox(props) {
           onDismiss={() => setShowPrice(false)}
           anchor={
             <Text onPress={() => setShowPrice(true)} style={styles.filterItem}>
-              {priceFilter === 'price-az'
+              {props.sort === 'price-az'
                 ? 'Lowest Price'
-                : !priceFilter
+                : !props.sort
                 ? 'Price'
                 : 'Highest Price'}
               <Ionicons name="chevron-down" />
@@ -105,14 +111,14 @@ export default function SearchBox(props) {
           }>
           <Menu.Item
             onPress={() => {
-              setPriceFilter('price-az');
+              props.setSort('price-az');
               setShowPrice(false);
             }}
             title="Lowest Price"
           />
           <Menu.Item
             onPress={() => {
-              setPriceFilter('price-za');
+              props.setSort('price-za');
               setShowPrice(false);
             }}
             title="Highest Price"

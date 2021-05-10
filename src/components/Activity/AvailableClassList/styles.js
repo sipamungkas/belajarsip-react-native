@@ -28,6 +28,28 @@ const styles = StyleSheet.create({
   courseList: {
     marginVertical: 12,
   },
+  pageCount: {
+    marginTop: 10,
+  },
+  pageContainer: {
+    flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 10,
+    alignSelf: 'flex-end',
+  },
+  pageItem: {
+    margin: 5,
+  },
+  page: {
+    width: 35,
+    height: 35,
+    padding: 5,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
 });
 
 export default styles;
