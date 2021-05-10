@@ -15,6 +15,7 @@ import Login from './src/screens/Login';
 import Register from './src/screens/Register';
 import DashboardStudent from './src/screens/Dashboard/Student';
 import DashboardHeader from './src/components/Dashboard/Header';
+import Activity from './src/screens/Activity';
 
 import Color from './src/Color';
 
@@ -31,6 +32,8 @@ function getHeaderTitle(route) {
     case 'Dashboard':
       // return 'Dashboard';
       return <DashboardHeader />;
+    case 'Activity':
+      return 'Activity';
     case 'Profile':
       return 'My profile';
     case 'Account':
@@ -84,7 +87,7 @@ function TabNavigator() {
         inactiveTintColor: 'rgba(173, 169, 187, 1)',
       }}>
       <Tab.Screen name="Dashboard" component={DashboardStudent} />
-      <Tab.Screen name="Activity" component={DashboardStudent} />
+      <Tab.Screen name="Activity" component={Activity} />
       <Tab.Screen name="Chat" component={DashboardStudent} />
       <Tab.Screen name="Profile" component={DashboardStudent} />
     </Tab.Navigator>
