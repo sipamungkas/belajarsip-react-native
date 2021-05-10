@@ -18,7 +18,7 @@ import Item from '../../components/Activity/MyClassItem';
 
 import {API_URL} from '@env';
 
-export default function MyClass() {
+export default function MyClass(props) {
   const [myClasses, setMyClasses] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
@@ -88,7 +88,7 @@ export default function MyClass() {
 
   return (
     <SafeAreaView>
-      <Header back title="My Class" />
+      <Header back title="My Class" {...props} />
       <FlatList
         style={styles.container}
         ListHeaderComponent={<HeaderList />}

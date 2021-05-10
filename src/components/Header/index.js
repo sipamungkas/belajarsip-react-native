@@ -41,7 +41,14 @@ export default function Header(props) {
         <View style={styles.container}>
           <StatusBar backgroundColor={Color.PRIMARY} />
           <View style={styles.main}>
-            {back && <Ionicons name="chevron-back" size={30} color="white" />}
+            {back && (
+              <Ionicons
+                name="chevron-back"
+                size={30}
+                color="white"
+                onPress={() => props.navigation.goBack()}
+              />
+            )}
             <Text style={styles.title}>{title}</Text>
           </View>
         </View>
