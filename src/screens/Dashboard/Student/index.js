@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, View, StatusBar} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
 import News from '../../../components/Dashboard/News';
 import MyClass from '../../../components/Dashboard/MyClass';
+import Header from '../../../components/Header';
 
 import styles from './styles';
 
 export default function DashboardStudent(props) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [tab, setTab] = useState(2);
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -20,8 +21,8 @@ export default function DashboardStudent(props) {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = date => {
-    console.warn('A date has been picked: ', moment(date).format('YYYY-MM-DD'));
+  const handleConfirm = selectedDate => {
+    setDate(moment(selectedDate).format('YYYY-MM-DD'));
     hideDatePicker();
   };
 
@@ -48,16 +49,24 @@ export default function DashboardStudent(props) {
     {id: 2, title: 'History of Europe', time: '11.00 - 11.40', progress: 25},
   ];
 
+  console.log(date);
   return (
-    <ScrollView style={styles.container}>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-      <News data={newsData} />
-      <MyClass data={classData} showDatePicker={showDatePicker} />
-    </ScrollView>
+    <View>
+      <Header title="Dashboard" />
+      <ScrollView
+        style={[
+          styles.container,
+          {paddingBottom: StatusBar.currentHeight + 115},
+        ]}>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+        <News data={newsData} />
+        <MyClass date={date} data={classData} showDatePicker={showDatePicker} />
+      </ScrollView>
+    </View>
   );
 }

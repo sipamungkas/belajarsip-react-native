@@ -11,7 +11,8 @@ import Color from '../../../Color';
 
 export default function ForYou(props) {
   const [myClassData, setMyClassData] = useState();
-  const date = '2021-03-29';
+  // const date = '2021-03-29';
+  const {date} = props;
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiQnVyaGFuIFVwZGF0ZWEiLCJyb2xlX2lkIjoyLCJpYXQiOjE2MjA2MDk3MDksImV4cCI6MTYyMDY5NjEwOSwiaXNzIjoiQkVMQUpBUlNJUCJ9.04ndNaHCYYS_bfaW8Hb1vLD6cvmgQAZ-q-ADOZsC84U';
   useEffect(() => {
@@ -32,6 +33,11 @@ export default function ForYou(props) {
   return (
     <View>
       {!myClassData && <ActivityIndicator color={Color.PRIMARY} />}
+      {myClassData?.length === 0 && (
+        <Card style={{padding: 10}}>
+          <Text style={{textAlign: 'center'}}>No Schedule</Text>
+        </Card>
+      )}
       {myClassData &&
         myClassData.map((item, index) => (
           <Card

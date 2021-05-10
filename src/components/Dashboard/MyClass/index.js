@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import ProgressCircle from 'react-native-progress-circle';
-import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
 
 import ForYou from '../ForYou';
 
@@ -11,6 +10,7 @@ import Color from '../../../Color';
 import AllSchedule from '../AllSchedule';
 
 export default function Dashboard(props) {
+  console.log('child', props.date);
   const [tab, setTab] = useState(1);
   const tabList = ['All Schedule', 'For You'];
   return (
@@ -18,7 +18,13 @@ export default function Dashboard(props) {
       <View style={styles.containerTitle}>
         <View>
           <Text style={styles.containerTitleText}>My Class</Text>
-          <Text style={styles.containerSubtitle}>Today, October 10</Text>
+          <Text style={styles.containerSubtitle}>
+            {moment(props.date).format('YYYY MM DD') ===
+            moment(Date.now()).format('YYYY MM DD')
+              ? 'Today'
+              : moment(props.date).format('dddd')}
+            , {moment(props.date).format('D MMMM')}
+          </Text>
         </View>
         <Ionicons
           name="calendar-outline"
@@ -41,9 +47,9 @@ export default function Dashboard(props) {
         ))}
       </View>
       {tab === 1 ? (
-        <ForYou data={props.data} />
+        <ForYou date={props.date} />
       ) : (
-        <AllSchedule data={props.data} />
+        <AllSchedule data={props.data} date={props.date} />
       )}
     </View>
   );
