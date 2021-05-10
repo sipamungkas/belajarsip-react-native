@@ -4,6 +4,9 @@ import {View, ScrollView, TouchableOpacity, StatusBar} from 'react-native';
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import {connect} from 'react-redux';
+import {logoutHandler} from '../../store/actions/auth';
+
 import PinIcon from '../../assets/icons/pin-icon.svg';
 import LogoutIcon from '../../assets/icons/logout-icon.svg';
 import SecurityIcon from '../../assets/icons/security-icon.svg';
@@ -12,10 +15,18 @@ import StorageIcon from '../../assets/icons/storage-icon.svg';
 import Header from '../../components/Header';
 import styles from './styles';
 
-export default function Profile() {
+function Profile(props) {
+  const {
+    authReducer: {user},
+  } = props;
+  console.log(user);
+  const onLogoutHandler = () => {
+    props.onLogoutHandler();
+    props.navigation.navigate('Login');
+  };
   return (
     <View>
-      <Header title="Profile" mode={'profile'} />
+      <Header title="Profile" mode={'profile'} user={user} />
       <ScrollView
         contentContainerStyle={{
           ...styles.container,
@@ -158,7 +169,7 @@ export default function Profile() {
               )}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onLogoutHandler}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={[styles.titleStyle, {color: 'red'}]}
@@ -178,3 +189,19 @@ export default function Profile() {
     </View>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogoutHandler: () => dispatch(logoutHandler()),
+  };
+};
+
+const ConnectedProfile = connect(mapStateToProps, mapDispatchToProps)(Profile);
+
+export default ConnectedProfile;

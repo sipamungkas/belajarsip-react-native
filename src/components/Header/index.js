@@ -9,7 +9,7 @@ import styles from './styles';
 import {API_URL} from '@env';
 
 export default function Header(props) {
-  const {back, title, mode} = props;
+  const {back, title, mode, user} = props;
   switch (mode) {
     case 'profile':
       return (
@@ -24,10 +24,12 @@ export default function Header(props) {
               style={styles.avatar}
               height={45}
               width={45}
-              source={{uri: `${API_URL}/avatars/avatar-1.png`}}
+              source={{uri: `${API_URL}/${user.avatar}`}}
             />
             <View style={styles.info}>
-              <Text style={styles.profileName}>Emir Kharisma</Text>
+              <Text style={styles.profileName}>
+                {user?.name || 'Emir Kharisma'}
+              </Text>
               <Text style={styles.online}>Online</Text>
             </View>
           </View>
