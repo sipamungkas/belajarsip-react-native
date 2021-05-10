@@ -11,8 +11,11 @@ export default StyleSheet.create({
   },
   filter: {
     paddingVertical: 10,
+    paddingHorizontal: 5,
     backgroundColor: 'rgba(238, 238, 238, 1)',
     flexDirection: 'row',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   filterWrapper: {
     flex: 1,

@@ -1,7 +1,9 @@
 import React from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 
 import SearchBox from '../SearchBox';
+import Item from '../AvailableClassItem';
+
 import styles from './styles';
 
 const courses = [
@@ -10,7 +12,7 @@ const courses = [
     name: 'HTML CSS Fundamentals',
     category_id: 1,
     level_id: 1,
-    price: 4,
+    price: 0,
     session_start: '08:00:00',
     duration: 5400000,
     start_date: '2021-03-28T17:00:00.000Z',
@@ -20,7 +22,7 @@ const courses = [
     category: 'Software',
   },
   {
-    id: 4,
+    id: 1,
     name: 'HTML CSS Fundamentals',
     category_id: 1,
     level_id: 1,
@@ -40,9 +42,11 @@ export default function AvailableClassList(props) {
     <View>
       <Text style={styles.title}>New Class</Text>
       <SearchBox />
-      {courses.map(course => (
-        <Text key={course.id}>{course.name}</Text>
-      ))}
+      <View style={styles.courseList}>
+        {courses.map(course => (
+          <Item key={course.id} course={course} />
+        ))}
+      </View>
     </View>
   );
 }

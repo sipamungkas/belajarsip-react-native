@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'rgba(81, 231, 43, 1)',
   },
+  courseList: {
+    marginVertical: 12,
+  },
 });
 
 export default styles;
