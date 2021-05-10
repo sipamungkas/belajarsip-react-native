@@ -15,8 +15,11 @@ import Login from './src/screens/Login';
 import Register from './src/screens/Register';
 import DashboardStudent from './src/screens/Dashboard/Student';
 import DashboardHeader from './src/components/Dashboard/Header';
+
 import Activity from './src/screens/Activity';
 import ActivityMyClass from './src/screens/MyClass';
+
+import Profile from './src/screens/Profile';
 
 import Color from './src/Color';
 
@@ -126,7 +129,7 @@ function TabNavigator() {
       <Tab.Screen name="Dashboard" component={DashboardStudent} />
       <Tab.Screen name="Activity" component={ActivityNavigator} />
       <Tab.Screen name="Chat" component={DashboardStudent} />
-      <Tab.Screen name="Profile" component={DashboardStudent} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
@@ -137,30 +140,32 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Home"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: Color.PRIMARY,
-              height: 75,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 25,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            animationEnabled: true,
-            headerLeft: props => (
-              <Ionicons
-                style={{marginLeft: 10}}
-                name="chevron-back"
-                color="white"
-                size={30}
-                onPress={() => {
-                  console.log(props);
-                }}
-              />
-            ),
-          }}>
+          headerMode="none"
+          // screenOptions={{
+          //   headerStyle: {
+          //     backgroundColor: Color.PRIMARY,
+          //     height: 75,
+          //     borderBottomLeftRadius: 20,
+          //     borderBottomRightRadius: 25,
+          //   },
+          //   headerTintColor: '#fff',
+          //   headerTitleStyle: {
+          //     fontWeight: 'bold',
+          //   },
+          //   animationEnabled: true,
+          //   headerLeft: props => (
+          //     <Ionicons
+          //       style={{marginLeft: 10}}
+          //       name="chevron-back"
+          //       color="white"
+          //       size={30}
+          //       onPress={() => {
+          //         console.log(props);
+          //       }}
+          //     />
+          //   ),
+          // }}
+        >
           <Stack.Screen
             name="Login"
             component={Login}
