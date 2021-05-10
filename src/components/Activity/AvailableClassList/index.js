@@ -23,15 +23,21 @@ export default function AvailableClassList(props) {
     let pages = [];
     for (let i = 1; i <= totalPage; i++) {
       pages.push(i);
-      console.log(i, info?.total);
     }
     return pages;
   };
 
   const prevPageHandler = () => {
+    if (currentPage === 1) {
+      return;
+    }
     setCurrentPage(currentPage - 1);
   };
   const nextPageHandler = () => {
+    console.log(currentPage);
+    if (currentPage === totalPage) {
+      return;
+    }
     setCurrentPage(currentPage + 1);
   };
   const pages = pageList();
@@ -120,7 +126,10 @@ export default function AvailableClassList(props) {
           style={styles.pageItem}
           theme={{roundness: 8}}
           onPress={nextPageHandler}>
-          <TouchableOpacity style={styles.page} disabled={!info?.prev}>
+          <TouchableOpacity
+            style={styles.page}
+            onPress={nextPageHandler}
+            disabled={info?.next === null}>
             <Ionicons name="chevron-forward" />
           </TouchableOpacity>
         </Card>

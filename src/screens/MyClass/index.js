@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,29 +8,65 @@ import {
 } from 'react-native';
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import Color from '../../Color';
 
 import styles from './styles';
 import Item from '../../components/Activity/MyClassItem';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+import {API_URL} from '@env';
 
 export default function MyClass() {
-  const renderItem = ({item}) => <Item title={item.title} />;
+  const [myClasses, setMyClasses] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [info, setInfo] = useState({});
+  const [totalPage, setTotalPage] = useState(0);
+  const pageList = () => {
+    let pages = [];
+    for (let i = 1; i <= totalPage; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
 
-  const pageList = [1, 2, 3];
+  const prevPageHandler = () => {
+    if (currentPage === 1) {
+      return;
+    }
+    setCurrentPage(currentPage - 1);
+  };
+  const nextPageHandler = page => {
+    if (currentPage === totalPage) {
+      return;
+    }
+    setCurrentPage(currentPage + 1);
+  };
+  const pages = pageList();
+
+  const limit = 5;
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiQnVyaGFuIFVwZGF0ZWEiLCJyb2xlX2lkIjoyLCJpYXQiOjE2MjA2NjE0ODUsImV4cCI6MTYyMDc0Nzg4NSwiaXNzIjoiQkVMQUpBUlNJUCJ9.6yArS41aouxWaBt1kq2FSL-pmxDmrV77oqBX4ZYcgj0';
+  useEffect(() => {
+    axios
+      .get(
+        `${API_URL}/v1/courses/my-class?search=&sort=&page=${currentPage}&limit=${limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then(res => {
+        setMyClasses(res.data.data);
+        setInfo(res.data.info);
+        setTotalPage(res.data.info.total_page);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [token, currentPage]);
+
+  const renderItem = ({item}) => <Item course={item} />;
 
   const HeaderList = () => (
     <View
@@ -52,33 +88,53 @@ export default function MyClass() {
     <SafeAreaView style={styles.container}>
       <FlatList
         ListHeaderComponent={<HeaderList />}
-        data={DATA}
+        data={myClasses}
         renderItem={renderItem}
         keyExtractor={course => course.id}
       />
       <View style={styles.pageCount}>
-        <Text>1 of 64 items</Text>
+        <Text>
+          {(info?.current_page - 1) * limit + (myClasses?.length || 0)} of{' '}
+          {info?.total || 0} items
+        </Text>
       </View>
       <View style={styles.pageContainer}>
         <Card elevation={2} style={styles.pageItem} theme={{roundness: 8}}>
-          <TouchableOpacity style={styles.page}>
+          <TouchableOpacity
+            style={styles.page}
+            onPress={prevPageHandler}
+            disabled={info?.prev !== null}>
             <Ionicons name="chevron-back" />
           </TouchableOpacity>
         </Card>
-        {pageList.map((page, index) => (
+        {pages.map((page, index) => (
           <Card
             key={index}
             elevation={2}
-            style={styles.pageItem}
+            style={{
+              ...styles.pageItem,
+              backgroundColor: page === currentPage ? Color.PRIMARY : 'white',
+            }}
             theme={{roundness: 8}}>
-            <TouchableOpacity style={styles.page}>
-              <Text>{page}</Text>
+            <TouchableOpacity
+              style={styles.page}
+              onPress={() => setCurrentPage(page)}>
+              <Text style={{color: page === currentPage ? 'white' : 'black'}}>
+                {page}
+              </Text>
             </TouchableOpacity>
           </Card>
         ))}
 
-        <Card elevation={2} style={styles.pageItem} theme={{roundness: 8}}>
-          <TouchableOpacity style={styles.page}>
+        <Card
+          elevation={2}
+          style={styles.pageItem}
+          theme={{roundness: 8}}
+          onPress={nextPageHandler}>
+          <TouchableOpacity
+            style={styles.page}
+            disabled={info?.next !== null}
+            onPress={nextPageHandler}>
             <Ionicons name="chevron-forward" />
           </TouchableOpacity>
         </Card>
