@@ -7,7 +7,7 @@ import styles from './styles';
 export default function index(props) {
   return (
     <View style={{flexDirection: 'row'}}>
-      <Card style={styles.timeContainer}>
+      <Card style={styles.timeContainer} elevation={2}>
         <Text style={styles.time}>{'00.00 - 00.00'}</Text>
       </Card>
       <View style={{flex: 3, flexDirection: 'column'}}>
