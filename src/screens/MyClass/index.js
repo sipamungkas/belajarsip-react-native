@@ -48,8 +48,8 @@ function MyClass(props) {
   const pages = pageList();
 
   const limit = 5;
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiQnVyaGFuIFVwZGF0ZWEiLCJyb2xlX2lkIjoyLCJpYXQiOjE2MjA2NjE0ODUsImV4cCI6MTYyMDc0Nzg4NSwiaXNzIjoiQkVMQUpBUlNJUCJ9.6yArS41aouxWaBt1kq2FSL-pmxDmrV77oqBX4ZYcgj0';
+  const {token} = props.authReducer.user;
+  console.log(token);
   useEffect(() => {
     axios
       .get(
