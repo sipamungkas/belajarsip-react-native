@@ -11,6 +11,7 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
+import RNBootSplash from 'react-native-bootsplash';
 
 import Login from './src/screens/Login';
 import Register from './src/screens/Register';
@@ -140,7 +141,7 @@ function App(props) {
 
   return (
     <PaperProvider>
-      <NavigationContainer>
+      <NavigationContainer onReady={() => RNBootSplash.hide()}>
         <Stack.Navigator headerMode="none">
           {isLoggedIn ? (
             <>
