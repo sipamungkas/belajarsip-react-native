@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StatusBar, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Avatar} from 'react-native-paper';
+import {Searchbar} from 'react-native-paper';
 
 import Color from '../../Color';
 import styles from './styles';
@@ -35,7 +35,30 @@ export default function Header(props) {
           </View>
         </View>
       );
-
+    case 'dashboard':
+      return (
+        <View style={styles.container}>
+          <StatusBar backgroundColor={Color.PRIMARY} />
+          <View style={styles.main}>
+            {back && (
+              <Ionicons
+                name="chevron-back"
+                size={30}
+                color="white"
+                onPress={() => props.navigation.goBack()}
+              />
+            )}
+            <Text style={styles.title}>{title}</Text>
+          </View>
+          <Searchbar
+            style={{height: 40, marginTop: 10, backgroundColor: '#E5E6EB'}}
+            theme={{roundness: 30}}
+            inputStyle={{fontFamily: 'Roboto-Regular', fontSize: 15}}
+            placeholder="Looking for something?"
+            clearButtonMode="always"
+          />
+        </View>
+      );
     default:
       return (
         <View style={styles.container}>

@@ -50,10 +50,9 @@ function DashboardStudent(props) {
     {id: 2, title: 'History of Europe', time: '11.00 - 11.40', progress: 25},
   ];
 
-  console.log(props.authReducer);
   return (
     <View>
-      <Header title="Dashboard" />
+      <Header title="Dashboard" mode="dashboard" />
       <ScrollView
         style={[
           styles.container,
