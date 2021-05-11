@@ -3,18 +3,20 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import {ActivityIndicator, Card} from 'react-native-paper';
 import axios from 'axios';
+import {connect} from 'react-redux';
 
 import styles from './styles';
 
 import {API_URL} from '@env';
 import Color from '../../../Color';
 
-export default function ForYou(props) {
+function ForYou(props) {
   const [myClassData, setMyClassData] = useState();
   // const date = '2021-03-29';
   const {date} = props;
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiQnVyaGFuIFVwZGF0ZWEiLCJyb2xlX2lkIjoyLCJpYXQiOjE2MjA2MDk3MDksImV4cCI6MTYyMDY5NjEwOSwiaXNzIjoiQkVMQUpBUlNJUCJ9.04ndNaHCYYS_bfaW8Hb1vLD6cvmgQAZ-q-ADOZsC84U';
+
+  const {token} = props.authReducer.user;
+  console.log(token);
   useEffect(() => {
     axios
       .get(`${API_URL}/v1/dashboard/${date}`, {
@@ -72,3 +74,13 @@ export default function ForYou(props) {
     </View>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+const ConnectedForYou = connect(mapStateToProps)(ForYou);
+
+export default ConnectedForYou;

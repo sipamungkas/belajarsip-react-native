@@ -9,6 +9,8 @@ import {
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
+import {connect} from 'react-redux';
+
 import Color from '../../Color';
 
 import styles from './styles';
@@ -18,7 +20,7 @@ import Item from '../../components/Activity/MyClassItem';
 
 import {API_URL} from '@env';
 
-export default function MyClass(props) {
+function MyClass(props) {
   const [myClasses, setMyClasses] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
@@ -146,3 +148,13 @@ export default function MyClass(props) {
     </SafeAreaView>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+const ConnectedMyClass = connect(mapStateToProps)(MyClass);
+
+export default ConnectedMyClass;

@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {ActivityIndicator, Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
+import {connect} from 'react-redux';
 
 import Color from '../../../Color';
 import SearchBox from '../SearchBox';
@@ -12,13 +13,16 @@ import {API_URL} from '@env';
 
 import styles from './styles';
 
-export default function AvailableClassList(props) {
+function AvailableClassList(props) {
   const [availableCourses, setAvailableCourses] = useState();
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
   const [totalPage, setTotalPage] = useState(0);
+
+  const {token} = props.authReducer.user;
+
   const pageList = () => {
     let pages = [];
     for (let i = 1; i <= totalPage; i++) {
@@ -42,8 +46,7 @@ export default function AvailableClassList(props) {
   const pages = pageList();
 
   const limit = 5;
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiQnVyaGFuIFVwZGF0ZWEiLCJyb2xlX2lkIjoyLCJpYXQiOjE2MjA2NjE0ODUsImV4cCI6MTYyMDc0Nzg4NSwiaXNzIjoiQkVMQUpBUlNJUCJ9.6yArS41aouxWaBt1kq2FSL-pmxDmrV77oqBX4ZYcgj0';
+
   useEffect(() => {
     axios
       .get(
@@ -136,3 +139,15 @@ export default function AvailableClassList(props) {
     </View>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+const ConnectedAvailableClassList = connect(mapStateToProps)(
+  AvailableClassList,
+);
+
+export default ConnectedAvailableClassList;

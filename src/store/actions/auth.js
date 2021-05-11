@@ -6,6 +6,7 @@ import {API_URL} from '@env';
 
 export function loginHandler(username, password) {
   return function (dispatch) {
+    console.log(`${API_URL}/v1`);
     return axios
       .post(`${API_URL}/v1/auth/login`, {username, password})
       .then(res => {
