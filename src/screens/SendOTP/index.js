@@ -15,6 +15,7 @@ export default function SendOTP(props) {
   const usernameHasErrors = () => {
     return email && !emailRules.test(email);
   };
+
   return (
     <>
       <StatusBar
