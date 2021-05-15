@@ -172,7 +172,7 @@ function Register(props) {
         theme={{roundness: 10}}
         disabled={isLoading}
         loading={isLoading}>
-        <Text style={styles.btnText}>register with google</Text>
+        <Text style={styles.btnText}>Register with google</Text>
       </Button>
       <TouchableOpacity>
         <Text style={{...styles.newUsertext, marginTop: formMargin}}>

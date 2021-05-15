@@ -12,7 +12,7 @@ export function useOrientation() {
   useEffect(() => {
     const callback = () =>
       setOrientation(
-        Dimensions.get('window').height >= Dimensions.get('window').width
+        Dimensions.get('window').height > Dimensions.get('window').width
           ? 'PORTRAIT'
           : 'LANDSCAPE',
       );
