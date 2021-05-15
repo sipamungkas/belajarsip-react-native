@@ -5,7 +5,7 @@ import {AppRegistry} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 
-import App from './App';
+import App from './src/navigators/rootNavigators';
 import {name as appName} from './app.json';
 import storeWithPersistor from './src/store/store';
 
