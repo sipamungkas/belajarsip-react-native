@@ -9,11 +9,8 @@ import {
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
-
-import DashboardHeader from '../components/Dashboard/Header';
 
 const Stack = createStackNavigator();
 
@@ -40,24 +37,6 @@ function getHeaderTitle(route) {
   }
 }
 
-function getHeaderRight(route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Dashboard';
-  switch (routeName) {
-    case 'Dashboard':
-      return (
-        <Ionicons
-          name="notifications"
-          color="white"
-          size={20}
-          style={{position: 'absolute', top: 16, right: 3}}
-        />
-      );
-
-    default:
-      return '';
-  }
-}
-
 function App(props) {
   const {isLoggedIn} = props.authReducer;
   return (
@@ -71,7 +50,6 @@ function App(props) {
                 component={HomeNavigators}
                 options={({route}) => ({
                   headerTitle: getHeaderTitle(route),
-                  headerRight: () => getHeaderRight(route),
                 })}
               />
             </>
@@ -82,7 +60,6 @@ function App(props) {
                 component={AuthNavigators}
                 options={({route}) => ({
                   headerTitle: getHeaderTitle(route),
-                  headerRight: () => getHeaderRight(route),
                 })}
               />
             </>
