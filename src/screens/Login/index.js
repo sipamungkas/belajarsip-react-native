@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {ScrollView, View, Dimensions, TouchableOpacity} from 'react-native';
+import {
+  StatusBar,
+  ScrollView,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {TextInput, Text, Button, HelperText} from 'react-native-paper';
 
 import {useOrientation} from '../../hooks/useOrientation';
@@ -48,6 +54,10 @@ function Login(props) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <StatusBar
+        backgroundColor={Color.DEFAULT_BACKGROUND}
+        barStyle="dark-content"
+      />
       <Text style={styles.loginText}>Login</Text>
       <View
         style={{
@@ -100,7 +110,9 @@ function Login(props) {
           style={{display: helperTextDisplay}}>
           {password.length < 8 ? 'Min Password Length is 8' : ''}
         </HelperText>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
+        <TouchableOpacity onPress={() => props.navigation.navigate('SendOTP')}>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
+        </TouchableOpacity>
       </View>
       <Button
         mode="contained"
