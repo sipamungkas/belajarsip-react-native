@@ -56,7 +56,7 @@ export default function SendOTP(props) {
         </View>
         <View style={styles.btnContainer}>
           <Button
-            onPress={() => props.navigation.navigate('VerifyOTP')}
+            onPress={() => props.navigation.navigate('OTPVerification')}
             mode="contained"
             style={styles.loginBtn}
             uppercase={false}
