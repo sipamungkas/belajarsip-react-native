@@ -35,7 +35,7 @@ export default StyleSheet.create({
     paddingHorizontal: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 25,
+    marginTop: 25,
     width: '100%',
   },
   otp: {
@@ -46,8 +46,24 @@ export default StyleSheet.create({
     fontSize: 40,
     fontStyle: 'normal',
   },
-  otpContent: {},
-  email: {height: 50},
+  resendContainer: {
+    flexDirection: 'row',
+    marginVertical: 18,
+    alignItems: 'center',
+  },
+  resend: {
+    color: '#ADA9BB',
+    fontFamily: 'Kanit-Medium',
+    fontSize: 14,
+    marginRight: 5,
+    fontStyle: 'normal',
+  },
+  resendLink: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: Color.PRIMARY,
+  },
   btnContainer: {
     width: '100%',
   },

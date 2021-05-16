@@ -1,5 +1,12 @@
 import React, {useRef, useState} from 'react';
-import {View, ScrollView, Text, StatusBar, ToastAndroid} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  StatusBar,
+  ToastAndroid,
+  TouchableOpacity,
+} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 
 import Color from '../../Color';
@@ -130,6 +137,12 @@ export default function SendOTP(props) {
               },
             }}
           />
+        </View>
+        <View style={styles.resendContainer}>
+          <Text style={styles.resend}>Didn’t receive a code?</Text>
+          <TouchableOpacity>
+            <Text style={styles.resendLink}>Resend</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.btnContainer}>
           <Button
