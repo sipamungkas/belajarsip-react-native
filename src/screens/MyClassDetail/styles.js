@@ -9,14 +9,20 @@ import Color from '../../Color';
 export default StyleSheet.create({
   container: {
     paddingTop: 5,
-    paddingBottom: StatusBar.currentHeight + 115,
+    // paddingBottom: StatusBar.currentHeight + 115,
     width: '100%',
     flexGrow: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
   },
   imageBackground: {
     width: '100%',
     transform: [{translateY: -20}],
+  },
+  imageOverlay: {
+    backgroundColor: '#EDEDED',
+    opacity: 0.5,
+    height: '100%',
+    width: '100%',
   },
   information: {
     paddingHorizontal: 10,
@@ -43,7 +49,7 @@ export default StyleSheet.create({
   },
   informationText: {
     // width: '100%',
-    backgroundColor: 'goldenrod',
+
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: 30,
@@ -60,5 +66,19 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     textAlign: 'left',
     marginRight: 10,
+  },
+  content: {
+    marginTop: 20,
+    paddingBottom: 10,
+  },
+  tabLabel: {fontSize: 12, padding: 0, margin: 0, color: 'black'},
+  tabBar: {
+    flexDirection: 'row',
+    paddingTop: 10,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 16,
   },
 });
