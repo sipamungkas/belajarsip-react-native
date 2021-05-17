@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, ImageBackground, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  ScrollView,
+  Image,
+  Dimensions,
+} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -10,6 +17,7 @@ import styles from './styles';
 
 export default function MyClassDetail(props) {
   const {courseId, courseName} = props.route.params;
+  const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
   const orientation = useOrientation();
   return (
     <View>
@@ -21,7 +29,7 @@ export default function MyClassDetail(props) {
           resizeMethod="resize"
           style={[
             styles.imageBackground,
-            {height: orientation === 'PORTRAIT' ? hp(50) : hp(40)},
+            {height: orientation === 'PORTRAIT' ? hp(25) : windowHeight * 0.5},
           ]}
           source={{
             uri:
