@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, StatusBar} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
@@ -46,11 +46,13 @@ export default function Dashboard(props) {
           </TouchableOpacity>
         ))}
       </View>
-      {tab === 1 ? (
-        <ForYou date={props.date} />
-      ) : (
-        <AllSchedule data={props.data} date={props.date} />
-      )}
+      <View style={{paddingBottom: StatusBar.currentHeight + 115}}>
+        {tab === 1 ? (
+          <ForYou date={props.date} />
+        ) : (
+          <AllSchedule data={props.data} date={props.date} />
+        )}
+      </View>
     </View>
   );
 }
