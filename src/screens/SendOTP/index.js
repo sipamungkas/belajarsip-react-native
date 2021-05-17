@@ -17,7 +17,7 @@ import CustomModal from '../../components/CustomModal';
 import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-questions.svg';
 import styles from './styles';
-import {sendOTP} from '../../services/api';
+import {sendOTP} from '../../services/api/forgot';
 
 function SendOTP(props) {
   const [email, setEmail] = useState('');

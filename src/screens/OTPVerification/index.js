@@ -19,10 +19,10 @@ import styles from './styles';
 
 function OTPVerification(props) {
   const orientation = useOrientation();
-  const [input1, setInput1] = useState();
-  const [input2, setInput2] = useState();
-  const [input3, setInput3] = useState();
-  const [input4, setInput4] = useState();
+  const [input1, setInput1] = useState('');
+  const [input2, setInput2] = useState('');
+  const [input3, setInput3] = useState('');
+  const [input4, setInput4] = useState('');
   const inputRef1 = useRef();
   const inputRef2 = useRef();
   const inputRef3 = useRef();
