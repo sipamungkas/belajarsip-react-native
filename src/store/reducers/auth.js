@@ -2,7 +2,7 @@ import {LOGIN, SET_ERROR, SET_LOADING, LOGOUT} from '../actions/actionTypes';
 
 const initialState = {
   user: {},
-  isLoggedIn: true,
+  isLoggedIn: false,
   isError: false,
   error: {},
 };

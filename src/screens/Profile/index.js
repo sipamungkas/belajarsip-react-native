@@ -19,7 +19,7 @@ function Profile(props) {
   const {
     authReducer: {user},
   } = props;
-  console.log(user);
+  console.log(props.authReducer);
   const onLogoutHandler = () => {
     props.onLogoutHandler();
   };
