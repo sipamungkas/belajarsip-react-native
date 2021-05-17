@@ -8,13 +8,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
+import {useOrientation} from '../../hooks/useOrientation';
 
 import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-lamp.svg';
 
 import styles from './styles';
 
-export default function SendOTP(props) {
+export default function OTPVerification(props) {
+  const orientation = useOrientation();
   const [input1, setInput1] = useState();
   const [input2, setInput2] = useState();
   const [input3, setInput3] = useState();
@@ -36,6 +38,7 @@ export default function SendOTP(props) {
       ToastAndroid.show('Please fill all field!', ToastAndroid.SHORT);
       return;
     }
+    props.navigation.navigate('CreateNewPassword');
     // call api and next
   };
   return (
@@ -44,7 +47,9 @@ export default function SendOTP(props) {
         backgroundColor={Color.DEFAULT_BACKGROUND}
         barStyle="dark-content"
       />
-      <View style={styles.header} />
+      <View
+        style={[styles.header, {height: orientation === 'PORTRAIT' ? 35 : 0}]}
+      />
 
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Reset password</Text>

@@ -3,7 +3,6 @@ import Color from '../../Color';
 
 export default StyleSheet.create({
   header: {
-    height: 35,
     padding: 3,
     backgroundColor: Color.DEFAULT_BACKGROUND,
   },
