@@ -1,23 +1,64 @@
 import React, {useState} from 'react';
-import {View, ScrollView, Text, StatusBar} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  StatusBar,
+  ToastAndroid,
+  Alert,
+} from 'react-native';
 import {HelperText, Button, TextInput} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import {connect} from 'react-redux';
+
+import {setEmail as setEmailRedux} from '../../store/actions/forgot';
+import CustomModal from '../../components/CustomModal';
 import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-questions.svg';
-
 import styles from './styles';
+import {sendOTP} from '../../services/api';
 
-export default function SendOTP(props) {
+function SendOTP(props) {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const emailRules = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/;
 
   const usernameHasErrors = () => {
     return email && !emailRules.test(email);
   };
 
+  const sendHandler = () => {
+    setIsLoading(true);
+    if (!email || usernameHasErrors()) {
+      ToastAndroid.show('Invalid Email Address', ToastAndroid.SHORT);
+      setIsLoading(false);
+      return;
+    }
+    sendOTP(email)
+      .then(res => {
+        setIsLoading(false);
+        props.onSetEmail(email);
+        props.navigation.navigate('OTPVerification');
+      })
+      .catch(err => {
+        console.log(err.message);
+        setIsLoading(false);
+        if (err?.response?.status === 404) {
+          Alert.alert('Not Found', 'Email Not Found!');
+          return;
+        }
+        Alert.alert('Error', err?.message || 'Something went wrong!');
+      });
+  };
+
   return (
     <>
+      <CustomModal
+        visible={isLoading}
+        type={'loading'}
+        message={'Please wait...'}
+      />
       <StatusBar
         backgroundColor={Color.DEFAULT_BACKGROUND}
         barStyle="dark-content"
@@ -56,7 +97,7 @@ export default function SendOTP(props) {
         </View>
         <View style={styles.btnContainer}>
           <Button
-            onPress={() => props.navigation.navigate('OTPVerification')}
+            onPress={sendHandler}
             mode="contained"
             style={styles.loginBtn}
             uppercase={false}
@@ -68,3 +109,19 @@ export default function SendOTP(props) {
     </>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    forgotReducer: state.forgotReducer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetEmail: email => dispatch(setEmailRedux(email)),
+  };
+};
+
+const ConnectedSendOTP = connect(mapStateToProps, mapDispatchToProps)(SendOTP);
+
+export default ConnectedSendOTP;

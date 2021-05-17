@@ -3,6 +3,7 @@ import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {authReducer} from './auth';
+import {forgotReducer} from './forgot';
 
 const persistConfig = {
   key: 'root',
@@ -10,7 +11,7 @@ const persistConfig = {
   whitelist: ['authReducer'],
 };
 
-const rootReducer = combineReducers({authReducer});
+const rootReducer = combineReducers({authReducer, forgotReducer});
 
 export default persistReducer(persistConfig, rootReducer);
 // export default rootReducer;

@@ -8,14 +8,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
+import {connect} from 'react-redux';
 import {useOrientation} from '../../hooks/useOrientation';
+import {setOTP} from '../../store/actions/forgot';
 
 import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-lamp.svg';
 
 import styles from './styles';
 
-export default function OTPVerification(props) {
+function OTPVerification(props) {
   const orientation = useOrientation();
   const [input1, setInput1] = useState();
   const [input2, setInput2] = useState();
@@ -41,6 +43,7 @@ export default function OTPVerification(props) {
     props.navigation.navigate('CreateNewPassword');
     // call api and next
   };
+  console.log(props.forgotReducer);
   return (
     <>
       <StatusBar
@@ -163,3 +166,22 @@ export default function OTPVerification(props) {
     </>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    forgotReducer: state.forgotReducer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setOTP: otp => dispatch(setOTP(otp)),
+  };
+};
+
+const ConnectedOTPVerification = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(OTPVerification);
+
+export default ConnectedOTPVerification;
