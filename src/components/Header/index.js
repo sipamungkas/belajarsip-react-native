@@ -22,7 +22,7 @@ export default function Header(props) {
           <View style={styles.profileDetail}>
             {user.avatar !== null ? (
               <Image
-                style={[styles.avatar, {borderRadius: '50%'}]}
+                style={[styles.avatar, {borderRadius: 45 / 2}]}
                 height={45}
                 width={45}
                 source={{uri: `${API_URL}/${user.avatar}`}}
@@ -34,7 +34,7 @@ export default function Header(props) {
                 style={[styles.avatar, {backgroundColor: 'white'}]}
                 color={Color.PRIMARY}
                 size={50}
-                label={user.name.slice(0, 1)}
+                label={user?.name?.slice(0, 1)}
               />
             )}
             {/* <Image
