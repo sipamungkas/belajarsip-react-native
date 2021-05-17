@@ -17,7 +17,9 @@ export default function Header(props) {
           <StatusBar backgroundColor={Color.PRIMARY} />
           <View style={styles.main}>
             {back && <Ionicons name="chevron-back" size={30} color="white" />}
-            <Text style={[styles.title, styles.titleProfile]}>{title}</Text>
+            <Text numberOfLines={1} style={[styles.title, styles.titleProfile]}>
+              {title}
+            </Text>
           </View>
           <View style={styles.profileDetail}>
             {user.avatar !== null ? (
@@ -65,7 +67,9 @@ export default function Header(props) {
                 onPress={() => props.navigation.goBack()}
               />
             )}
-            <Text style={styles.title}>{title}</Text>
+            <Text numberOfLines={1} style={styles.title}>
+              {title}
+            </Text>
           </View>
           <Searchbar
             style={{height: 40, marginTop: 10, backgroundColor: '#E5E6EB'}}
@@ -89,7 +93,9 @@ export default function Header(props) {
                 onPress={() => props.navigation.goBack()}
               />
             )}
-            <Text style={styles.title}>{title}</Text>
+            <Text numberOfLines={1} style={styles.title}>
+              {title}
+            </Text>
           </View>
         </View>
       );

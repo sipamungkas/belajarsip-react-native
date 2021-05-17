@@ -70,7 +70,7 @@ function MyClass(props) {
       });
   }, [token, currentPage]);
 
-  const renderItem = ({item}) => <Item course={item} />;
+  const renderItem = ({item}) => <Item {...props} course={item} />;
 
   const HeaderList = () => (
     <View

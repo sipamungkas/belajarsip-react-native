@@ -59,7 +59,9 @@ function MyClassList(props) {
         </View>
       )}
       {myCourses?.length > 0 &&
-        myCourses.map(item => <MyClassItem key={item.id} course={item} />)}
+        myCourses.map(item => (
+          <MyClassItem {...props} key={item.id} course={item} />
+        ))}
 
       <View
         style={{

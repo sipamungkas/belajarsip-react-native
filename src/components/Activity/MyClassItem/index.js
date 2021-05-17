@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityComponent,
-} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {Card} from 'react-native-paper';
 import ProgressCircle from 'react-native-progress-circle';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,8 +8,18 @@ import styles from './styles';
 
 export default function MyClassItem(props) {
   const {course} = props;
+
   return (
-    <Card style={{marginVertical: 2}} elevation={2} theme={{roundness: 10}}>
+    <Card
+      style={{marginVertical: 2}}
+      elevation={2}
+      theme={{roundness: 10}}
+      onPress={() =>
+        props.navigation.navigate('MyClassDetail', {
+          courseId: course.id,
+          courseName: course?.name || 'Untitled',
+        })
+      }>
       <View style={styles.item}>
         <View style={{flex: 4}}>
           <Text style={styles.title}>{course?.name || 'Untitled'}</Text>

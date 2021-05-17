@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Activity from '../screens/Activity';
 import ActivityMyClass from '../screens/MyClass';
+import MyClassDetail from '../screens/MyClassDetail';
 import Color from '../Color';
 
 const Stack = createStackNavigator();
@@ -34,6 +35,13 @@ export default function ActivityNavigator() {
       <Stack.Screen
         name="ActivityMyClass"
         component={ActivityMyClass}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MyClassDetail"
+        component={MyClassDetail}
         options={{
           headerShown: false,
         }}
