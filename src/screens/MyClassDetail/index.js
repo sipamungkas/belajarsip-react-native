@@ -21,7 +21,6 @@ export default function MyClassDetail(props) {
   const orientation = useOrientation();
   return (
     <View>
-      {console.log(orientation === 'PORTRAIT')}
       <Header back title={courseName} {...props} />
       <ScrollView contentContainerStyle={styles.container}>
         <ImageBackground
