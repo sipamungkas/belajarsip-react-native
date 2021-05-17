@@ -18,7 +18,7 @@ function Register(props) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState();
-  const [success, setSuccess] = useState();
+  const [success, setSuccess] = useState(true);
 
   const passwordHasErrors = () => {
     return password.length < 8 && password;
@@ -62,33 +62,34 @@ function Register(props) {
 
   return (
     <>
+      <CustomModal
+        visible={isLoading}
+        type={'loading'}
+        message={'Please wait...'}
+      />
+      <CustomModal
+        visible={success?.success || success || false}
+        type={'success'}
+        message={success?.message || 'Account Created'}
+        callbackComponent={
+          <TouchableOpacity
+            onPress={() => {
+              setSuccess(false);
+              props.navigation.navigate('Login');
+            }}>
+            <Text style={styles.callbackComponent}>Login Your Account</Text>
+          </TouchableOpacity>
+        }
+      />
       <StatusBar
         backgroundColor={Color.DEFAULT_BACKGROUND}
         barStyle="dark-content"
       />
+
       <View
         style={[styles.header, {height: orientation === 'PORTRAIT' ? 35 : 0}]}
       />
       <ScrollView contentContainerStyle={styles.container}>
-        <CustomModal
-          visible={isLoading}
-          type={'loading'}
-          message={'Please wait...'}
-        />
-        <CustomModal
-          visible={success?.success || false}
-          type={'success'}
-          message={success?.message || 'Account Created'}
-          callbackComponent={
-            <TouchableOpacity
-              onPress={() => {
-                setSuccess(false);
-                props.navigation.navigate('Login');
-              }}>
-              <Text style={styles.callbackComponent}>Login Your Account</Text>
-            </TouchableOpacity>
-          }
-        />
         <Text style={styles.title}>Create new password</Text>
         <Text
           style={[
