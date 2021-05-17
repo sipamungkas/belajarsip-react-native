@@ -6,11 +6,14 @@ import {
   StatusBar,
   ToastAndroid,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {useOrientation} from '../../hooks/useOrientation';
 import {setOTP} from '../../store/actions/forgot';
+import {otpVerification} from '../../services/api/forgot';
+import CustomModal from '../../components/CustomModal';
 
 import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-lamp.svg';
@@ -19,6 +22,7 @@ import styles from './styles';
 
 function OTPVerification(props) {
   const orientation = useOrientation();
+  const [isLoading, setIsLoading] = useState(false);
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
@@ -35,17 +39,45 @@ function OTPVerification(props) {
   };
 
   const sendHandler = () => {
+    setIsLoading(true);
+    const {email} = props.forgotReducer;
     const otp = `${input1 || ''}${input2 || ''}${input3 || ''}${input4 || ''}`;
     if (otp.length < 4) {
       ToastAndroid.show('Please fill all field!', ToastAndroid.SHORT);
       return;
     }
-    props.navigation.navigate('CreateNewPassword');
+    otpVerification(email, otp)
+      .then(res => {
+        console.log(res.data);
+        setIsLoading(false);
+        props.onSetOTP(otp);
+        props.navigation.navigate('CreateNewPassword');
+      })
+      .catch(err => {
+        console.log(err.message);
+        setIsLoading(false);
+        if (err?.response?.status === 404) {
+          Alert.alert('Not Found', 'Email Not Found!');
+          return;
+        }
+        Alert.alert(
+          'Error',
+          err?.response?.data?.message ||
+            err?.message ||
+            'Something went wrong!',
+        );
+      });
+
     // call api and next
   };
-  console.log(props.forgotReducer);
+
   return (
     <>
+      <CustomModal
+        visible={isLoading}
+        type={'loading'}
+        message={'Please wait...'}
+      />
       <StatusBar
         backgroundColor={Color.DEFAULT_BACKGROUND}
         barStyle="dark-content"
@@ -175,7 +207,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setOTP: otp => dispatch(setOTP(otp)),
+    onSetOTP: otp => dispatch(setOTP(otp)),
   };
 };
 

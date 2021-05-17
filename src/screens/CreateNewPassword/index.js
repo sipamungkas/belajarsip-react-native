@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import {StatusBar, ScrollView, View, TouchableOpacity} from 'react-native';
+import {
+  StatusBar,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {Text, Button, HelperText} from 'react-native-paper';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import axios from 'axios';
 
 import {useOrientation} from '../../hooks/useOrientation';
+import {newPassword} from '../../services/api/forgot';
+import {connect} from 'react-redux';
 
 import Color from '../../Color';
 import CustomTextInput from '../../components/CustomTextInput';
@@ -12,13 +19,13 @@ import CustomModal from '../../components/CustomModal';
 
 import styles from './styles';
 
-function Register(props) {
+function CreateNewPassword(props) {
   const orientation = useOrientation();
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState();
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const passwordHasErrors = () => {
     return password.length < 8 && password;
@@ -28,22 +35,43 @@ function Register(props) {
     return password !== confirmPassword;
   };
 
-  const onRegisterHandler = () => {
-    setLoading(true);
+  const sendHandler = () => {
+    const {otp, email} = props.forgotReducer;
+    setIsLoading(true);
     if (formValidationErrors()) {
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
+    newPassword(email, otp, password)
+      .then(res => {
+        console.log(res.data);
+        setIsLoading(false);
+        setSuccess(true);
+      })
+      .catch(err => {
+        console.log(err.message);
+        setIsLoading(false);
+        if (err?.response?.status === 404) {
+          Alert.alert('Not Found', 'Email Not Found!');
+          return;
+        }
+        Alert.alert(
+          'Error',
+          err?.response?.data?.message ||
+            err?.message ||
+            'Something went wrong!',
+        );
+      });
     // setSuccess(true);
     // axios
     //   .post(`${API_URL}/v1/auth/register`, {username, email, password})
     //   .then(res => {
     //     setSuccess(res.data);
-    //     setLoading(false);
+    //     setIsLoading(false);
     //   })
     //   .catch(err => {
     //     setSuccess(false);
-    //     setLoading(false);
+    //     setIsLoading(false);
     //     setError(err);
     //   });
   };
@@ -68,9 +96,9 @@ function Register(props) {
         message={'Please wait...'}
       />
       <CustomModal
-        visible={success?.success || success || false}
+        visible={success || false}
         type={'success'}
-        message={success?.message || 'Account Created'}
+        message={'Password Changed!'}
         callbackComponent={
           <TouchableOpacity
             onPress={() => {
@@ -127,7 +155,7 @@ function Register(props) {
             {marginTop: orientation === 'PORTRAIT' ? hp(20) : hp(3)},
           ]}>
           <Button
-            // onPress={sendHandler}
+            onPress={sendHandler}
             mode="contained"
             style={styles.loginBtn}
             uppercase={false}
@@ -140,4 +168,11 @@ function Register(props) {
   );
 }
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    forgotReducer: state.forgotReducer,
+  };
+};
+
+const ConnectedCreateNewPassword = connect(mapStateToProps)(CreateNewPassword);
+export default ConnectedCreateNewPassword;

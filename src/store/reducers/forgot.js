@@ -12,7 +12,7 @@ export const forgotReducer = (state = initialState, action) => {
         ...state,
         email: action.payload,
       };
-    case SET_FORGOT_EMAIL:
+    case SET_FORGOT_OTP:
       return {
         ...state,
         otp: action.payload,
