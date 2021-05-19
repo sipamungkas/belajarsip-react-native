@@ -5,11 +5,12 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 
 import Color from '../../Color';
 
@@ -17,6 +18,7 @@ import styles from './styles';
 
 import Header from '../../components/Header';
 import Item from '../../components/Activity/MyClassItem';
+import Unauthorized from '../../utils/UnauthorizedHandler';
 
 import {API_URL} from '@env';
 
@@ -25,6 +27,7 @@ function MyClass(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
   const [totalPage, setTotalPage] = useState(0);
+  const dispatch = useDispatch();
   const pageList = () => {
     let pages = [];
     for (let i = 1; i <= totalPage; i++) {
@@ -49,7 +52,7 @@ function MyClass(props) {
 
   const limit = 5;
   const {token} = props.authReducer.user;
-  console.log(token);
+
   useEffect(() => {
     axios
       .get(
@@ -66,9 +69,15 @@ function MyClass(props) {
         setTotalPage(res.data.info.total_page);
       })
       .catch(err => {
-        console.log(err);
+        const message =
+          err.response.status === 401
+            ? 'Session Expired, please logout and login again'
+            : err.response?.data?.message ||
+              err.response?.data?.error ||
+              err.message;
+        Alert.alert('Error', message);
       });
-  }, [token, currentPage]);
+  }, [token, currentPage, props]);
 
   const renderItem = ({item}) => <Item {...props} course={item} />;
 
@@ -97,6 +106,11 @@ function MyClass(props) {
         data={myClasses}
         renderItem={renderItem}
         keyExtractor={course => course.id}
+        ListEmptyComponent={
+          <Card style={{padding: 10}}>
+            <Text style={{textAlign: 'center'}}>You don't have any class</Text>
+          </Card>
+        }
       />
       <View style={styles.pageCount}>
         <Text>

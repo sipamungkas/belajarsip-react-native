@@ -1,9 +1,4 @@
-import {StyleSheet, StatusBar} from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
+import {StyleSheet} from 'react-native';
 import Color from '../../Color';
 
 export default StyleSheet.create({
@@ -14,71 +9,46 @@ export default StyleSheet.create({
     flexGrow: 1,
     backgroundColor: 'white',
   },
-  imageBackground: {
-    width: '100%',
-    transform: [{translateY: -20}],
-  },
-  imageOverlay: {
-    backgroundColor: '#EDEDED',
-    opacity: 0.5,
-    height: '100%',
-    width: '100%',
-  },
-  information: {
-    paddingHorizontal: 10,
-    position: 'absolute',
-    bottom: 0,
-    transform: [{translateY: 80 / 2}],
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  categoryBackground: {
-    position: 'relative',
-    width: 100,
-    height: 100,
-    backgroundColor: Color.PRIMARY,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-    padding: 15,
-    marginRight: 20,
-  },
-  categoryIcon: {
-    width: '100%',
-    height: '100%',
-  },
-  informationText: {
-    // width: '100%',
-
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 30,
-  },
-  title: {
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 16,
-    fontStyle: 'normal',
-    textAlign: 'left',
-  },
-  subInformationText: {
-    fontFamily: 'Montserrat-Medium',
-    fontSize: 12,
-    fontStyle: 'normal',
-    textAlign: 'left',
-    marginRight: 10,
-  },
   content: {
-    marginTop: 20,
+    backgroundColor: 'goldenrod',
     paddingBottom: 10,
   },
-  tabLabel: {fontSize: 12, padding: 0, margin: 0, color: 'black'},
-  tabBar: {
+  menuList: {
     flexDirection: 'row',
-    paddingTop: 10,
+    borderBottomWidth: 1,
+    marginBottom: 10,
   },
-  tabItem: {
-    flex: 1,
+  menuContainer: {
+    transform: [{translateY: 2}],
+    padding: 10,
+    marginHorizontal: 5,
+    // borderBottomColor: Color.PRIMARY,
+    // borderBottomWidth: 2,
+  },
+  active: {
+    borderBottomWidth: 3,
+    borderBottomColor: Color.PRIMARY,
+  },
+  menuText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    textAlign: 'left',
+  },
+  activeText: {
+    fontWeight: 'bold',
+  },
+  fab: {
+    backgroundColor: Color.PRIMARY,
     alignItems: 'center',
-    padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 50 / 2,
+
+    position: 'absolute',
+    right: 16,
+    bottom: 5,
   },
 });
