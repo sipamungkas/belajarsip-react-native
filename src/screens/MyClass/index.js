@@ -18,7 +18,6 @@ import styles from './styles';
 
 import Header from '../../components/Header';
 import Item from '../../components/Activity/MyClassItem';
-import Unauthorized from '../../utils/UnauthorizedHandler';
 
 import {API_URL} from '@env';
 
