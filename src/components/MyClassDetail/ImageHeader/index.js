@@ -49,7 +49,7 @@ export default function ImageHeader(props) {
                 }}
               />
             </View>
-            <View style={{backgroundColor: 'red', width: '68%'}}>
+            <View style={{width: '68%'}}>
               <Text numberOfLines={1} style={styles.title}>
                 {course?.name || 'Untitled'}
               </Text>
