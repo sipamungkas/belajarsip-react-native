@@ -1,20 +1,29 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Alert} from 'react-native';
 
+import {getSubcourseByCourseId} from '../../../services/api/courses';
 import ProgressItem from '../ProgressItem';
 
-const data = [
-  {name: 'HTML Essential Training', score: 100},
-  {name: 'HTML Essential Training', score: 45},
-  {name: 'HTML Essential Training', score: 78},
-  {name: 'HTML Essential Training HTML Essential Training', score: null},
-];
-
 export default function Progress(props) {
+  const {token, courseId} = props;
+  const [progressList, setProgressList] = useState([]);
+  useEffect(() => {
+    getSubcourseByCourseId(token, courseId)
+      .then(res => setProgressList(res.data.data))
+      .catch(err => {
+        Alert.alert(
+          'Error',
+          err?.response?.data?.message ||
+            err.message ||
+            'Something went wrong!',
+        );
+      });
+  }, [courseId, token]);
+
   return (
     <View>
-      {data.map((item, index) => (
-        <ProgressItem key={index} course={item} />
+      {progressList.map((item, index) => (
+        <ProgressItem key={index} subcourse={item} />
       ))}
     </View>
   );

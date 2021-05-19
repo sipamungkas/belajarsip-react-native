@@ -6,3 +6,9 @@ export const getCourseById = (token, id) => {
     headers: {Authorization: `Bearer ${token}`},
   });
 };
+
+export const getSubcourseByCourseId = (token, id) => {
+  return axios.get(`${API_URL}/v1/courses/${id}/subcourses`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+};

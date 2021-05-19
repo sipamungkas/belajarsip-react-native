@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {useStore, useSelector, shallowEqual} from 'react-redux';
+import {useSelector, shallowEqual} from 'react-redux';
 import {
   Alert,
   View,
@@ -37,7 +37,7 @@ export default function MyClassDetail(props) {
   const renderTabContent = () => {
     switch (index) {
       case 1:
-        return <ProgressList />;
+        return <ProgressList token={token} courseId={courseId} />;
       case 2:
         return <Information course={course} />;
       default:

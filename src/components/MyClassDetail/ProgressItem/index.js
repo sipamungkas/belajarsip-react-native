@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import {Button, Card, Checkbox} from 'react-native-paper';
+import {Card, Checkbox} from 'react-native-paper';
 
 import Color from '../../../Color';
 
@@ -23,13 +23,13 @@ const scoreColor = score => {
 };
 
 export default function ProgressItem(props) {
-  const {name, score} = props.course;
+  const {title, score} = props.subcourse;
   return (
     <Card elevation={3} theme={{roundness: 8}} style={styles.card}>
       <View style={styles.itemContainer}>
         <Checkbox color={Color.PRIMARY} status={score ? 'checked' : ''} />
         <Text style={styles.title} numberOfLines={1}>
-          {name || 'Untitled'}
+          {title || 'Untitled'}
         </Text>
         {score || score !== null || score === 0 ? (
           <Text
