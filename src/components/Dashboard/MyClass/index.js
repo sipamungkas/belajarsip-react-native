@@ -10,7 +10,6 @@ import Color from '../../../Color';
 import AllSchedule from '../AllSchedule';
 
 export default function Dashboard(props) {
-  console.log('child', props.date);
   const [tab, setTab] = useState(1);
   const tabList = ['All Schedule', 'For You'];
   return (

@@ -1,15 +1,20 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useSelector, shallowEqual} from 'react-redux';
 
 import DashboardStudent from '../screens/Dashboard/Student';
+import DashboardInstructor from '../screens/Dashboard/Instructor';
 import Profile from '../screens/Profile';
 
-import ActivityNavigators from './activityStudentNavigators';
+import ActivityStudentNavigators from './activityStudentNavigators';
+import ActivityInstructorNavigators from './activityInstructorNavigators';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const {role_id: roleId} = authReducer.user;
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -36,8 +41,18 @@ export default function TabNavigator() {
         activeTintColor: 'rgba(87, 132, 186, 1)',
         inactiveTintColor: 'rgba(173, 169, 187, 1)',
       }}>
-      <Tab.Screen name="Dashboard" component={DashboardStudent} />
-      <Tab.Screen name="Activity" component={ActivityNavigators} />
+      <Tab.Screen
+        name="Dashboard"
+        component={roleId === 1 ? DashboardInstructor : DashboardStudent}
+      />
+      <Tab.Screen
+        name="Activity"
+        component={
+          roleId === 1
+            ? ActivityInstructorNavigators
+            : ActivityStudentNavigators
+        }
+      />
       <Tab.Screen name="Chat" component={DashboardStudent} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
