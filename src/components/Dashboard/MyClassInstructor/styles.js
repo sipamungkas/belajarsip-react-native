@@ -31,14 +31,10 @@ export default StyleSheet.create({
     color: 'rgba(77, 80, 91, 1)',
     marginBottom: 20,
   },
-  tabs: {
-    flexDirection: 'row',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  tabItem: {
-    marginHorizontal: 5,
+  addTaskBtn: {
+    padding: 3,
+    marginTop: 20,
+    width: 150,
+    alignSelf: 'center',
   },
 });

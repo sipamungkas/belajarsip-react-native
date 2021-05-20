@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {ActivityIndicator, Card} from 'react-native-paper';
 import axios from 'axios';
+
 import {connect} from 'react-redux';
 
 import styles from './styles';
@@ -10,6 +11,7 @@ import DateItem from '../DateItem';
 
 import {API_URL} from '@env';
 import Color from '../../../Color';
+import {durationToTime} from '../../../utils/TimeConverter';
 
 function ForYou(props) {
   const [myClassData, setMyClassData] = useState();
@@ -25,7 +27,6 @@ function ForYou(props) {
         },
       })
       .then(res => {
-        console.log(res.data.data);
         setMyClassData(res.data.data);
       })
       .catch(err => {
@@ -55,15 +56,15 @@ function ForYou(props) {
       {myClassData &&
         myClassData.map((item, index) => (
           <Card
-            key={item.id}
+            key={index}
             elevation={2}
             style={{marginVertical: 3}}
             theme={{roundness: 10}}>
             <TouchableOpacity style={styles.item}>
               <View style={{flex: 1}}>
                 <Text style={styles.time}>
-                  {' '}
-                  {item.start_at || '00.00 - 00.00'}
+                  {durationToTime(item.start_at, item.duration) ||
+                    '00.00 - 00.00'}
                 </Text>
               </View>
               <View style={{...styles.titleContainer, flex: 2}}>

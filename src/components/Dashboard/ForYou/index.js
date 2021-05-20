@@ -9,6 +9,7 @@ import styles from './styles';
 
 import {API_URL} from '@env';
 import Color from '../../../Color';
+import {durationToTime} from '../../../utils/TimeConverter';
 
 function ForYou(props) {
   const [myClassData, setMyClassData] = useState();
@@ -50,8 +51,8 @@ function ForYou(props) {
             <TouchableOpacity style={styles.item}>
               <View style={{flex: 1}}>
                 <Text style={styles.time}>
-                  {' '}
-                  {item.start_at || '00.00 - 00.00'}
+                  {durationToTime(item.start_at, item.duration) ||
+                    '00.00 - 00.00'}
                 </Text>
               </View>
               <View style={{...styles.titleContainer, flex: 2}}>

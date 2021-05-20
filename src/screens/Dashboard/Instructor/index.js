@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ScrollView, View, StatusBar} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -13,11 +13,19 @@ import styles from './styles';
 function DashboardStudent(props) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-  const weekStart = moment(date).startOf('week');
-  const dateInAWeek = [weekStart];
-  for (let i = 1; i < 7; i++) {
-    dateInAWeek.push(moment().days(i));
-  }
+  const [dateInAWeek, setDateInAWeek] = useState([
+    moment(date).startOf('week'),
+  ]);
+
+  useEffect(() => {
+    const weekStart = moment(date).startOf('week');
+    const dates = [weekStart];
+    for (let i = 1; i < 7; i++) {
+      dates.push(moment(weekStart).days(i));
+    }
+    setDateInAWeek(dates);
+  }, [date]);
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -28,6 +36,7 @@ function DashboardStudent(props) {
 
   const handleConfirm = selectedDate => {
     setDate(moment(selectedDate).format('YYYY-MM-DD'));
+
     hideDatePicker();
   };
 
@@ -44,16 +53,6 @@ function DashboardStudent(props) {
     },
   ];
 
-  const classData = [
-    {
-      id: 1,
-      title: 'Introduction to Banking Finance',
-      time: '08.00 - 09.40',
-      progress: 80,
-    },
-    {id: 2, title: 'History of Europe', time: '11.00 - 11.40', progress: 25},
-  ];
-  console.log(dateInAWeek);
   return (
     <View>
       <Header title="Dashboard" mode="dashboard" />
@@ -74,7 +73,6 @@ function DashboardStudent(props) {
           setActiveDate={setDate}
           dateInAWeek={dateInAWeek}
           date={date}
-          data={classData}
           showDatePicker={showDatePicker}
         />
       </ScrollView>
