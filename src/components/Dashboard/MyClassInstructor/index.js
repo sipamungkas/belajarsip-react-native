@@ -28,13 +28,14 @@ export default function Dashboard(props) {
       <View style={{paddingBottom: StatusBar.currentHeight + 115}}>
         <ForYouInstructor {...props} />
         <Button
+          uppercase={false}
           icon={() => <Ionicons name="add-circle" color="white" size={24} />}
           color={Color.PRIMARY}
           mode="contained"
           style={styles.addTaskBtn}
           theme={{roundness: 20}}
           onPress={() => {}}>
-          Add Task
+          New Task
         </Button>
       </View>
     </View>
