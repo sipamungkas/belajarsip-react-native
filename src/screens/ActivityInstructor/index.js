@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {View, ScrollView, StatusBar} from 'react-native';
 
 import Header from '../../components/Header';
-import MyClassList from '../../components/Activity/MyClassList/index';
-import AvailableClassList from '../../components/Activity/AvailableClassList';
+import MyClassListInstructor from '../../components/Activity/MyClassListInstructor/index';
 
 import styles from './styles';
 
@@ -16,8 +15,8 @@ export default function ActivityStudent(props) {
           styles.container,
           {paddingBottom: StatusBar.currentHeight + 115},
         ]}>
-        <MyClassList {...props} />
-        <AvailableClassList />
+        <MyClassListInstructor {...props} />
+        {/* <AvailableClassList /> */}
       </ScrollView>
     </View>
   );
