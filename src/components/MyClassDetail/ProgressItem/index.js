@@ -19,7 +19,7 @@ const scoreColor = score => {
   if (score >= 0) {
     return 'rgba(232, 78, 56, 1)';
   }
-  return '';
+  return 'black';
 };
 
 export default function ProgressItem(props) {

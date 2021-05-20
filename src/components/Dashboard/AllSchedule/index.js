@@ -13,7 +13,7 @@ export default function index(props) {
       <View style={{flex: 3, flexDirection: 'column'}}>
         {props.data.map((item, index) => (
           <Card
-            key={item.id}
+            key={index}
             elevation={2}
             style={{marginVertical: 3}}
             theme={{roundness: 10}}>
