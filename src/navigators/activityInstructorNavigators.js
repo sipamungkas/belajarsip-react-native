@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import ActivityInstructor from '../screens/ActivityInstructor';
 import ActivityMyClass from '../screens/MyClass';
-import MyClassDetail from '../screens/MyClassDetail';
+import MyClassDetailInstructor from '../screens/MyClassDetailInstructor';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +30,7 @@ export default function ActivityNavigator() {
       />
       <Stack.Screen
         name="MyClassDetail"
-        component={MyClassDetail}
+        component={MyClassDetailInstructor}
         options={{
           headerShown: false,
         }}

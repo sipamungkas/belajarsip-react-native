@@ -5,3 +5,7 @@ export function durationToTime(start, duration) {
   const endAt = moment(start, 'hh:mm:ss').add(duration, 'ms').format('HH:mm');
   return `${startAt} - ${endAt}`;
 }
+
+export function dateYMD(date) {
+  return moment(date).format('YYYY-MM-DD');
+}
