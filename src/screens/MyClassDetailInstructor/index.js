@@ -15,6 +15,7 @@ import ImageHeader from '../../components/MyClassDetail/ImageHeader';
 import Header from '../../components/Header';
 import Information from '../../components/MyClassDetail/Information';
 import ProgressList from '../../components/MyClassDetail/ProgressInstructor';
+import StudentList from '../../components/MyClassDetail/StudentList';
 import {getCourseById} from '../../services/api/courses';
 
 import styles from './styles';
@@ -40,6 +41,8 @@ export default function MyClassDetail(props) {
         return <ProgressList token={token} courseId={courseId} />;
       case 2:
         return <Information course={course} />;
+      case 3:
+        return <StudentList token={token} courseId={courseId} {...props} />;
       default:
         return <Information course={course} />;
     }
@@ -64,6 +67,7 @@ export default function MyClassDetail(props) {
     <View style={{flex: 1, backgroundColor: Color.DEFAULT_BACKGROUND}}>
       <Header back title={courseName} {...props} />
       <ScrollView
+        nestedScrollEnabled
         ref={contentRef}
         scrollEventThrottle={16}
         onScroll={Animated.event(
