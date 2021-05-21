@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Alert, Text} from 'react-native';
+import {View, FlatList, Alert} from 'react-native';
 
 import {useRoute} from '@react-navigation/core';
 import {shallowEqual, useSelector} from 'react-redux';

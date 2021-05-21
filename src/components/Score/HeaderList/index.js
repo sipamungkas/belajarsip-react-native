@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Card} from 'react-native-paper';
 
-export default function index() {
+export default function HeaderList() {
   return (
     <Card theme={{roundness: 0}} style={{borderBottomWidth: 1}}>
       <Card.Content style={{flexDirection: 'row', alignItems: 'center'}}>
