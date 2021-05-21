@@ -32,7 +32,12 @@ export default function StudentList(props) {
         <StudentItem
           student={student}
           key={student.user_id}
-          onPress={() => props.navigation.navigate('ActivityHome')}
+          onPress={() =>
+            props.navigation.navigate('Score', {
+              student: student,
+              courseId: courseId,
+            })
+          }
         />
       ))}
     </View>

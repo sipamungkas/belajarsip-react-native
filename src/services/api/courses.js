@@ -18,3 +18,9 @@ export const getStudentList = (token, courseId) => {
     headers: {Authorization: `Bearer ${token}`},
   });
 };
+
+export const getStudentScore = (token, courseId, studentId) => {
+  return axios.get(`${API_URL}/v1/courses/${courseId}/students/${studentId}`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+};

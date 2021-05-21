@@ -5,11 +5,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 export default function StudentItem(props) {
-  const {student, onPress} = props;
+  const {student, onPress, ellipsis} = props;
   return (
     <Card style={styles.card} theme={{roundness: 0}} onPress={onPress}>
       <Card.Content style={{flexDirection: 'row', alignItems: 'center'}}>
-        {student.avatar ? (
+        {student?.avatar ? (
           <Avatar.Image size={40} source={{uri: student?.avatar}} />
         ) : (
           <Avatar.Text size={40} label={student?.name?.slice(0, 1) || '-'} />
@@ -17,9 +17,11 @@ export default function StudentItem(props) {
         <Text numberOfLines={1} style={styles.name}>
           {student?.name || 'No Name'}
         </Text>
-        <TouchableWithoutFeedback style={styles.more}>
-          <Ionicons name="ellipsis-vertical" color="black" size={20} />
-        </TouchableWithoutFeedback>
+        {ellipsis !== false && (
+          <TouchableWithoutFeedback style={styles.more}>
+            <Ionicons name="ellipsis-vertical" color="black" size={20} />
+          </TouchableWithoutFeedback>
+        )}
       </Card.Content>
     </Card>
   );
