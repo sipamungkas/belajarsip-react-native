@@ -31,7 +31,7 @@ export default function StudentList(props) {
       {studentList.map(student => (
         <StudentItem
           student={student}
-          key={student.id}
+          key={student.user_id}
           onPress={() => props.navigation.navigate('ActivityHome')}
         />
       ))}
