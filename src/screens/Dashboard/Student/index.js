@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ScrollView, View, StatusBar} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-import {connect} from 'react-redux';
 
 import News from '../../../components/Dashboard/News';
 import MyClass from '../../../components/Dashboard/MyClass';
@@ -14,6 +13,7 @@ function DashboardStudent(props) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [tab, setTab] = useState(2);
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -53,6 +53,7 @@ function DashboardStudent(props) {
   return (
     <View>
       <Header title="Dashboard" mode="dashboard" />
+
       <ScrollView
         style={[
           styles.container,
@@ -71,12 +72,4 @@ function DashboardStudent(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    authReducer: state.authReducer,
-  };
-};
-
-const ConnectedDashboard = connect(mapStateToProps)(DashboardStudent);
-
-export default ConnectedDashboard;
+export default DashboardStudent;

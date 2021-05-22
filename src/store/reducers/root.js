@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {authReducer} from './auth';
 import {forgotReducer} from './forgot';
+import {snackbarReducer} from './snackbar';
 
 const persistConfig = {
   key: 'root',
@@ -11,7 +12,11 @@ const persistConfig = {
   whitelist: ['authReducer'],
 };
 
-const rootReducer = combineReducers({authReducer, forgotReducer});
+const rootReducer = combineReducers({
+  authReducer,
+  forgotReducer,
+  snackbarReducer,
+});
 
 export default persistReducer(persistConfig, rootReducer);
 // export default rootReducer;

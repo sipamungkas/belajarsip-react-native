@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider, Snackbar} from 'react-native-paper';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {
@@ -17,6 +17,12 @@ const Stack = createStackNavigator();
 // Navigators
 import AuthNavigators from './authNavigators';
 import HomeNavigators from './homeNavigators';
+
+//action
+import {snackbarHide} from '../store/actions/snackbar';
+
+// color
+import Color from '../Color';
 
 function getHeaderTitle(route) {
   // If the focused route is not found, we need to assume it's the initial screen
@@ -39,6 +45,8 @@ function getHeaderTitle(route) {
 
 function App(props) {
   const {isLoggedIn} = props.authReducer;
+  const {snackbar, msg, error} = props.snackbarReducer;
+
   return (
     <PaperProvider>
       <NavigationContainer onReady={() => RNBootSplash.hide()}>
@@ -66,6 +74,22 @@ function App(props) {
           )}
         </Stack.Navigator>
       </NavigationContainer>
+      <Snackbar
+        theme={{
+          colors: {accent: 'white'},
+        }}
+        style={{backgroundColor: error ? 'red' : Color.PRIMARY}}
+        visible={snackbar}
+        onDismiss={() => props.onSnackbarHide()}
+        duration={5000}
+        action={{
+          label: 'Ok',
+          onPress: () => {
+            props.onSnackbarHide();
+          },
+        }}>
+        {msg}
+      </Snackbar>
     </PaperProvider>
   );
 }
@@ -73,9 +97,16 @@ function App(props) {
 const mapStateToProps = state => {
   return {
     authReducer: state.authReducer,
+    snackbarReducer: state.snackbarReducer,
   };
 };
 
-const ConnectedLogin = connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    onSnackbarHide: () => dispatch(snackbarHide()),
+  };
+};
+
+const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default ConnectedLogin;
