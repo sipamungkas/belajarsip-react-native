@@ -5,13 +5,13 @@ import {scoreColor} from '../../../utils/Score';
 import styles from './styles';
 
 export default function ScoreItem(props) {
-  const {subcourse} = props;
+  const {subcourse, onPress} = props;
   return (
     <Card
       style={styles.card}
       elevation={2}
       theme={{roundness: 0}}
-      onPress={() => {}}>
+      onPress={onPress}>
       <Card.Content style={styles.content}>
         <Text numberOfLines={1} style={styles.name}>
           {subcourse?.title || 'untitle'}

@@ -24,3 +24,30 @@ export const getStudentScore = (token, courseId, studentId) => {
     headers: {Authorization: `Bearer ${token}`},
   });
 };
+
+export const createScore = (token, courseId, subcourseId, studentId, score) => {
+  return axios.post(
+    `${API_URL}/v1/courses/${courseId}/students`,
+    {
+      subcourse_id: subcourseId,
+      student_id: studentId,
+      score: score || 0,
+    },
+    {
+      headers: {Authorization: `Bearer ${token}`},
+    },
+  );
+};
+
+export const updateScore = (token, courseId, subcourseId, studentId, score) => {
+  return axios.patch(
+    `${API_URL}/v1/courses/${courseId}/students/${studentId}`,
+    {
+      subcourse_id: subcourseId,
+      score: score || 0,
+    },
+    {
+      headers: {Authorization: `Bearer ${token}`},
+    },
+  );
+};
