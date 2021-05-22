@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, FlatList, Alert} from 'react-native';
 import {useRoute} from '@react-navigation/core';
+import {Snackbar} from 'react-native-paper';
 import {shallowEqual, useSelector} from 'react-redux';
 
 import Header from '../../components/Header';
@@ -12,10 +13,14 @@ import EditModal from '../../components/Score/EditModal';
 
 import {getStudentScore} from '../../services/api/courses';
 import styles from './styles';
+import Color from '../../Color';
 
 export default function Score(props) {
   const [scoreList, setScoreList] = useState([]);
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
+  const [snackbar, setSnackbar] = useState(false);
+  const [danger, setDanger] = useState(false);
+  const [msg, setMsg] = useState('');
   const [data, setData] = useState({});
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const {token} = authReducer.user;
@@ -45,7 +50,7 @@ export default function Score(props) {
         );
       });
   }, [token, courseId, student]);
-  console.log(scoreList);
+
   return (
     <View style={styles.container}>
       <Header {...props} title="Score" back />
@@ -62,11 +67,31 @@ export default function Score(props) {
         )}
       />
       <EditModal
+        setSnackbar={setSnackbar}
+        setMsg={setMsg}
+        setDanger={setDanger}
+        setScoreList={setScoreList}
         visible={visible}
         showModal={showModal}
         hideModal={hideModal}
         data={data}
       />
+      <Snackbar
+        theme={{
+          colors: {accent: 'white'},
+        }}
+        style={{backgroundColor: danger ? 'red' : Color.PRIMARY}}
+        visible={snackbar}
+        onDismiss={() => setSnackbar(false)}
+        duration={5000}
+        action={{
+          label: 'Ok',
+          onPress: () => {
+            setSnackbar(false);
+          },
+        }}>
+        {msg}
+      </Snackbar>
     </View>
   );
 }

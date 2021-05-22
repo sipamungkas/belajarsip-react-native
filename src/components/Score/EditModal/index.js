@@ -1,11 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {Text, TextInput} from 'react-native';
 import {Modal, Button, Portal, Card} from 'react-native-paper';
 import Color from '../../../Color';
-import {createScore, updateScore} from '../../../services/api/courses';
+import {
+  createScore,
+  updateScore,
+  getStudentScore,
+} from '../../../services/api/courses';
 
 export default function EditModal(props) {
-  const {visible, hideModal, data} = props;
+  const {
+    visible,
+    hideModal,
+    data,
+    setDanger,
+    setMsg,
+    setSnackbar,
+    setScoreList,
+  } = props;
   const [score, setScore] = useState();
   const containerStyle = {padding: 20};
   useEffect(() => {
@@ -15,9 +27,40 @@ export default function EditModal(props) {
     }
   }, [data]);
 
+  const scoreValidation = () => {
+    const floatScore = parseFloat(score);
+    if (floatScore > 100 || floatScore < 0) {
+      setDanger(true);
+      setMsg('Score must be betwen 1 - 100');
+      setSnackbar(true);
+      hideModal();
+      return false;
+    }
+    return true;
+  };
+
+  const refreshScoreList = () => {
+    getStudentScore(data.token, data.courseId, data.studentId)
+      .then(res => {
+        setScoreList(res.data.data);
+      })
+      .catch(err => {
+        setDanger(true);
+        setMsg(
+          err?.response?.data?.message ||
+            err?.message ||
+            'Something went wrong!',
+        );
+        setSnackbar(true);
+      });
+  };
+
   const saveHandler = () => {
+    if (!scoreValidation()) {
+      return;
+    }
+
     const propsScore = data.subcourse.score;
-    console.log(propsScore);
     if (propsScore === undefined || propsScore === null || propsScore === '') {
       console.log('create');
       createScore(
@@ -28,15 +71,22 @@ export default function EditModal(props) {
         score,
       )
         .then(res => {
-          console.log(res.data.data);
+          setMsg(res?.data?.message || 'Success');
+          refreshScoreList();
+          setSnackbar(true);
         })
         .catch(err => {
-          console.log(err);
+          setDanger(true);
+          setMsg(
+            err?.response?.data?.message ||
+              err?.message ||
+              'Something went wrong!',
+          );
+          setSnackbar(true);
         });
       hideModal();
       return;
     } else {
-      console.log(':update');
       updateScore(
         data.token,
         data.courseId,
@@ -45,10 +95,18 @@ export default function EditModal(props) {
         score,
       )
         .then(res => {
-          console.log(res.data.data);
+          setMsg(res?.data?.message || 'Success');
+          refreshScoreList();
+          setSnackbar(true);
         })
         .catch(err => {
-          console.log(err.response.data);
+          setDanger(true);
+          setMsg(
+            err?.response?.data?.message ||
+              err?.message ||
+              'Something went wrong!',
+          );
+          setSnackbar(true);
         });
       hideModal();
       return;
