@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047451770293",
+    "project_id": "belajarsip-id",
+    "storage_bucket": "belajarsip-id.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047451770293:android:7995a28aaa0d35a2d00dfc",
+        "android_client_info": {
+          "package_name": "com.belajarsip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047451770293-vq4lh1u2baa5fjrsu5940kc0iidh3223.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8SElwfd4-hxKgk9Li3ZnH0sA_vkGlnkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047451770293-vq4lh1u2baa5fjrsu5940kc0iidh3223.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
