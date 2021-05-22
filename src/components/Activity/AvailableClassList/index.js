@@ -9,6 +9,8 @@ import Color from '../../../Color';
 import SearchBox from '../SearchBox';
 import Item from '../AvailableClassItem';
 
+import NotifService from '../../../services/notifications/NotifService';
+
 import {API_URL} from '@env';
 
 import styles from './styles';
@@ -66,6 +68,16 @@ function AvailableClassList(props) {
         console.log(err);
       });
   }, [token, currentPage, search, sort]);
+
+  const notif = new NotifService();
+
+  const registerHandler = course => {
+    notif.localNotif(
+      'Class Register Success',
+      `Registered to Class ${course?.name} \nOpen the app and check your schedule`,
+    );
+  };
+
   return (
     <View>
       <Text style={styles.title}>New Class</Text>
@@ -87,7 +99,13 @@ function AvailableClassList(props) {
           </View>
         )}
         {availableCourses?.length > 0 &&
-          availableCourses.map(item => <Item key={item.id} course={item} />)}
+          availableCourses.map(item => (
+            <Item
+              key={item.id}
+              course={item}
+              onRegister={() => registerHandler(item)}
+            />
+          ))}
       </View>
       <View style={styles.pageCount}>
         <Text>

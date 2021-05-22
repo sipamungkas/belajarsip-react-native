@@ -5,8 +5,8 @@ import Color from '../../../Color';
 
 import styles from './styles';
 
-export default function index(props) {
-  const {course} = props;
+export default function AvailableClassItem(props) {
+  const {course, onRegister} = props;
   return (
     <Card style={styles.card} elevation={2} theme={{roundness: 10}}>
       <View style={styles.container}>
@@ -21,6 +21,7 @@ export default function index(props) {
         </View>
         <View style={styles.actionContainer}>
           <Button
+            onPress={onRegister}
             uppercase={false}
             style={styles.btn}
             contentStyle={styles.btnText}
