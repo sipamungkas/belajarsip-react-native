@@ -11,6 +11,7 @@ import {
 
 import {connect} from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
+import CustomModal from '../components/CustomModal';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ import {snackbarHide} from '../store/actions/snackbar';
 
 // color
 import Color from '../Color';
+import {setIsLoading} from '../store/actions/loading';
 
 function getHeaderTitle(route) {
   // If the focused route is not found, we need to assume it's the initial screen
@@ -45,6 +47,7 @@ function getHeaderTitle(route) {
 
 function App(props) {
   const {isLoggedIn} = props.authReducer;
+  const {isLoading, msg: isLoadingMsg} = props.loadingReducer;
   const {snackbar, msg, danger} = props.snackbarReducer;
 
   return (
@@ -90,6 +93,11 @@ function App(props) {
         }}>
         {msg}
       </Snackbar>
+      <CustomModal
+        visible={isLoading}
+        type={'loading'}
+        message={isLoadingMsg || 'Please wait...'}
+      />
     </PaperProvider>
   );
 }
@@ -98,12 +106,14 @@ const mapStateToProps = state => {
   return {
     authReducer: state.authReducer,
     snackbarReducer: state.snackbarReducer,
+    loadingReducer: state.loadingReducer,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onSnackbarHide: () => dispatch(snackbarHide()),
+    onSetIsLoading: value => dispatch(setIsLoading(value)),
   };
 };
 

@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, StatusBar} from 'react-native';
+import {ScrollView, View, StatusBar, Pressable, Text} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-import {connect} from 'react-redux';
 
 import News from '../../../components/Dashboard/News';
 import MyClassInstructor from '../../../components/Dashboard/MyClassInstructor';
@@ -10,7 +9,7 @@ import Header from '../../../components/Header';
 
 import styles from './styles';
 
-function DashboardStudent(props) {
+function DashboardInstructor(props) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [dateInAWeek, setDateInAWeek] = useState([
@@ -79,13 +78,4 @@ function DashboardStudent(props) {
     </View>
   );
 }
-
-const mapStateToProps = state => {
-  return {
-    authReducer: state.authReducer,
-  };
-};
-
-const ConnectedDashboard = connect(mapStateToProps)(DashboardStudent);
-
-export default ConnectedDashboard;
+export default DashboardInstructor;
