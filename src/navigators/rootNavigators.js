@@ -45,7 +45,7 @@ function getHeaderTitle(route) {
 
 function App(props) {
   const {isLoggedIn} = props.authReducer;
-  const {snackbar, msg, error} = props.snackbarReducer;
+  const {snackbar, msg, danger} = props.snackbarReducer;
 
   return (
     <PaperProvider>
@@ -78,7 +78,7 @@ function App(props) {
         theme={{
           colors: {accent: 'white'},
         }}
-        style={{backgroundColor: error ? 'red' : Color.PRIMARY}}
+        style={{backgroundColor: danger ? 'red' : Color.PRIMARY}}
         visible={snackbar}
         onDismiss={() => props.onSnackbarHide()}
         duration={5000}
