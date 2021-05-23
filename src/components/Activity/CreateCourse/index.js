@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Image, Pressable} from 'react-native';
 import {Card, Button} from 'react-native-paper';
 import ModalSelector from 'react-native-modal-selector';
@@ -6,7 +6,8 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {snackbarSuccess, snackbarError} from '../../../store/actions/snackbar';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+import {getCategories} from '../../../services/api/categories';
 
 import styles from './styles';
 
@@ -19,6 +20,12 @@ export default function CreateCourse() {
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
   const [response, setResponse] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const {
+    user: {token},
+  } = authReducer;
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -77,6 +84,19 @@ export default function CreateCourse() {
     {key: 2, label: 'Finance'},
   ];
 
+  useEffect(() => {
+    getCategories(token)
+      .then(res => {
+        setCategories(res.data.data);
+      })
+      .catch(err => {
+        snackbarError(
+          err?.response?.message || err?.message || 'Something went wrong',
+        );
+      });
+  }, [token]);
+
+  console.log(categories);
   return (
     <Card>
       <Card.Title titleStyle={styles.title} title="Create new course" />
@@ -132,15 +152,23 @@ export default function CreateCourse() {
         <View style={[styles.inputContainer]}>
           <Text style={styles.label}>Categories:</Text>
           <ModalSelector
+            labelExtractor={data => data.name}
+            keyExtractor={data => data.id}
             optionContainerStyle={{backgroundColor: 'white'}}
             cancelStyle={{backgroundColor: 'white'}}
             cancelText="Cancel"
-            data={data}
+            data={categories}
             initValue="Select something yummy!"
             onChange={option => {
-              alert(`${option.label} (${option.key}) nom nom nom`);
+              setSelectedCategory(option.id);
             }}>
-            <TextInput placeholder="Select Category" />
+            <TextInput
+              placeholder="Select Category"
+              value={
+                categories.find(cat => cat.id === selectedCategory)?.name ||
+                null
+              }
+            />
           </ModalSelector>
         </View>
         <View style={styles.inputContainer}>
