@@ -51,3 +51,12 @@ export const updateScore = (token, courseId, subcourseId, studentId, score) => {
     },
   );
 };
+
+export const createCourse = (token, formData) => {
+  return axios.post(`${API_URL}/v1/courses`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

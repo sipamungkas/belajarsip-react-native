@@ -14,10 +14,12 @@ export default function ActivityStudent(props) {
       <ScrollView
         contentContainerStyle={[
           styles.container,
-          {paddingBottom: StatusBar.currentHeight + 115},
+          {paddingBottom: StatusBar.currentHeight + 70},
         ]}>
         <MyClassListInstructor {...props} />
-        <CreateCourse />
+        <View style={styles.createCourseContainer}>
+          <CreateCourse />
+        </View>
         {/* <AvailableClassList /> */}
       </ScrollView>
     </View>

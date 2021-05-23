@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, Image, Pressable} from 'react-native';
+import {View, Text, TextInput, Image, Pressable, Platform} from 'react-native';
 import {Card, Button} from 'react-native-paper';
 import ModalSelector from 'react-native-modal-selector';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -7,7 +7,10 @@ import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {snackbarSuccess, snackbarError} from '../../../store/actions/snackbar';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+// api calls
 import {getCategories} from '../../../services/api/categories';
+import {createCourse} from '../../../services/api/courses';
+import {getLevels} from '../../../services/api/levels';
 
 import styles from './styles';
 
@@ -20,8 +23,13 @@ export default function CreateCourse() {
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
   const [response, setResponse] = useState(null);
+  const [courseName, setCourseName] = useState('');
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
+  const [levels, setLevels] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState();
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const {
     user: {token},
@@ -63,12 +71,13 @@ export default function CreateCourse() {
 
   const handleConfirmEnd = selectedTime => {
     const newEndTime = moment(selectedTime);
+
     if (!startTime) {
       dispatch(snackbarError('Please select start time first!'));
       hideSessionEndPicker();
       return;
     }
-    if (startTime.diff(endTime) <= 0) {
+    if (newEndTime.diff(startTime) <= 0) {
       dispatch(snackbarError('End Time must be greater than start time'));
       hideSessionEndPicker();
       return;
@@ -77,12 +86,6 @@ export default function CreateCourse() {
     setEndTime(newEndTime);
     hideSessionEndPicker();
   };
-
-  const data = [
-    {key: 0, section: true, label: 'Categories'},
-    {key: 1, label: 'Software'},
-    {key: 2, label: 'Finance'},
-  ];
 
   useEffect(() => {
     getCategories(token)
@@ -94,11 +97,53 @@ export default function CreateCourse() {
           err?.response?.message || err?.message || 'Something went wrong',
         );
       });
+    getLevels(token)
+      .then(res => {
+        setLevels(res.data.data);
+      })
+      .catch(err => {
+        snackbarError(
+          err?.response?.message || err?.message || 'Something went wrong',
+        );
+      });
   }, [token]);
 
-  console.log(categories);
+  const createHandler = () => {
+    const formData = new FormData();
+    formData.append('image', {
+      uri:
+        Platform.OS === 'android'
+          ? response?.uri
+          : response.uri.replace('file://', ''),
+      name: `course-${Date.now()}.jpg`,
+      type: 'image/*',
+    });
+    formData.append('name', courseName);
+    formData.append('description', description);
+    formData.append('level', selectedLevel);
+    formData.append('category', selectedCategory);
+    formData.append('price', price);
+    formData.append('start_date', date);
+    formData.append('session_start', `${startTime.format('hh:mm')}:00`);
+    formData.append('duration', endTime.diff(startTime, 'ms'));
+    formData.append('day', moment(date).format('E') - 1);
+
+    console.log(formData);
+    createCourse(token, formData)
+      .then(res => {
+        dispatch(snackbarSuccess(res.data.message));
+      })
+      .catch(err => {
+        const errMsg =
+          err?.response?.data?.message ||
+          err?.message ||
+          'Something went wrong!';
+        dispatch(snackbarError(errMsg));
+      });
+  };
+
   return (
-    <Card>
+    <Card style={styles.container}>
       <Card.Title titleStyle={styles.title} title="Create new course" />
       <Card.Content>
         <View>
@@ -147,7 +192,11 @@ export default function CreateCourse() {
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Class Name:</Text>
-          <TextInput placeholder="Input Class Name" />
+          <TextInput
+            value={courseName}
+            placeholder="Input Class Name"
+            onChangeText={text => setCourseName(text)}
+          />
         </View>
         <View style={[styles.inputContainer]}>
           <Text style={styles.label}>Categories:</Text>
@@ -171,9 +220,33 @@ export default function CreateCourse() {
             />
           </ModalSelector>
         </View>
+        <View style={[styles.inputContainer]}>
+          <Text style={styles.label}>Level:</Text>
+          <ModalSelector
+            labelExtractor={data => data.name}
+            keyExtractor={data => data.id}
+            optionContainerStyle={{backgroundColor: 'white'}}
+            cancelStyle={{backgroundColor: 'white'}}
+            cancelText="Cancel"
+            data={levels}
+            onChange={option => {
+              setSelectedLevel(option.id);
+            }}>
+            <TextInput
+              placeholder="Select Level"
+              value={
+                levels.find(level => level.id === selectedLevel)?.name || null
+              }
+            />
+          </ModalSelector>
+        </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Price:</Text>
-          <TextInput keyboardType="decimal-pad" placeholder="Input Price ($)" />
+          <TextInput
+            onChangeText={text => setPrice(text)}
+            keyboardType="decimal-pad"
+            placeholder="Input Price ($)"
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Schedule:</Text>
@@ -201,13 +274,13 @@ export default function CreateCourse() {
             <TextInput
               style={{opacity: 1, color: 'black'}}
               editable={false}
-              value={startTime?.format('hh:mm') || 'Please select a time'}
+              value={startTime?.format('hh:mm A') || 'Please select a time'}
               placeholder="Session Start"
             />
           </Pressable>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Time:</Text>
+          <Text style={styles.label}>End Time:</Text>
           <Pressable
             onPress={() => {
               showSessionEndPicker();
@@ -215,7 +288,7 @@ export default function CreateCourse() {
             <TextInput
               style={{opacity: 1, color: 'black'}}
               editable={false}
-              value={endTime?.format('hh:mm') || 'Please select a time'}
+              value={endTime?.format('hh:mm A') || 'Please select a time'}
               placeholder="Session End"
             />
           </Pressable>
@@ -226,9 +299,20 @@ export default function CreateCourse() {
             multiline
             numberOfLines={4}
             style={styles.description}
+            onChangeText={text => setDescription(text)}
             placeholder="Please Input Description"
           />
         </View>
+        <Button
+          mode="contained"
+          color="rgba(87, 186, 97, 1)"
+          labelStyle={styles.createLabel}
+          style={styles.btnCreate}
+          theme={{roundness: 25}}
+          uppercase={false}
+          onPress={createHandler}>
+          Create
+        </Button>
       </Card.Content>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}

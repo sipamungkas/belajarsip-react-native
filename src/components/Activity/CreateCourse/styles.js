@@ -18,8 +18,10 @@ export default StyleSheet.create({
     alignItems: 'flex-start',
   },
   description: {
-    marginTop: 15,
+    marginVertical: 15,
     backgroundColor: 'rgba(235, 235, 235, 1)            ',
     width: '100%',
   },
+  btnCreate: {marginBottom: 20},
+  createLabel: {color: 'white'},
 });

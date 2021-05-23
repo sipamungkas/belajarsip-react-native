@@ -78,7 +78,7 @@ function App(props) {
         theme={{
           colors: {accent: 'white'},
         }}
-        style={{backgroundColor: danger ? 'red' : Color.PRIMARY}}
+        style={{backgroundColor: danger ? '#ad1a1a' : Color.PRIMARY}}
         visible={snackbar}
         onDismiss={() => props.onSnackbarHide()}
         duration={5000}
@@ -107,6 +107,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(App);
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 
-export default ConnectedLogin;
+export default ConnectedApp;

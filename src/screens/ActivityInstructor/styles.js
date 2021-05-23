@@ -8,5 +8,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: '2%',
   },
+  createCourseContainer: {
+    marginTop: 50,
+  },
 });
 export default styles;
