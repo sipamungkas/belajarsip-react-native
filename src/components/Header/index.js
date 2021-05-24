@@ -10,6 +10,7 @@ import {API_URL} from '@env';
 
 export default function Header(props) {
   const {back, title, mode, user} = props;
+  let avatarSrc = user?.avatar || null;
   switch (mode) {
     case 'profile':
       return (
@@ -27,9 +28,12 @@ export default function Header(props) {
                 style={[styles.avatar, {borderRadius: 45 / 2}]}
                 height={45}
                 width={45}
-                source={{uri: `${API_URL}/${user.avatar}`}}
+                source={{uri: `${API_URL}/${avatarSrc}`}}
                 resizeMode="cover"
                 resizeMethod="auto"
+                onError={() => {
+                  avatarSrc = null;
+                }}
               />
             ) : (
               <Avatar.Text
