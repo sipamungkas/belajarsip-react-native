@@ -49,7 +49,7 @@ export default function Dashboard(props) {
         {tab === 1 ? (
           <ForYou date={props.date} />
         ) : (
-          <AllSchedule data={props.data} date={props.date} />
+          <AllSchedule date={props.date} />
         )}
       </View>
     </View>

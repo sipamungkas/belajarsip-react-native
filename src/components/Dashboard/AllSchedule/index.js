@@ -1,41 +1,96 @@
-import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import {Card} from 'react-native-paper';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {snackbarError} from '../../../store/actions/snackbar';
+
+import {getAllCourseByDate} from '../../../services/api/dashboard';
 import styles from './styles';
 
-export default function index(props) {
+export default function AllSchedule(props) {
+  const dispatch = useDispatch();
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const [data, setData] = useState([]);
+  const {token} = authReducer.user;
+  const {date} = props;
+
+  useEffect(() => {
+    getAllCourseByDate(token, date)
+      .then(res => {
+        const newData = res.data.data;
+        setData(newData);
+      })
+      .catch(err => {
+        const errMsg =
+          err?.response?.data?.message ||
+          err?.message ||
+          'Something went wrong!';
+        dispatch(snackbarError(errMsg));
+      });
+  }, [token, date, dispatch]);
+
+  const arrayOfStartTime = [];
+  for (const course of data) {
+    if (!arrayOfStartTime.includes(course.start_at)) {
+      arrayOfStartTime.push(course.start_at);
+    }
+  }
+
+  const groupedByTime = [];
+
+  for (const startTime of arrayOfStartTime) {
+    groupedByTime.push({
+      startAt: startTime,
+      courseList: data.filter(course => course.start_at === startTime),
+    });
+  }
+
   return (
-    <View style={{flexDirection: 'row'}}>
-      <Card style={styles.timeContainer} elevation={2}>
-        <Text style={styles.time}>{'00.00 - 00.00'}</Text>
-      </Card>
-      <View style={{flex: 3, flexDirection: 'column'}}>
-        {props.data.map((item, index) => (
-          <Card
-            key={index}
-            elevation={2}
-            style={{marginVertical: 3}}
-            theme={{roundness: 10}}>
-            <TouchableOpacity style={styles.item}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>{item.title || 'untitled'}</Text>
-              </View>
-              <View>
-                <ProgressCircle
-                  percent={item.progress}
-                  radius={20}
-                  borderWidth={3}
-                  color="#3399FF"
-                  shadowColor="#fff"
-                  bgColor="#fff">
-                  <Text style={{fontSize: 14}}>{`${item.progress}%`}</Text>
-                </ProgressCircle>
-              </View>
-            </TouchableOpacity>
+    <View>
+      {!groupedByTime && <ActivityIndicator color={Color.PRIMARY} />}
+      {groupedByTime?.length === 0 && (
+        <Card style={{padding: 10}}>
+          <Text style={{textAlign: 'center'}}>No Schedule</Text>
+        </Card>
+      )}
+      {groupedByTime.map((item, index) => (
+        <View key={index} style={{flexDirection: 'row', marginVertical: 5}}>
+          <Card style={styles.timeContainer} elevation={2}>
+            <Text style={styles.time}>{item.startAt || '00.00 - 00.00'}</Text>
           </Card>
-        ))}
-      </View>
+          <View style={{flex: 3, flexDirection: 'column'}}>
+            {item.courseList.map((course, index2) => (
+              <Card
+                key={index2}
+                elevation={2}
+                style={{marginVertical: 3}}
+                theme={{roundness: 10}}>
+                <TouchableOpacity style={styles.item}>
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>
+                      {course.title || 'untitled'}
+                    </Text>
+                  </View>
+                  <View>
+                    {/* <ProgressCircle
+                      percent={course.progress || 0}
+                      radius={20}
+                      borderWidth={3}
+                      color="#3399FF"
+                      shadowColor="#fff"
+                      bgColor="#fff">
+                      <Text style={{fontSize: 14}}>{`${
+                        course.progress || 0
+                      }%`}</Text>
+                    </ProgressCircle> */}
+                  </View>
+                </TouchableOpacity>
+              </Card>
+            ))}
+          </View>
+        </View>
+      ))}
     </View>
   );
 }
