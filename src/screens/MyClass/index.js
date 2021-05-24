@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Alert,
+  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,6 +24,7 @@ import Item from '../../components/Activity/MyClassItem';
 import {API_URL} from '@env';
 
 function MyClass(props) {
+  const [refreshing, setRefreshing] = useState(false);
   const [myClasses, setMyClasses] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
@@ -34,6 +37,36 @@ function MyClass(props) {
     }
     return pages;
   };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setMyClasses(null);
+    axios
+      .get(
+        `${API_URL}/v1/courses/my-class?search=&sort=&page=${currentPage}&limit=${limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then(res => {
+        setMyClasses(res.data.data);
+        setInfo(res.data.info);
+        setTotalPage(res.data.info.total_page);
+        setRefreshing(false);
+      })
+      .catch(err => {
+        const message =
+          err.response.status === 401
+            ? 'Session Expired, please logout and login again'
+            : err.response?.data?.message ||
+              err.response?.data?.error ||
+              err.message;
+        Alert.alert('Error', message);
+        setRefreshing(false);
+      });
+  }, [token, currentPage]);
 
   const prevPageHandler = () => {
     if (currentPage === 1) {
@@ -100,6 +133,9 @@ function MyClass(props) {
     <SafeAreaView>
       <Header back title="My Class" {...props} />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         style={styles.container}
         ListHeaderComponent={<HeaderList />}
         data={myClasses}
@@ -107,7 +143,13 @@ function MyClass(props) {
         keyExtractor={course => course.id}
         ListEmptyComponent={
           <Card style={{padding: 10}}>
-            <Text style={{textAlign: 'center'}}>You don't have any class</Text>
+            {refreshing ? (
+              <ActivityIndicator color={Color.PRIMARY} />
+            ) : (
+              <Text style={{textAlign: 'center'}}>
+                You don't have any class
+              </Text>
+            )}
           </Card>
         }
       />
