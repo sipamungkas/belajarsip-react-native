@@ -2,20 +2,26 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {ActivityIndicator, Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
-import {connect} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {snackbarError, snackbarSuccess} from '../../../store/actions/snackbar';
+
+import {errorFormatter} from '../../../utils/Error';
+
+import {
+  getCourseWithFilter,
+  registerToCourse,
+} from '../../../services/api/courses';
 
 import Color from '../../../Color';
 import SearchBox from '../SearchBox';
 import Item from '../AvailableClassItem';
 
 import NotifService from '../../../services/notifications/NotifService';
-
-import {API_URL} from '@env';
-
 import styles from './styles';
 
-function AvailableClassList(props) {
+export default function AvailableClassList(props) {
+  const dispatch = useDispatch();
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const [availableCourses, setAvailableCourses] = useState();
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
@@ -23,7 +29,7 @@ function AvailableClassList(props) {
   const [info, setInfo] = useState({});
   const [totalPage, setTotalPage] = useState(0);
 
-  const {token} = props.authReducer.user;
+  const {token} = authReducer.user;
 
   const pageList = () => {
     let pages = [];
@@ -50,32 +56,36 @@ function AvailableClassList(props) {
   const limit = 5;
 
   useEffect(() => {
-    axios
-      .get(
-        `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
+    getCourseWithFilter(token, search, sort, currentPage, limit)
       .then(res => {
         setAvailableCourses(res.data.data);
         setInfo(res.data.info);
         setTotalPage(res.data.info.total_page);
       })
       .catch(err => {
-        console.log(err);
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
       });
-  }, [token, currentPage, search, sort]);
+  }, [token, currentPage, search, sort, dispatch]);
 
   const notif = new NotifService();
 
   const registerHandler = course => {
-    notif.localNotif(
-      'Class Register Success',
-      `Registered to Class ${course?.name} \nOpen the app and check your schedule`,
-    );
+    registerToCourse(token, course.id)
+      .then(res => {
+        const msg = res?.data?.message || 'Register Success';
+        dispatch(snackbarSuccess(msg));
+        if (res.status == 201) {
+          notif.localNotif(
+            'Class Register Success',
+            `Registered to Class ${course?.name} \nOpen the app and check your schedule`,
+          );
+        }
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
+      });
   };
 
   return (
@@ -157,15 +167,3 @@ function AvailableClassList(props) {
     </View>
   );
 }
-
-const mapStateToProps = state => {
-  return {
-    authReducer: state.authReducer,
-  };
-};
-
-const ConnectedAvailableClassList = connect(mapStateToProps)(
-  AvailableClassList,
-);
-
-export default ConnectedAvailableClassList;

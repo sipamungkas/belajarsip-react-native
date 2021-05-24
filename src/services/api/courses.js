@@ -1,10 +1,39 @@
 import axios from 'axios';
 import {API_URL} from '@env';
 
+export const getCourseWithFilter = (
+  token,
+  search,
+  sort,
+  currentPage,
+  limit,
+) => {
+  return axios.get(
+    `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
 export const getCourseById = (token, id) => {
   return axios.get(`${API_URL}/v1/courses/${id}`, {
     headers: {Authorization: `Bearer ${token}`},
   });
+};
+
+export const registerToCourse = (token, courseId) => {
+  return axios.post(
+    `${API_URL}/v1/courses/register`,
+    {
+      course_id: courseId,
+    },
+    {
+      headers: {Authorization: `Bearer ${token}`},
+    },
+  );
 };
 
 export const getSubcourseByCourseId = (token, id) => {
