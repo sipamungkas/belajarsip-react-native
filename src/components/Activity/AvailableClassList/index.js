@@ -3,7 +3,12 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {ActivityIndicator, Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import {snackbarError, snackbarSuccess} from '../../../store/actions/snackbar';
+import {
+  snackbarError,
+  snackbarHide,
+  snackbarSuccess,
+} from '../../../store/actions/snackbar';
+import {setIsLoading} from '../../../store/actions/loading';
 
 import {errorFormatter} from '../../../utils/Error';
 
@@ -71,9 +76,12 @@ export default function AvailableClassList(props) {
   const notif = new NotifService();
 
   const registerHandler = course => {
+    dispatch(snackbarHide());
+    dispatch(setIsLoading(true));
     registerToCourse(token, course.id)
       .then(res => {
         const msg = res?.data?.message || 'Register Success';
+        dispatch(setIsLoading(false));
         dispatch(snackbarSuccess(msg));
         if (res.status === 201) {
           notif.localNotif(
@@ -84,6 +92,7 @@ export default function AvailableClassList(props) {
       })
       .catch(err => {
         const msg = errorFormatter(err);
+        dispatch(setIsLoading(false));
         dispatch(snackbarError(msg));
       });
   };
