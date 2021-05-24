@@ -75,7 +75,7 @@ export default function AvailableClassList(props) {
       .then(res => {
         const msg = res?.data?.message || 'Register Success';
         dispatch(snackbarSuccess(msg));
-        if (res.status == 201) {
+        if (res.status === 201) {
           notif.localNotif(
             'Class Register Success',
             `Registered to Class ${course?.name} \nOpen the app and check your schedule`,
