@@ -15,12 +15,15 @@ export default StyleSheet.create({
     // height: hp(20),
   },
   profileDetail: {
+    alignItems: 'center',
     flexDirection: 'row',
     marginVertical: 10,
   },
-  avatar: {marginRight: 20},
+  avatar: {width: 50, height: 50, marginRight: 20},
   profileName: {color: 'white', fontFamily: 'Roboto-Medium', fontSize: 18},
+  profileNameSkeleton: {width: 120, height: 20, borderRadius: 4},
   online: {color: 'white', fontFamily: 'Roboto-Regular', fontSize: 14},
+  onlineSkeleton: {marginTop: 6, width: 50, height: 20, borderRadius: 4},
   main: {
     flexDirection: 'row',
     alignItems: 'center',

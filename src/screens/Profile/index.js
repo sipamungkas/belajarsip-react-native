@@ -1,32 +1,86 @@
-import React from 'react';
-import {View, ScrollView, TouchableOpacity, StatusBar} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  StatusBar,
+  RefreshControl,
+} from 'react-native';
 
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {connect} from 'react-redux';
+import {useSelector, shallowEqual, useDispatch} from 'react-redux';
 import {logoutHandler} from '../../store/actions/auth';
+import {getProfile} from '../../services/api/profile';
 
 import PinIcon from '../../assets/icons/pin-icon.svg';
 import LogoutIcon from '../../assets/icons/logout-icon.svg';
 import SecurityIcon from '../../assets/icons/security-icon.svg';
 import StorageIcon from '../../assets/icons/storage-icon.svg';
 
+import {errorFormatter} from '../../utils/Error';
+import {snackbarError, snackbarSuccess} from '../../store/actions/snackbar';
+
 import Header from '../../components/Header';
 import styles from './styles';
 
-function Profile(props) {
+export default function Profile(props) {
+  const dispatch = useDispatch();
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const [profile, setProfile] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const {
-    authReducer: {user},
-  } = props;
-
+    user: {token},
+  } = authReducer;
   const onLogoutHandler = () => {
-    props.onLogoutHandler();
+    dispatch(logoutHandler);
   };
+  useEffect(() => {
+    setIsLoading(true);
+    getProfile(token)
+      .then(res => {
+        setProfile(res.data.data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        setIsLoading(false);
+        dispatch(snackbarError(msg));
+      });
+  }, [token, dispatch]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setIsLoading(true);
+    getProfile(token)
+      .then(res => {
+        setProfile(res.data.data);
+        setIsLoading(false);
+        setRefreshing(false);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        setIsLoading(false);
+        setRefreshing(false);
+        dispatch(snackbarError(msg));
+      });
+  }, [token, dispatch]);
+
+  console.log(profile);
   return (
     <View>
-      <Header title="Profile" mode={'profile'} user={user} />
+      <Header
+        title="Profile"
+        mode={'profile'}
+        user={profile}
+        isLoading={isLoading}
+      />
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         contentContainerStyle={{
           ...styles.container,
           paddingBottom: StatusBar.currentHeight + 115,
@@ -132,10 +186,8 @@ function Profile(props) {
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
               title="Data and Storage"
-              left={props => (
-                <StorageIcon size={20} color="rgba(63, 67, 86, 1)" />
-              )}
-              right={props => (
+              left={() => <StorageIcon size={20} color="rgba(63, 67, 86, 1)" />}
+              right={() => (
                 <Ionicons
                   name="chevron-forward"
                   size={20}
@@ -152,14 +204,14 @@ function Profile(props) {
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
               title="F.A.Q"
-              left={props => (
+              left={() => (
                 <Ionicons
                   name="help-circle"
                   size={20}
                   color="rgba(63, 67, 86, 1)"
                 />
               )}
-              right={props => (
+              right={() => (
                 <Ionicons
                   name="chevron-forward"
                   size={20}
@@ -173,8 +225,8 @@ function Profile(props) {
               rightStyle={{marginRight: 10}}
               titleStyle={[styles.titleStyle, {color: 'red'}]}
               title="Logout"
-              left={props => <LogoutIcon size={20} />}
-              right={props => (
+              left={() => <LogoutIcon size={20} />}
+              right={() => (
                 <Ionicons
                   name="chevron-forward"
                   size={20}
@@ -188,19 +240,3 @@ function Profile(props) {
     </View>
   );
 }
-
-const mapStateToProps = state => {
-  return {
-    authReducer: state.authReducer,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onLogoutHandler: () => dispatch(logoutHandler()),
-  };
-};
-
-const ConnectedProfile = connect(mapStateToProps, mapDispatchToProps)(Profile);
-
-export default ConnectedProfile;
