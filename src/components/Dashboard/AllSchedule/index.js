@@ -4,6 +4,7 @@ import ProgressCircle from 'react-native-progress-circle';
 import {Card} from 'react-native-paper';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {snackbarError} from '../../../store/actions/snackbar';
+import Color from '../../../Color';
 
 import {getAllCourseByDate} from '../../../services/api/dashboard';
 import styles from './styles';
