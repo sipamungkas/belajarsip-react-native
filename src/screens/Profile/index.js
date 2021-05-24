@@ -91,6 +91,23 @@ export default function Profile(props) {
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
+              title="Change Name"
+              left={() => (
+                <Ionicons name="text" size={20} color="rgba(63, 67, 86, 1)" />
+              )}
+              right={() => (
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color="rgba(63, 67, 86, 1)"
+                />
+              )}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Card.Title
+              rightStyle={{marginRight: 10}}
+              titleStyle={styles.titleStyle}
               title="Phone Numbers"
               left={props => (
                 <Ionicons name="call" size={20} color="rgba(63, 67, 86, 1)" />
