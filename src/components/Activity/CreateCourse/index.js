@@ -108,6 +108,19 @@ export default function CreateCourse() {
       });
   }, [token]);
 
+  const resetInput = () => {
+    setStartTime();
+    setEndTime();
+    setResponse();
+    setCourseName();
+    setCategories();
+    setSelectedCategory();
+    setLevels();
+    setSelectedLevel();
+    setDescription();
+    setPrice();
+  };
+
   const createHandler = () => {
     const formData = new FormData();
     formData.append('image', {
@@ -131,6 +144,7 @@ export default function CreateCourse() {
     createCourse(token, formData)
       .then(res => {
         dispatch(snackbarSuccess(res.data.message));
+        resetInput();
       })
       .catch(err => {
         const errMsg =
