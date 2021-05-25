@@ -33,6 +33,7 @@ export default function AvailableClassList(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
   const [totalPage, setTotalPage] = useState(0);
+  const [itemLoading, setItemLoading] = useState(false);
 
   const {token} = authReducer.user;
 
@@ -61,15 +62,19 @@ export default function AvailableClassList(props) {
   const limit = 5;
 
   useEffect(() => {
+    setAvailableCourses([]);
+    setItemLoading(true);
     getCourseWithFilter(token, search, sort, currentPage, limit)
       .then(res => {
         setAvailableCourses(res.data.data);
         setInfo(res.data.info);
         setTotalPage(res.data.info.total_page);
+        setItemLoading(false);
       })
       .catch(err => {
         const msg = errorFormatter(err);
         dispatch(snackbarError(msg));
+        setItemLoading(false);
       });
   }, [token, currentPage, search, sort, dispatch]);
 
@@ -111,11 +116,17 @@ export default function AvailableClassList(props) {
           <ActivityIndicator animating={true} color={Color.PRIMARY} />
         )}
         {availableCourses?.length === 0 && (
-          <View>
-            <Text style={{textAlign: 'center', marginTop: 10}}>
-              There is no new class
-            </Text>
-          </View>
+          <Card>
+            <Card.Content>
+              {itemLoading ? (
+                <ActivityIndicator animating={true} color={Color.PRIMARY} />
+              ) : (
+                <Text style={{textAlign: 'center', marginTop: 10}}>
+                  There is no new class
+                </Text>
+              )}
+            </Card.Content>
+          </Card>
         )}
         {availableCourses?.length > 0 &&
           availableCourses.map(item => (

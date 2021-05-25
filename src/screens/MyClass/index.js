@@ -22,6 +22,8 @@ import Header from '../../components/Header';
 import Item from '../../components/Activity/MyClassItem';
 
 import {API_URL} from '@env';
+import {errorFormatter} from '../../utils/Error';
+import {snackbarError} from '../../store/actions/snackbar';
 
 function MyClass(props) {
   const [refreshing, setRefreshing] = useState(false);
@@ -29,6 +31,7 @@ function MyClass(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
   const [totalPage, setTotalPage] = useState(0);
+  const [itemLoading, setItemLoading] = useState(false);
   const dispatch = useDispatch();
   const pageList = () => {
     let pages = [];
@@ -74,7 +77,7 @@ function MyClass(props) {
     }
     setCurrentPage(currentPage - 1);
   };
-  const nextPageHandler = page => {
+  const nextPageHandler = () => {
     if (currentPage === totalPage) {
       return;
     }
@@ -86,6 +89,8 @@ function MyClass(props) {
   const {token} = props.authReducer.user;
 
   useEffect(() => {
+    setItemLoading(true);
+    setMyClasses([]);
     axios
       .get(
         `${API_URL}/v1/courses/my-class?search=&sort=&page=${currentPage}&limit=${limit}`,
@@ -99,17 +104,17 @@ function MyClass(props) {
         setMyClasses(res.data.data);
         setInfo(res.data.info);
         setTotalPage(res.data.info.total_page);
+        setItemLoading(false);
       })
       .catch(err => {
-        const message =
+        const msg =
           err.response.status === 401
             ? 'Session Expired, please logout and login again'
-            : err.response?.data?.message ||
-              err.response?.data?.error ||
-              err.message;
-        Alert.alert('Error', message);
+            : errorFormatter(err);
+        dispatch(snackbarError(msg));
+        setItemLoading(false);
       });
-  }, [token, currentPage, props]);
+  }, [token, currentPage, props, dispatch]);
 
   const renderItem = ({item}) => <Item {...props} course={item} />;
 
@@ -143,7 +148,7 @@ function MyClass(props) {
         keyExtractor={course => course.id}
         ListEmptyComponent={
           <Card style={{padding: 10}}>
-            {refreshing ? (
+            {refreshing || itemLoading ? (
               <ActivityIndicator color={Color.PRIMARY} />
             ) : (
               <Text style={{textAlign: 'center'}}>

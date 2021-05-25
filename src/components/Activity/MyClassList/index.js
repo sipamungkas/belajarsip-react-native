@@ -11,12 +11,17 @@ import {API_URL} from '@env';
 import styles from './styles';
 import Color from '../../../Color';
 import axios from 'axios';
+import {snackbarError} from '../../../store/actions/snackbar';
+import {errorFormatter} from '../../../utils/Error';
 
 function MyClassList(props) {
   const [myCourses, setMyCourses] = useState();
   const [info, setInfo] = useState({});
+  const [itemLoading, setItemLoading] = useState(false);
   const {token} = props.authReducer.user;
   useEffect(() => {
+    setMyCourses([]);
+    setItemLoading(true);
     axios
       .get(`${API_URL}/v1/courses/my-class?limit=3`, {
         headers: {
@@ -26,9 +31,12 @@ function MyClassList(props) {
       .then(res => {
         setMyCourses(res.data.data);
         setInfo(res.data.info);
+        setItemLoading(false);
       })
       .catch(err => {
-        console.log(err);
+        const msg = errorFormatter(err);
+        snackbarError(msg);
+        setItemLoading(false);
       });
   }, [token]);
 
@@ -53,9 +61,13 @@ function MyClassList(props) {
       )}
       {myCourses?.length === 0 && (
         <View>
-          <Text style={{textAlign: 'center', marginTop: 10}}>
-            You dont have any class
-          </Text>
+          {itemLoading ? (
+            <ActivityIndicator animating={true} color={Color.PRIMARY} />
+          ) : (
+            <Text style={{textAlign: 'center', marginTop: 10}}>
+              You dont have any class
+            </Text>
+          )}
         </View>
       )}
       {myCourses?.length > 0 &&
