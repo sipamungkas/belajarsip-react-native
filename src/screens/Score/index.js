@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Alert} from 'react-native';
+import {View, FlatList} from 'react-native';
 import {useRoute} from '@react-navigation/core';
 import {Snackbar} from 'react-native-paper';
-import {shallowEqual, useSelector} from 'react-redux';
+import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 
 import Header from '../../components/Header';
 import StudentItem from '../../components/MyClassDetail/StudentItem';
@@ -14,8 +14,11 @@ import EditModal from '../../components/Score/EditModal';
 import {getStudentScore} from '../../services/api/courses';
 import styles from './styles';
 import Color from '../../Color';
+import {snackbarError} from '../../store/actions/snackbar';
+import {errorFormatter} from '../../utils/Error';
 
 export default function Score(props) {
+  const dispatch = useDispatch();
   const [scoreList, setScoreList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
@@ -42,14 +45,10 @@ export default function Score(props) {
         setScoreList(res.data.data);
       })
       .catch(err => {
-        Alert.alert(
-          'Error',
-          err?.response?.data?.message ||
-            err.message ||
-            'Something went wrong!',
-        );
+        const errMsg = errorFormatter(err);
+        dispatch(snackbarError(errMsg));
       });
-  }, [token, courseId, student]);
+  }, [token, courseId, student, dispatch]);
 
   return (
     <View style={styles.container}>

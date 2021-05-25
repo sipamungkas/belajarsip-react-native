@@ -1,10 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Alert, Text} from 'react-native';
+import {View, Text} from 'react-native';
+import {useDispatch} from 'react-redux';
+
 import StudentItem from '../StudentItem';
 import {getStudentList} from '../../../services/api/courses';
 import {Card} from 'react-native-paper';
+import {errorFormatter} from '../../../utils/Error';
+import {snackbarError} from '../../../store/actions/snackbar';
 
 export default function StudentList(props) {
+  const dispatch = useDispatch();
   const [studentList, setStudentList] = useState([]);
   const {token, courseId} = props;
   useEffect(() => {
@@ -13,14 +18,10 @@ export default function StudentList(props) {
         setStudentList(res.data.data);
       })
       .catch(err => {
-        Alert.alert(
-          'Error',
-          err?.response?.data?.message ||
-            err.message ||
-            'Something went wrong!',
-        );
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
       });
-  }, [token, courseId]);
+  }, [token, courseId, dispatch]);
   return (
     <View>
       {studentList.length === 0 && (

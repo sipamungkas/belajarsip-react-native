@@ -130,7 +130,7 @@ function MyClass(props) {
       <View style={{flex: 1, alignItems: 'center'}}>
         <Text style={styles.thead}>Score</Text>
       </View>
-      <View style={{width: 20}}></View>
+      <View style={{width: 20}} />
     </View>
   );
 

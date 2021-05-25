@@ -1,13 +1,13 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {useSelector, shallowEqual} from 'react-redux';
 import {
-  Alert,
   View,
   Text,
   ScrollView,
   TouchableNativeFeedback,
   Animated,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -19,8 +19,11 @@ import {getCourseById} from '../../services/api/courses';
 
 import styles from './styles';
 import Color from '../../Color';
+import {errorFormatter} from '../../utils/Error';
+import {snackbarError} from '../../store/actions/snackbar';
 
 export default function MyClassDetail(props) {
+  const dispatch = useDispatch();
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const {token} = authReducer.user;
   const {courseId, courseName} = props.route.params;
@@ -51,14 +54,10 @@ export default function MyClassDetail(props) {
         setCourse(res.data.data);
       })
       .catch(err => {
-        Alert.alert(
-          'Error',
-          err?.response?.data?.message ||
-            err.message ||
-            'Something went wrong!',
-        );
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
       });
-  }, [token, courseId]);
+  }, [token, courseId, dispatch]);
 
   return (
     <View style={{flex: 1, backgroundColor: Color.DEFAULT_BACKGROUND}}>
