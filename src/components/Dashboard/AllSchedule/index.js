@@ -8,26 +8,32 @@ import Color from '../../../Color';
 
 import {getAllCourseByDate} from '../../../services/api/dashboard';
 import styles from './styles';
+import {errorFormatter} from '../../../utils/Error';
 
-export default function AllSchedule(props) {
+function AllSchedule(props) {
   const dispatch = useDispatch();
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const {token} = authReducer.user;
   const {date} = props;
 
   useEffect(() => {
+    if (!token) {
+      return;
+    }
+    setIsLoading(true);
     getAllCourseByDate(token, date)
       .then(res => {
         const newData = res.data.data;
         setData(newData);
+        setIsLoading(false);
       })
       .catch(err => {
-        const errMsg =
-          err?.response?.data?.message ||
-          err?.message ||
-          'Something went wrong!';
-        dispatch(snackbarError(errMsg));
+        const msg = errorFormatter(err);
+
+        dispatch(snackbarError(msg));
+        setIsLoading(false);
       });
   }, [token, date, dispatch]);
 
@@ -52,7 +58,11 @@ export default function AllSchedule(props) {
       {!groupedByTime && <ActivityIndicator color={Color.PRIMARY} />}
       {groupedByTime?.length === 0 && (
         <Card style={{padding: 10}}>
-          <Text style={{textAlign: 'center'}}>No Schedule</Text>
+          {isLoading ? (
+            <ActivityIndicator color={Color.PRIMARY} />
+          ) : (
+            <Text style={{textAlign: 'center'}}>No Schedule</Text>
+          )}
         </Card>
       )}
       {groupedByTime.map((item, index) => (
@@ -95,3 +105,5 @@ export default function AllSchedule(props) {
     </View>
   );
 }
+
+export default AllSchedule;
