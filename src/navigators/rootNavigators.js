@@ -81,7 +81,7 @@ function App(props) {
         theme={{
           colors: {accent: 'white'},
         }}
-        style={{backgroundColor: danger ? '#ad1a1a' : Color.PRIMARY}}
+        style={{backgroundColor: danger ? Color.DANGER : Color.PRIMARY}}
         visible={snackbar}
         onDismiss={() => props.onSnackbarHide()}
         duration={5000}

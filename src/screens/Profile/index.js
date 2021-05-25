@@ -23,14 +23,20 @@ import {errorFormatter} from '../../utils/Error';
 import {snackbarError, snackbarSuccess} from '../../store/actions/snackbar';
 
 import Header from '../../components/Header';
+import ChangeNameModal from '../../components/Profile/ChangeNameModal';
+import ChangePasswordModal from '../../components/Profile/ChangePasswordModal';
+import ChangePhoneModal from '../../components/Profile/ChangePhoneModal';
 import styles from './styles';
 
-export default function Profile(props) {
+export default function Profile() {
   const dispatch = useDispatch();
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const [profile, setProfile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [showChangeName, setShowChangeName] = useState(false);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const {
     user: {token},
   } = authReducer;
@@ -68,7 +74,6 @@ export default function Profile(props) {
       });
   }, [token, dispatch]);
 
-  console.log(profile);
   return (
     <View>
       <Header
@@ -87,7 +92,9 @@ export default function Profile(props) {
         }}>
         <Card style={styles.section}>
           <Card.Title titleStyle={styles.sectionTitle} title="Account" />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowChangeName(true)}
+            disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -104,7 +111,9 @@ export default function Profile(props) {
               )}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowPhoneModal(true)}
+            disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -121,7 +130,9 @@ export default function Profile(props) {
               )}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowPasswordModal(true)}
+            disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -139,7 +150,7 @@ export default function Profile(props) {
         </Card>
         <Card style={styles.section}>
           <Card.Title titleStyle={styles.sectionTitle} title="Settings" />
-          <TouchableOpacity>
+          <TouchableOpacity disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -160,7 +171,7 @@ export default function Profile(props) {
               )}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -181,7 +192,7 @@ export default function Profile(props) {
               )}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -198,7 +209,7 @@ export default function Profile(props) {
               )}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -216,7 +227,7 @@ export default function Profile(props) {
         </Card>
         <Card style={styles.section}>
           <Card.Title titleStyle={styles.sectionTitle} title="Help" />
-          <TouchableOpacity>
+          <TouchableOpacity disabled={isLoading}>
             <Card.Title
               rightStyle={{marginRight: 10}}
               titleStyle={styles.titleStyle}
@@ -254,6 +265,21 @@ export default function Profile(props) {
           </TouchableOpacity>
         </Card>
       </ScrollView>
+      <ChangeNameModal
+        name={profile?.name || null}
+        show={showChangeName}
+        setShow={setShowChangeName}
+      />
+      <ChangePasswordModal
+        name={profile?.name || null}
+        show={showPasswordModal}
+        setShow={setShowPasswordModal}
+      />
+      <ChangePhoneModal
+        name={profile?.name || null}
+        show={showPhoneModal}
+        setShow={setShowPhoneModal}
+      />
     </View>
   );
 }

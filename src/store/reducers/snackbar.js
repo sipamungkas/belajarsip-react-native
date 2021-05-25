@@ -32,7 +32,6 @@ export const snackbarReducer = (state = initialState, action) => {
         ...state,
         snackbar: false,
         msg: '',
-        danger: false,
       };
     default:
       return {

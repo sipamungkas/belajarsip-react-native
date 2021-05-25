@@ -5,4 +5,5 @@ export default {
   DEFAULT_BACKGROUND: '#f7f7f7',
   HOMEBACKGROUND: 'rgba(230, 237, 246, 1)',
   PINK: 'rgba(244, 207, 223, 1)',
+  DANGER: '#ad1a1a',
 };
