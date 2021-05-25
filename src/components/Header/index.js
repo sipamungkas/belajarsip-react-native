@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, StatusBar, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StatusBar, Image, Pressable} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Searchbar, Avatar} from 'react-native-paper';
 import Skeleton from 'react-native-skeleton-placeholder';
@@ -22,8 +22,12 @@ const LoadProfileSkeleton = () => (
 );
 
 export default function Header(props) {
-  const {back, title, mode, user, isLoading} = props;
-  let avatarSrc = user?.avatar || null;
+  const [avatarSrc, setAvatarSrc] = useState();
+  const {back, title, mode, user, isLoading, setShowAvatarModal} = props;
+  useEffect(() => {
+    setAvatarSrc(user?.avatar || null);
+  }, [user]);
+
   switch (mode) {
     case 'profile':
       return (
@@ -39,27 +43,28 @@ export default function Header(props) {
             <LoadProfileSkeleton />
           ) : (
             <View style={styles.profileDetail}>
-              {user?.avatar !== null ? (
-                <Image
-                  style={[styles.avatar, {borderRadius: 45 / 2}]}
-                  height={45}
-                  width={45}
-                  source={{uri: `${API_URL}/${avatarSrc}`}}
-                  resizeMode="cover"
-                  resizeMethod="auto"
-                  onError={() => {
-                    avatarSrc = null;
-                  }}
-                />
-              ) : (
-                <Avatar.Text
-                  style={[styles.avatar, {backgroundColor: 'white'}]}
-                  color={Color.PRIMARY}
-                  size={50}
-                  label={user?.name?.slice(0, 1)}
-                />
-              )}
-
+              <Pressable onPress={() => setShowAvatarModal(true)}>
+                {user?.avatar !== null ? (
+                  <Image
+                    style={[styles.avatar, {borderRadius: 45 / 2}]}
+                    height={45}
+                    width={45}
+                    source={{uri: `${API_URL}/images/${avatarSrc}`}}
+                    resizeMode="cover"
+                    resizeMethod="auto"
+                    onError={() => {
+                      setAvatarSrc(null);
+                    }}
+                  />
+                ) : (
+                  <Avatar.Text
+                    style={[styles.avatar, {backgroundColor: 'white'}]}
+                    color={Color.PRIMARY}
+                    size={50}
+                    label={user?.name?.slice(0, 1)}
+                  />
+                )}
+              </Pressable>
               <View style={styles.info}>
                 <Text style={styles.profileName}>
                   {user?.name || 'Emir Kharisma'}

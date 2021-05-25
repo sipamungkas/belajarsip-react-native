@@ -32,7 +32,18 @@ export const updatePassword = (token, oldPassword, newPassword) => {
     `${API_URL}/v1/profile`,
     {old_password: oldPassword, new_password: newPassword},
     {
-      headers: {Authorization: `Bearer ${token}`},
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
   );
+};
+
+export const updateAvatar = (token, formData) => {
+  return axios.patch(`${API_URL}/v1/profile`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };

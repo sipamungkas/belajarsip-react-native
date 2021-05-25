@@ -26,6 +26,7 @@ import Header from '../../components/Header';
 import ChangeNameModal from '../../components/Profile/ChangeNameModal';
 import ChangePasswordModal from '../../components/Profile/ChangePasswordModal';
 import ChangePhoneModal from '../../components/Profile/ChangePhoneModal';
+import ChangeAvatarModal from '../../components/Profile/ChangeAvatarModal';
 import styles from './styles';
 
 export default function Profile() {
@@ -37,11 +38,12 @@ export default function Profile() {
   const [showChangeName, setShowChangeName] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const {
     user: {token},
   } = authReducer;
   const onLogoutHandler = () => {
-    dispatch(logoutHandler);
+    dispatch(logoutHandler());
   };
   useEffect(() => {
     setIsLoading(true);
@@ -52,8 +54,14 @@ export default function Profile() {
       })
       .catch(err => {
         const msg = errorFormatter(err);
+        if (msg === 'jwt expired') {
+          dispatch(
+            snackbarError('Session Expired Please Logout and Login again!'),
+          );
+        } else {
+          snackbarError(msg);
+        }
         setIsLoading(false);
-        dispatch(snackbarError(msg));
       });
   }, [token, dispatch]);
 
@@ -77,6 +85,8 @@ export default function Profile() {
   return (
     <View>
       <Header
+        showAvatarModal={showAvatarModal}
+        setShowAvatarModal={setShowAvatarModal}
         title="Profile"
         mode={'profile'}
         user={profile}
@@ -279,6 +289,11 @@ export default function Profile() {
         name={profile?.name || null}
         show={showPhoneModal}
         setShow={setShowPhoneModal}
+      />
+      <ChangeAvatarModal
+        avatar={profile?.avatar || null}
+        show={showAvatarModal}
+        setShow={setShowAvatarModal}
       />
     </View>
   );

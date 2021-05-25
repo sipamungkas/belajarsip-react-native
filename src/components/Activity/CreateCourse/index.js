@@ -128,7 +128,6 @@ export default function CreateCourse() {
     formData.append('duration', endTime.diff(startTime, 'ms'));
     formData.append('day', moment(date).format('E') - 1);
 
-    console.log(formData);
     createCourse(token, formData)
       .then(res => {
         dispatch(snackbarSuccess(res.data.message));
