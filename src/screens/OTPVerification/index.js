@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {useOrientation} from '../../hooks/useOrientation';
 import {setOTP} from '../../store/actions/forgot';
 import {otpVerification} from '../../services/api/forgot';
@@ -19,8 +19,12 @@ import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-lamp.svg';
 
 import styles from './styles';
+import {snackbarError} from '../../store/actions/snackbar';
+import {errorFormatter} from '../../utils/Error';
 
 function OTPVerification(props) {
+  const dispatch = useDispatch();
+  const forgotReducer = useSelector(state => state.forgotReducer, shallowEqual);
   const orientation = useOrientation();
   const [isLoading, setIsLoading] = useState(false);
   const [input1, setInput1] = useState('');
@@ -40,7 +44,7 @@ function OTPVerification(props) {
 
   const sendHandler = () => {
     setIsLoading(true);
-    const {email} = props.forgotReducer;
+    const {email} = forgotReducer;
     const otp = `${input1 || ''}${input2 || ''}${input3 || ''}${input4 || ''}`;
     if (otp.length < 4) {
       ToastAndroid.show('Please fill all field!', ToastAndroid.SHORT);
@@ -48,24 +52,18 @@ function OTPVerification(props) {
     }
     otpVerification(email, otp)
       .then(res => {
-        console.log(res.data);
         setIsLoading(false);
-        props.onSetOTP(otp);
+        dispatch(setOTP(otp));
         props.navigation.navigate('CreateNewPassword');
       })
       .catch(err => {
-        console.log(err.message);
         setIsLoading(false);
         if (err?.response?.status === 404) {
-          Alert.alert('Not Found', 'Email Not Found!');
+          dispatch(snackbarError('Email Not Found!'));
           return;
         }
-        Alert.alert(
-          'Error',
-          err?.response?.data?.message ||
-            err?.message ||
-            'Something went wrong!',
-        );
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
       });
 
     // call api and next
@@ -199,21 +197,4 @@ function OTPVerification(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    forgotReducer: state.forgotReducer,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSetOTP: otp => dispatch(setOTP(otp)),
-  };
-};
-
-const ConnectedOTPVerification = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(OTPVerification);
-
-export default ConnectedOTPVerification;
+export default OTPVerification;

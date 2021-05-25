@@ -60,16 +60,14 @@ function MyClass(props) {
         setRefreshing(false);
       })
       .catch(err => {
-        const message =
+        const msg =
           err.response.status === 401
             ? 'Session Expired, please logout and login again'
-            : err.response?.data?.message ||
-              err.response?.data?.error ||
-              err.message;
-        Alert.alert('Error', message);
+            : errorFormatter(err);
+        dispatch(snackbarError(msg));
         setRefreshing(false);
       });
-  }, [token, currentPage]);
+  }, [token, currentPage, dispatch]);
 
   const prevPageHandler = () => {
     if (currentPage === 1) {

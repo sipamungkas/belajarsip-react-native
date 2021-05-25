@@ -10,7 +10,7 @@ import {
 import {HelperText, Button, TextInput} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {setEmail as setEmailRedux} from '../../store/actions/forgot';
 import CustomModal from '../../components/CustomModal';
@@ -18,8 +18,12 @@ import Color from '../../Color';
 import Illustration from '../../assets/images/illustrations/people-with-questions.svg';
 import styles from './styles';
 import {sendOTP} from '../../services/api/forgot';
+import {errorFormatter} from '../../utils/Error';
+import {snackbarError} from '../../store/actions/snackbar';
 
 function SendOTP(props) {
+  // const forgotReducer = useSelector(state => state.forgotReducer, shallowEqual);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const emailRules = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/;
@@ -38,17 +42,18 @@ function SendOTP(props) {
     sendOTP(email)
       .then(res => {
         setIsLoading(false);
-        props.onSetEmail(email);
+        dispatch(setEmailRedux(email));
         props.navigation.navigate('OTPVerification');
       })
       .catch(err => {
         console.log(err.message);
         setIsLoading(false);
         if (err?.response?.status === 404) {
-          Alert.alert('Not Found', 'Email Not Found!');
+          dispatch(snackbarError('Email Not Found!'));
           return;
         }
-        Alert.alert('Error', err?.message || 'Something went wrong!');
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
       });
   };
 
@@ -110,18 +115,4 @@ function SendOTP(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    forgotReducer: state.forgotReducer,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSetEmail: email => dispatch(setEmailRedux(email)),
-  };
-};
-
-const ConnectedSendOTP = connect(mapStateToProps, mapDispatchToProps)(SendOTP);
-
-export default ConnectedSendOTP;
+export default SendOTP;

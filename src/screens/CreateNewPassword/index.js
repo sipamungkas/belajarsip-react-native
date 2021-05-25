@@ -11,8 +11,10 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import {useOrientation} from '../../hooks/useOrientation';
 import {newPassword} from '../../services/api/forgot';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
+import {snackbarError} from '../../store/actions/snackbar';
+import {errorFormatter} from '../../utils/Error';
 import Color from '../../Color';
 import CustomTextInput from '../../components/CustomTextInput';
 import CustomModal from '../../components/CustomModal';
@@ -20,6 +22,8 @@ import CustomModal from '../../components/CustomModal';
 import styles from './styles';
 
 function CreateNewPassword(props) {
+  const dispatch = useDispatch();
+  const forgotReducer = useSelector(state => state.forgotReducer, shallowEqual);
   const orientation = useOrientation();
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -36,7 +40,7 @@ function CreateNewPassword(props) {
   };
 
   const sendHandler = () => {
-    const {otp, email} = props.forgotReducer;
+    const {otp, email} = forgotReducer;
     setIsLoading(true);
     if (formValidationErrors()) {
       setIsLoading(false);
@@ -52,15 +56,11 @@ function CreateNewPassword(props) {
         console.log(err.message);
         setIsLoading(false);
         if (err?.response?.status === 404) {
-          Alert.alert('Not Found', 'Email Not Found!');
+          dispatch(snackbarError('Email Not Found!'));
           return;
         }
-        Alert.alert(
-          'Error',
-          err?.response?.data?.message ||
-            err?.message ||
-            'Something went wrong!',
-        );
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
       });
     // setSuccess(true);
     // axios
@@ -168,11 +168,4 @@ function CreateNewPassword(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    forgotReducer: state.forgotReducer,
-  };
-};
-
-const ConnectedCreateNewPassword = connect(mapStateToProps)(CreateNewPassword);
-export default ConnectedCreateNewPassword;
+export default CreateNewPassword;
