@@ -83,7 +83,7 @@ const DATA = [
 ];
 
 export default function ChatList() {
-  const [create, setCreate] = useState(0);
+  const [create, setCreate] = useState(false);
   const renderItem = ({item}) => (
     <ChatItem
       item={item}

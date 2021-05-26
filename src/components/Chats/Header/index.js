@@ -1,5 +1,12 @@
 import React, {useRef, useState} from 'react';
-import {View, Text, StatusBar, Animated, Easing, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Animated,
+  Easing,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import NewGroupIcon from '../../../assets/icons/new-group-icon.svg';
@@ -56,14 +63,21 @@ export default function Header(props) {
           <Animated.View style={[styles.options, {opacity: opacity}]}>
             <View style={styles.icon}>
               <View style={styles.iconContainer}>
-                <Ionicons name="chatbox-ellipses" size={20} />
+                <Ionicons
+                  name="chatbox-ellipses"
+                  size={20}
+                  onPress={() => navigation.navigate('NewChat')}
+                />
               </View>
               <Text style={styles.iconText}>Chat</Text>
             </View>
             <View style={styles.icon}>
-              <View style={styles.iconContainer}>
-                <NewGroupIcon />
-              </View>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('NewChatGroup')}>
+                <View style={styles.iconContainer}>
+                  <NewGroupIcon />
+                </View>
+              </TouchableWithoutFeedback>
               <Text style={styles.iconText}>Group</Text>
             </View>
           </Animated.View>
