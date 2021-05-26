@@ -11,17 +11,26 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import {ProgressBar} from 'react-native-paper';
 
 import {useOrientation} from '../../../hooks/useOrientation';
 import {API_URL} from '@env';
 import DefaultCover from '../../../assets/images/default-course-cover.png';
 
 import styles from './styles';
+import Color from '../../../Color';
 
 export default function ImageHeader(props) {
   const {course} = props;
   const {height: windowHeight} = useWindowDimensions();
   const orientation = useOrientation();
+  let progress = 0;
+  if (course.progress) {
+    progress = course?.progress / 100 || 0;
+  }
+  if (course?.subcourses_done) {
+    progress = course.subcourses_done / course.subcourses_total;
+  }
 
   return (
     <View>
@@ -76,6 +85,11 @@ export default function ImageHeader(props) {
                   Price : {course?.price ? ` $${course?.price || 0}` : ' Free'}
                 </Text>
               </View>
+              <ProgressBar
+                indeterminate={false}
+                progress={progress}
+                color={Color.PRIMARY}
+              />
             </View>
           </View>
         </ImageBackground>

@@ -23,7 +23,7 @@ const LoadProfileSkeleton = () => (
 
 export default function Header(props) {
   const [avatarSrc, setAvatarSrc] = useState();
-  console.log(avatarSrc);
+
   const {back, title, mode, user, isLoading, setShowAvatarModal} = props;
   useEffect(() => {
     setAvatarSrc(user?.avatar || null);
