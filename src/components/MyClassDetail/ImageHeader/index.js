@@ -89,6 +89,10 @@ export default function ImageHeader(props) {
                   Price : {course?.price ? ` $${course?.price || 0}` : ' Free'}
                 </Text>
               </View>
+
+              <Text style={styles.progress}>
+                {100 - progress * 100 || 100}% to complete
+              </Text>
               <ProgressBar
                 indeterminate={false}
                 progress={progress}

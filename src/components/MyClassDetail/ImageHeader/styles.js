@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import Color from '../../../Color';
 
 import COLOR from '../../../Color';
 
@@ -42,7 +43,7 @@ export default StyleSheet.create({
 
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 30,
+    marginBottom: 10,
   },
   title: {
     fontFamily: 'Montserrat-SemiBold',
@@ -56,5 +57,11 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     textAlign: 'left',
     marginRight: 10,
+  },
+  progress: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 12,
+    color: Color.PRIMARY,
+    marginBottom: 1,
   },
 });
