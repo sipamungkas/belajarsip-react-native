@@ -59,7 +59,7 @@ export default function ImageHeader(props) {
                 source={
                   course?.category_icon
                     ? {
-                        uri: course.category_icon,
+                        uri: `${API_URL}/images/${course.category_icon}`,
                       }
                     : DefaultCategory
                 }
