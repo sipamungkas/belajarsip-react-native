@@ -5,7 +5,6 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
-  Alert,
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
@@ -19,7 +18,7 @@ import Color from '../../Color';
 import styles from './styles';
 
 import Header from '../../components/Header';
-import Item from '../../components/Activity/MyClassItem';
+import Item from '../../components/Activity/MyClassItemInstructor';
 
 import {API_URL} from '@env';
 import {errorFormatter} from '../../utils/Error';

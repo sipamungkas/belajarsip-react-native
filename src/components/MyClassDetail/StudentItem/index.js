@@ -4,13 +4,19 @@ import {Card, Avatar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
+import {API_URL} from '@env';
+
 export default function StudentItem(props) {
   const {student, onPress, ellipsis} = props;
+
   return (
     <Card style={styles.card} theme={{roundness: 0}} onPress={onPress}>
       <Card.Content style={{flexDirection: 'row', alignItems: 'center'}}>
         {student?.avatar ? (
-          <Avatar.Image size={40} source={{uri: student?.avatar}} />
+          <Avatar.Image
+            size={40}
+            source={{uri: `${API_URL}/images/${student?.avatar}`}}
+          />
         ) : (
           <Avatar.Text size={40} label={student?.name?.slice(0, 1) || '-'} />
         )}
