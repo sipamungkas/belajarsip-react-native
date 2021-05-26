@@ -7,10 +7,10 @@ import NewGroupIcon from '../../../assets/icons/new-group-icon.svg';
 import Color from '../../../Color';
 import styles from './styles';
 
-export default function Header() {
+export default function Header(props) {
   const navigation = useNavigation();
+  const {create, setCreate} = props;
 
-  const [create, setCreate] = useState(0);
   const animation = useRef(new Animated.Value(create ? 0 : 1)).current;
 
   // First set up animation

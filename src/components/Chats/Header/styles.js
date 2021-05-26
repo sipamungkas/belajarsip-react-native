@@ -3,6 +3,7 @@ import Color from '../../../Color';
 
 export default StyleSheet.create({
   container: {
+    zIndex: 1,
     flexDirection: 'column',
     minHeight: 75,
     backgroundColor: Color.PRIMARY,
