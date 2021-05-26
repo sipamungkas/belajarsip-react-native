@@ -61,13 +61,12 @@ export default function ChatList() {
       setSelected(prevState => [...prevState, userId]);
     } else {
       let data = selected;
-      console.log(
-        data.splice(
-          data.findIndex(index => index === userId),
-          1,
-        ),
-      );
-      setSelected([...data]);
+
+      data.splice(
+        data.findIndex(index => index === userId),
+        1,
+      ),
+        setSelected([...data]);
     }
   };
 
@@ -82,7 +81,6 @@ export default function ChatList() {
     />
   );
 
-  console.log(selected);
   return (
     <View style={styles.container}>
       <HeaderChoose
