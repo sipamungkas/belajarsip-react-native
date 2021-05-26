@@ -59,8 +59,11 @@ export default function MyClassDetail(props) {
       .catch(err => {
         const msg = errorFormatter(err);
         dispatch(snackbarError(msg));
+        if (err.status === 404) {
+          props.navigation.goBack();
+        }
       });
-  }, [token, courseId, dispatch]);
+  }, [token, courseId, dispatch, props]);
 
   return (
     <View style={{flex: 1, backgroundColor: Color.DEFAULT_BACKGROUND}}>

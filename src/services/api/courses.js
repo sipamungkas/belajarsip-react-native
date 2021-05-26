@@ -98,3 +98,12 @@ export const updateCourse = (token, courseId, formData) => {
     },
   });
 };
+
+export const deleteCourse = (token, courseId) => {
+  return axios.delete(`${API_URL}/v1/courses/${courseId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

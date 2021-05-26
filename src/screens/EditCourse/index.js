@@ -20,7 +20,7 @@ import Header from '../../components/Header';
 // api calls
 import {getCategories} from '../../services/api/categories';
 import {
-  createCourse,
+  deleteCourse,
   getCourseById,
   updateCourse,
 } from '../../services/api/courses';
@@ -29,7 +29,7 @@ import {API_URL} from '@env';
 
 import styles from './styles';
 import {errorFormatter} from '../../utils/Error';
-import Color from '../../Color';
+import DeleteModal from '../../components/Course/DeleteModal';
 
 export default function UpdateCourse(props) {
   const {courseId, courseName: defaultCourseName} = props.route.params;
@@ -48,6 +48,7 @@ export default function UpdateCourse(props) {
   const [selectedLevel, setSelectedLevel] = useState();
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
+  const [showDelete, setShowDelete] = useState(false);
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const {
     user: {token},
@@ -247,6 +248,24 @@ export default function UpdateCourse(props) {
       });
   };
 
+  const deleteHandler = () => {
+    setShowDelete(false);
+    dispatch(setIsLoading(true));
+    deleteCourse(token, courseId)
+      .then(res => {
+        dispatch(snackbarSuccess('Course Deleted'));
+        dispatch(setIsLoading(false));
+        setTimeout(() => {
+          props.navigation.replace('ActivityMyClass');
+        }, 2000);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
+        dispatch(setIsLoading(false));
+      });
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -254,9 +273,7 @@ export default function UpdateCourse(props) {
         title={defaultCourseName}
         {...props}
         right="delete"
-        onRightPress={() => {
-          console.warn('delete');
-        }}
+        onRightPress={() => setShowDelete(true)}
       />
       <ScrollView>
         <Card style={styles.container}>
@@ -461,6 +478,11 @@ export default function UpdateCourse(props) {
             mode="time"
             onConfirm={handleConfirmEnd}
             onCancel={hideSessionEndPicker}
+          />
+          <DeleteModal
+            show={showDelete}
+            setShow={setShowDelete}
+            deleteHandler={deleteHandler}
           />
         </Card>
       </ScrollView>
