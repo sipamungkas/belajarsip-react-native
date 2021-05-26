@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import ActivityInstructor from '../screens/ActivityInstructor';
-import ActivityMyClass from '../screens/MyClass';
+import ActivityMyClassInstructor from '../screens/MyClassInstructor';
 import MyClassDetailInstructor from '../screens/MyClassDetailInstructor';
 import Score from '../screens/Score';
 
@@ -24,7 +24,7 @@ export default function ActivityNavigator() {
       />
       <Stack.Screen
         name="ActivityMyClass"
-        component={ActivityMyClass}
+        component={ActivityMyClassInstructor}
         options={{
           headerShown: false,
         }}

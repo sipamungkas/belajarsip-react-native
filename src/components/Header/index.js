@@ -23,6 +23,7 @@ const LoadProfileSkeleton = () => (
 
 export default function Header(props) {
   const [avatarSrc, setAvatarSrc] = useState();
+  console.log(avatarSrc);
   const {back, title, mode, user, isLoading, setShowAvatarModal} = props;
   useEffect(() => {
     setAvatarSrc(user?.avatar || null);
@@ -44,7 +45,7 @@ export default function Header(props) {
           ) : (
             <View style={styles.profileDetail}>
               <Pressable onPress={() => setShowAvatarModal(true)}>
-                {user?.avatar !== null ? (
+                {avatarSrc !== null ? (
                   <Image
                     style={[styles.avatar, {borderRadius: 45 / 2}]}
                     height={45}
