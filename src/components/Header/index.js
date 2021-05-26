@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StatusBar, Image, Pressable} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Searchbar, Avatar, Button} from 'react-native-paper';
+import {Searchbar, Avatar, Button, Badge} from 'react-native-paper';
 import Skeleton from 'react-native-skeleton-placeholder';
+import {useNavigation} from '@react-navigation/native';
 
 import Color from '../../Color';
 import styles from './styles';
@@ -23,7 +24,7 @@ const LoadProfileSkeleton = () => (
 
 export default function Header(props) {
   const [avatarSrc, setAvatarSrc] = useState();
-
+  const navigation = useNavigation();
   const {
     back,
     title,
@@ -101,6 +102,18 @@ export default function Header(props) {
             <Text numberOfLines={1} style={styles.title}>
               {title}
             </Text>
+
+            <View>
+              <Ionicons
+                name="notifications"
+                color="white"
+                size={25}
+                onPress={() => navigation.navigate('Notification')}
+              />
+              <View style={styles.notificationContainer}>
+                <Badge size={9} />
+              </View>
+            </View>
           </View>
           <Searchbar
             style={{height: 40, marginTop: 10, backgroundColor: '#E5E6EB'}}

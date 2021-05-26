@@ -3,12 +3,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, shallowEqual} from 'react-redux';
 
-import DashboardStudent from '../screens/Dashboard/Student';
-import DashboardInstructor from '../screens/Dashboard/Instructor';
 import Profile from '../screens/Profile';
 
 import ActivityStudentNavigators from './activityStudentNavigators';
 import ActivityInstructorNavigators from './activityInstructorNavigators';
+import DashboardNavigators from './dashboardNavigators';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,10 +40,7 @@ export default function TabNavigator() {
         activeTintColor: 'rgba(87, 132, 186, 1)',
         inactiveTintColor: 'rgba(173, 169, 187, 1)',
       }}>
-      <Tab.Screen
-        name="Dashboard"
-        component={roleId === 1 ? DashboardInstructor : DashboardStudent}
-      />
+      <Tab.Screen name="Dashboard" component={DashboardNavigators} />
       <Tab.Screen
         name="Activity"
         component={
@@ -53,7 +49,7 @@ export default function TabNavigator() {
             : ActivityStudentNavigators
         }
       />
-      <Tab.Screen name="Chat" component={DashboardStudent} />
+      <Tab.Screen name="Chat" component={DashboardNavigators} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

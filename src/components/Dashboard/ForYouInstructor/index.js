@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {ActivityIndicator, Card} from 'react-native-paper';
 import axios from 'axios';
 
-import {connect} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 
 import styles from './styles';
 import StudentIcon from '../../../assets/icons/student-icon.svg';
@@ -12,14 +12,21 @@ import DateItem from '../DateItem';
 import {API_URL} from '@env';
 import Color from '../../../Color';
 import {durationToTime} from '../../../utils/TimeConverter';
+import {errorFormatter} from '../../../utils/Error';
+import {snackbarError} from '../../../store/actions/snackbar';
 
 function ForYou(props) {
-  const [myClassData, setMyClassData] = useState();
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const dispatch = useDispatch();
+  const [myClassData, setMyClassData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const {date, dateInAWeek, activeDate, setActiveDate} = props;
 
-  const {token} = props.authReducer.user;
+  const {token} = authReducer.user;
 
   useEffect(() => {
+    setMyClassData([]);
+    setIsLoading(true);
     axios
       .get(`${API_URL}/v1/dashboard/${date}`, {
         headers: {
@@ -28,11 +35,14 @@ function ForYou(props) {
       })
       .then(res => {
         setMyClassData(res.data.data);
+        setIsLoading(false);
       })
       .catch(err => {
-        console.log(err);
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
+        setIsLoading(false);
       });
-  }, [token, date]);
+  }, [token, date, dispatch]);
 
   return (
     <View>
@@ -47,10 +57,14 @@ function ForYou(props) {
           />
         ))}
       </View>
-      {!myClassData && <ActivityIndicator color={Color.PRIMARY} />}
+
       {myClassData?.length === 0 && (
         <Card style={{padding: 10}}>
-          <Text style={{textAlign: 'center'}}>No Schedule</Text>
+          {isLoading ? (
+            <ActivityIndicator color={Color.PRIMARY} />
+          ) : (
+            <Text style={{textAlign: 'center'}}>No Schedule</Text>
+          )}
         </Card>
       )}
       {myClassData &&
@@ -81,12 +95,4 @@ function ForYou(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    authReducer: state.authReducer,
-  };
-};
-
-const ConnectedForYou = connect(mapStateToProps)(ForYou);
-
-export default ConnectedForYou;
+export default ForYou;

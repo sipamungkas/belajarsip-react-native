@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import Color from '../../Color';
+import Color from '../../../Color';
 
 export default StyleSheet.create({
   container: {
@@ -39,14 +39,4 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   edit: {flex: 1, color: 'white', textAlign: 'right'},
-  notificationContainer: {
-    height: 12,
-    width: 12,
-    borderRadius: 7,
-    padding: 1,
-    backgroundColor: Color.PRIMARY,
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
 });
