@@ -8,6 +8,7 @@ import Profile from '../screens/Profile';
 import ActivityStudentNavigators from './activityStudentNavigators';
 import ActivityInstructorNavigators from './activityInstructorNavigators';
 import DashboardNavigators from './dashboardNavigators';
+import ChatNavigators from './chatNavigators';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +50,7 @@ export default function TabNavigator() {
             : ActivityStudentNavigators
         }
       />
-      <Tab.Screen name="Chat" component={DashboardNavigators} />
+      <Tab.Screen name="Chat" component={ChatNavigators} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
