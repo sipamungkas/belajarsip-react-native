@@ -281,12 +281,11 @@ export default function Profile() {
         setShow={setShowChangeName}
       />
       <ChangePasswordModal
-        name={profile?.name || null}
         show={showPasswordModal}
         setShow={setShowPasswordModal}
       />
       <ChangePhoneModal
-        name={profile?.name || null}
+        phoneNumber={profile?.phone || null}
         show={showPhoneModal}
         setShow={setShowPhoneModal}
       />
