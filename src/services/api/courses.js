@@ -89,3 +89,12 @@ export const createCourse = (token, formData) => {
     },
   });
 };
+
+export const updateCourse = (token, courseId, formData) => {
+  return axios.patch(`${API_URL}/v1/courses/${courseId}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

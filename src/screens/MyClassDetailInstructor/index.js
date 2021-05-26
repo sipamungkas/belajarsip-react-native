@@ -64,7 +64,18 @@ export default function MyClassDetail(props) {
 
   return (
     <View style={{flex: 1, backgroundColor: Color.DEFAULT_BACKGROUND}}>
-      <Header back title={courseName} {...props} />
+      <Header
+        back
+        title={courseName}
+        {...props}
+        right="edit"
+        onRightPress={() => {
+          props.navigation.navigate('EditCourse', {
+            courseId: course.id,
+            courseName: course.name,
+          });
+        }}
+      />
       <ScrollView
         nestedScrollEnabled
         ref={contentRef}

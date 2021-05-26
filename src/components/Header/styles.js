@@ -34,8 +34,10 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '500',
     color: 'white',
+    flex: 5,
   },
   titleProfile: {
     marginBottom: 10,
   },
+  edit: {flex: 1, color: 'white', textAlign: 'right'},
 });

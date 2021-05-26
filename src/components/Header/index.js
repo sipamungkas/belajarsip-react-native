@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StatusBar, Image, Pressable} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Searchbar, Avatar} from 'react-native-paper';
+import {Searchbar, Avatar, Button} from 'react-native-paper';
 import Skeleton from 'react-native-skeleton-placeholder';
 
 import Color from '../../Color';
@@ -24,7 +24,16 @@ const LoadProfileSkeleton = () => (
 export default function Header(props) {
   const [avatarSrc, setAvatarSrc] = useState();
 
-  const {back, title, mode, user, isLoading, setShowAvatarModal} = props;
+  const {
+    back,
+    title,
+    mode,
+    user,
+    isLoading,
+    setShowAvatarModal,
+    onRightPress,
+    right,
+  } = props;
   useEffect(() => {
     setAvatarSrc(user?.avatar || null);
   }, [user]);
@@ -118,6 +127,17 @@ export default function Header(props) {
             <Text numberOfLines={1} style={styles.title}>
               {title}
             </Text>
+            {right === 'edit' && (
+              <Button onPress={onRightPress} color={Color.PRIMARY}>
+                <Text style={styles.edit}>Edit</Text>
+              </Button>
+            )}
+
+            {right === 'delete' && (
+              <Button onPress={onRightPress} color={Color.DANGER}>
+                <Text style={styles.edit}>Delete</Text>
+              </Button>
+            )}
           </View>
         </View>
       );
