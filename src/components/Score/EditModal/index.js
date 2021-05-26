@@ -62,7 +62,6 @@ export default function EditModal(props) {
 
     const propsScore = data.subcourse.score;
     if (propsScore === undefined || propsScore === null || propsScore === '') {
-      console.log('create');
       createScore(
         data.token,
         data.courseId,

@@ -47,7 +47,6 @@ const ChangeAvatarModal = props => {
         dispatch(setIsLoading(false));
       })
       .catch(err => {
-        console.log(err.response.data);
         const msg = errorFormatter(err);
         setImage(null);
         dispatch(snackbarError(msg));

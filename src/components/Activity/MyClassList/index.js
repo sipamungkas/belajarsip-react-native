@@ -4,7 +4,7 @@ import MyClassItem from '../MyClassItem';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ActivityIndicator} from 'react-native-paper';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 
 import {API_URL} from '@env';
 
@@ -15,10 +15,12 @@ import {snackbarError} from '../../../store/actions/snackbar';
 import {errorFormatter} from '../../../utils/Error';
 
 function MyClassList(props) {
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const dispatch = useDispatch();
   const [myCourses, setMyCourses] = useState();
   const [info, setInfo] = useState({});
   const [itemLoading, setItemLoading] = useState(false);
-  const {token} = props.authReducer.user;
+  const {token} = authReducer.user;
   useEffect(() => {
     setMyCourses([]);
     setItemLoading(true);
@@ -35,10 +37,10 @@ function MyClassList(props) {
       })
       .catch(err => {
         const msg = errorFormatter(err);
-        snackbarError(msg);
+        dispatch(snackbarError(msg));
         setItemLoading(false);
       });
-  }, [token]);
+  }, [token, dispatch]);
 
   return (
     <View>
@@ -94,12 +96,4 @@ function MyClassList(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    authReducer: state.authReducer,
-  };
-};
-
-const ConnectedMyClassList = connect(mapStateToProps)(MyClassList);
-
-export default ConnectedMyClassList;
+export default MyClassList;
