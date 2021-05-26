@@ -10,7 +10,7 @@ import styles from './styles';
 export default function ActivityStudent(props) {
   return (
     <View>
-      <Header title="Activity Instructor" />
+      <Header title="Activity" />
       <ScrollView
         contentContainerStyle={[
           styles.container,
