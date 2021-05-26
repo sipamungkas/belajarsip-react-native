@@ -55,7 +55,7 @@ const ChangePhoneModal = props => {
             <TextInput
               keyboardType="number-pad"
               style={[styles.textInput]}
-              label="Name"
+              label="Phone Number"
               value={phoneNumber}
               onChangeText={text => setPhoneNumber(text)}
               mode="outlined"
