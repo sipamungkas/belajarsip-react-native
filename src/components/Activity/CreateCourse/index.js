@@ -6,6 +6,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {snackbarSuccess, snackbarError} from '../../../store/actions/snackbar';
+import {setIsLoading} from '../../../store/actions/loading';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 // api calls
 import {getCategories} from '../../../services/api/categories';
@@ -121,7 +122,46 @@ export default function CreateCourse() {
     setPrice();
   };
 
+  const createCourseValidator = () => {
+    if (!response) {
+      return 'Image can not be empty!';
+    }
+    if (!courseName) {
+      return 'Course name can not be empty!';
+    }
+    if (!description) {
+      return 'Description can not be empty!';
+    }
+    if (!selectedLevel) {
+      return 'Please select Level!';
+    }
+    if (!selectedCategory) {
+      return 'Please select category!';
+    }
+    if (!price) {
+      return 'Please input price, 0 for free!';
+    }
+    if (!date) {
+      return 'Schedule can not be empty!';
+    }
+    if (!startTime) {
+      return 'Start Time can not be empty!';
+    }
+    if (!endTime) {
+      return 'End Time can not be empty!';
+    }
+    return null;
+  };
+
   const createHandler = () => {
+    dispatch(setIsLoading(true));
+    const vaildatorMessage = createCourseValidator();
+    if (vaildatorMessage) {
+      dispatch(snackbarError(vaildatorMessage));
+      dispatch(setIsLoading(false));
+      return;
+    }
+
     const formData = new FormData();
     formData.append('image', {
       uri:
@@ -145,12 +185,15 @@ export default function CreateCourse() {
       .then(res => {
         dispatch(snackbarSuccess(res.data.message));
         resetInput();
+        dispatch(setIsLoading(false));
       })
       .catch(err => {
+        console.log(err.message);
         const errMsg =
           err?.response?.data?.message ||
           err?.message ||
           'Something went wrong!';
+        dispatch(setIsLoading(false));
         dispatch(snackbarError(errMsg));
       });
   };
@@ -227,7 +270,7 @@ export default function CreateCourse() {
             <TextInput
               placeholder="Select Category"
               value={
-                categories.find(cat => cat.id === selectedCategory)?.name ||
+                categories?.find(cat => cat.id === selectedCategory)?.name ||
                 null
               }
             />
@@ -248,7 +291,7 @@ export default function CreateCourse() {
             <TextInput
               placeholder="Select Level"
               value={
-                levels.find(level => level.id === selectedLevel)?.name || null
+                levels?.find(level => level.id === selectedLevel)?.name || null
               }
             />
           </ModalSelector>
@@ -309,6 +352,7 @@ export default function CreateCourse() {
         <View style={styles.descriptionContainer}>
           <Text style={styles.label}>Description:</Text>
           <TextInput
+            value={description}
             multiline
             numberOfLines={4}
             style={styles.description}
