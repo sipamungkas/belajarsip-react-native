@@ -9,6 +9,8 @@ import ActivityStudentNavigators from './activityStudentNavigators';
 import ActivityInstructorNavigators from './activityInstructorNavigators';
 import DashboardNavigators from './dashboardNavigators';
 import ChatNavigators from './chatNavigators';
+import ActivityIconInactive from '../assets/icons/activity-icon-inactive.svg';
+import ActivityIconActive from '../assets/icons/activity-icon-active.svg';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +32,17 @@ export default function TabNavigator() {
               ? 'chatbox-ellipses'
               : 'chatbox-ellipses-outline';
           } else if (route.name === 'Activity') {
-            iconName = focused ? 'bookmark' : 'bookmark-outline';
+            if (focused) {
+              return (
+                <ActivityIconActive
+                  width={size + 4}
+                  height={size + 4}
+                  // style={{width: size + 20, height: size + 20}}
+                />
+              );
+            }
+            return <ActivityIconInactive width={size + 4} height={size + 4} />;
+            // iconName = focused ? 'bookmark' : 'bookmark-outline';
           }
 
           // You can return any component that you like here!
