@@ -22,7 +22,6 @@ const renderImage = image => {
 
 export default function NotificationItem(props) {
   const {image, content, time} = props;
-  console.log(props);
   //   const imgSrc = image ? {uri: `${API_URL}/images/${image}`} : ActivityIcon;
 
   return (
