@@ -66,6 +66,11 @@ function Register(props) {
       });
   };
 
+  const setUserNameValidator = text =>
+    setUsername(
+      text.replace(/[`~0-9!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ \t]/gi, ''),
+    );
+
   const formValidationErrors = () => {
     if (!username || !email || !password || !confirmPassword) {
       setError({message: 'Please fill out all required fields!'});
@@ -119,7 +124,7 @@ function Register(props) {
           helpersValidation={usernameHasErrors}
           helpersMessage={'Username must be more than 3 characters'}
           value={username}
-          setValue={setUsername}
+          setValue={setUserNameValidator}
         />
         <TextInput
           style={[styles.username]}
