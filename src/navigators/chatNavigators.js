@@ -5,6 +5,7 @@ import ChatList from '../screens/Chats/ChatList';
 import NewChat from '../screens/Chats/NewChat';
 import NewChatGroup from '../screens/Chats/NewChatGroup';
 import CreateGroup from '../screens/Chats/CreateGroup';
+import Message from '../screens/Chats/Message';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,13 @@ export default function DashboardNavigators() {
       <Stack.Screen
         name="CreateGroup"
         component={CreateGroup}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Message"
+        component={Message}
         options={{
           headerShown: false,
         }}

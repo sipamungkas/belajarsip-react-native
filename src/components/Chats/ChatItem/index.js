@@ -3,10 +3,12 @@ import {View, Text} from 'react-native';
 import {Card, Avatar} from 'react-native-paper';
 import {API_URL} from '@env';
 import styles from './styles';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ChatItem(props) {
+  const navigation = useNavigation();
   return (
-    <Card elevation={0}>
+    <Card elevation={0} onPress={() => navigation.navigate('Message', {id: 1})}>
       <Card.Content style={styles.container}>
         {props?.avatar ? (
           <Avatar.Image
