@@ -3,20 +3,23 @@ import Color from '../../../Color';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
     borderRadius: 10,
   },
   input: {
+    marginVertical: 5,
     maxHeight: 100,
     flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginRight: 10,
   },
   sendButton: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
+    height: 35,
+    width: 35,
+    borderRadius: 35 / 2,
     backgroundColor: Color.PRIMARY,
     alignItems: 'center',
     justifyContent: 'center',

@@ -18,30 +18,20 @@ const messages = [
 ];
 
 export default function Message() {
-  const orientation = useOrientation();
   const renderItem = ({item}) => (
     <MessageItem item={item} isSender={item.from === '2'} />
   );
   return (
-    <View styles={styles.container}>
+    <View style={styles.container}>
       <Header title="Nissa Sabyan" back />
-      <View
-        style={[
-          styles.flatListContainer,
-          {
-            height:
-              orientation === 'PORTRAIT'
-                ? heightPercentageToDP(74)
-                : heightPercentageToDP(50),
-          },
-        ]}>
+      <View style={[styles.flatListContainer]}>
         <FlatList
           contentContainerStyle={styles.contentContainer}
           data={messages}
           renderItem={renderItem}
         />
       </View>
-      <View styles={styles.inputContainer}>
+      <View style={styles.inputContainer}>
         <MessageInput />
       </View>
     </View>
