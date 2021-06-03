@@ -30,6 +30,7 @@ import {setIsLoading} from '../store/actions/loading';
 import {io} from 'socket.io-client';
 import {SOCKET_URL} from '@env';
 import NotifService from '../services/notifications/NotifService';
+import {setNewNotification} from '../store/actions/notification';
 
 function getHeaderTitle(route) {
   // If the focused route is not found, we need to assume it's the initial screen
@@ -55,6 +56,7 @@ function App(props) {
   const {token, id: userId} = props.authReducer.user;
   const {isLoading, msg: isLoadingMsg} = props.loadingReducer;
   const {snackbar, msg, danger} = props.snackbarReducer;
+  const {onSetNewNotification} = props;
 
   useEffect(() => {
     const notif = new NotifService();
@@ -78,13 +80,14 @@ function App(props) {
         notification.title || 'New Notification!',
         notification.content,
       );
+      onSetNewNotification(true);
     });
 
     socket.on('connect_error', err => {
       console.log(err.message); // prints the message associated with the error
     });
     return () => socket.disconnect();
-  }, [token, userId]);
+  }, [token, userId, onSetNewNotification]);
 
   return (
     <PaperProvider>
@@ -150,6 +153,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onSnackbarHide: () => dispatch(snackbarHide()),
     onSetIsLoading: value => dispatch(setIsLoading(value)),
+    onSetNewNotification: value => dispatch(setNewNotification(value)),
   };
 };
 

@@ -4,6 +4,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Searchbar, Avatar, Button, Badge} from 'react-native-paper';
 import Skeleton from 'react-native-skeleton-placeholder';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {setNewNotification} from '../../store/actions/notification';
 
 import Color from '../../Color';
 import styles from './styles';
@@ -24,6 +26,13 @@ const LoadProfileSkeleton = () => (
 
 export default function Header(props) {
   const [avatarSrc, setAvatarSrc] = useState();
+  const notificationReducer = useSelector(
+    state => state.notificationReducer,
+    shallowEqual,
+  );
+  const {newNotification} = notificationReducer;
+
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {
     back,
@@ -108,11 +117,16 @@ export default function Header(props) {
                 name="notifications"
                 color="white"
                 size={25}
-                onPress={() => navigation.navigate('Notification')}
+                onPress={() => {
+                  dispatch(setNewNotification(false));
+                  navigation.navigate('Notification');
+                }}
               />
-              <View style={styles.notificationContainer}>
-                <Badge size={9} />
-              </View>
+              {newNotification && (
+                <View style={styles.notificationContainer}>
+                  <Badge size={9} />
+                </View>
+              )}
             </View>
           </View>
           <Searchbar

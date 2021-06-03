@@ -6,6 +6,7 @@ import {authReducer} from './auth';
 import {forgotReducer} from './forgot';
 import {snackbarReducer} from './snackbar';
 import {loadingReducer} from './loading';
+import {notificationReducer} from './notification';
 
 const persistConfig = {
   key: 'root',
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   forgotReducer,
   snackbarReducer,
   loadingReducer,
+  notificationReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);
