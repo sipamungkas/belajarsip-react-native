@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import Header from '../../../components/Chats/Header';
 import ChatItem from '../../../components/Chats/ChatItem';
@@ -84,6 +84,7 @@ const DATA = [
 
 export default function ChatList() {
   const [create, setCreate] = useState(false);
+
   const renderItem = ({item}) => (
     <ChatItem
       item={item}

@@ -15,6 +15,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     marginRight: 10,
+    paddingLeft: 10,
   },
   sendButton: {
     height: 35,
