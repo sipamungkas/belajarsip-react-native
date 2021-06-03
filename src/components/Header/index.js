@@ -96,7 +96,7 @@ export default function Header(props) {
                 name="chevron-back"
                 size={30}
                 color="white"
-                onPress={() => props.navigation.goBack()}
+                onPress={() => navigation.goBack()}
               />
             )}
             <Text numberOfLines={1} style={styles.title}>
@@ -134,7 +134,7 @@ export default function Header(props) {
                 name="chevron-back"
                 size={30}
                 color="white"
-                onPress={() => props.navigation.goBack()}
+                onPress={() => navigation.goBack()}
               />
             )}
             <Text numberOfLines={1} style={styles.title}>
