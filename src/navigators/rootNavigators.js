@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, {useCallback, useEffect} from 'react';
 
 import {Provider as PaperProvider, Snackbar} from 'react-native-paper';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -26,6 +26,11 @@ import {snackbarHide} from '../store/actions/snackbar';
 import Color from '../Color';
 import {setIsLoading} from '../store/actions/loading';
 
+// socket and notifications
+import {io} from 'socket.io-client';
+import {SOCKET_URL} from '@env';
+import NotifService from '../services/notifications/NotifService';
+
 function getHeaderTitle(route) {
   // If the focused route is not found, we need to assume it's the initial screen
   // This can happen during if there hasn't been any navigation inside the screen
@@ -47,8 +52,39 @@ function getHeaderTitle(route) {
 
 function App(props) {
   const {isLoggedIn} = props.authReducer;
+  const {token, id: userId} = props.authReducer.user;
   const {isLoading, msg: isLoadingMsg} = props.loadingReducer;
   const {snackbar, msg, danger} = props.snackbarReducer;
+
+  useEffect(() => {
+    const notif = new NotifService();
+
+    const socket = io('ws://192.168.8.101:8000', {
+      timeout: 5000,
+      autoConnect: false,
+      reconnectionDelay: 10000,
+      query: {
+        token: `Bearer ${token}`,
+      },
+    });
+    socket.connect();
+
+    socket.on('connect', () => {
+      socket.emit('join', `notification:${userId}`);
+    });
+
+    socket.on('notification', notification => {
+      notif.localNotif(
+        notification.title || 'New Notification!',
+        notification.content,
+      );
+    });
+
+    socket.on('connect_error', err => {
+      console.log(err.message); // prints the message associated with the error
+    });
+    return () => socket.disconnect();
+  }, [token, userId]);
 
   return (
     <PaperProvider>
