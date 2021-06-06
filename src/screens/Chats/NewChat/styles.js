@@ -7,4 +7,5 @@ export default StyleSheet.create({
     height: '100%',
     backgroundColor: 'rgba(230, 237, 246, 0.75)',
   },
+  flatList: {paddingBottom: 120},
 });

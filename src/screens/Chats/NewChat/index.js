@@ -109,6 +109,7 @@ export default function ChatList() {
         onRightPress={() => navigation.goBack()}
       />
       <FlatList
+        contentContainerStyle={styles.flatList}
         data={users}
         renderItem={renderItem}
         keyExtractor={item => item.id}
