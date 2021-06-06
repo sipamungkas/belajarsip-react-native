@@ -7,6 +7,7 @@ import {forgotReducer} from './forgot';
 import {snackbarReducer} from './snackbar';
 import {loadingReducer} from './loading';
 import {notificationReducer} from './notification';
+import {socketReducer} from './socket';
 
 const persistConfig = {
   key: 'root',
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   snackbarReducer,
   loadingReducer,
   notificationReducer,
+  socketReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

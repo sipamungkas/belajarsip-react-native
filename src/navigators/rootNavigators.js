@@ -31,6 +31,7 @@ import {io} from 'socket.io-client';
 import {SOCKET_URL} from '@env';
 import NotifService from '../services/notifications/NotifService';
 import {setNewNotification} from '../store/actions/notification';
+import {setSocket} from '../store/actions/socket';
 
 function getHeaderTitle(route) {
   // If the focused route is not found, we need to assume it's the initial screen
@@ -56,7 +57,7 @@ function App(props) {
   const {token, id: userId} = props.authReducer.user;
   const {isLoading, msg: isLoadingMsg} = props.loadingReducer;
   const {snackbar, msg, danger} = props.snackbarReducer;
-  const {onSetNewNotification} = props;
+  const {onSetNewNotification, onSetSocket} = props;
 
   useEffect(() => {
     const notif = new NotifService();
@@ -73,6 +74,7 @@ function App(props) {
 
     socket.on('connect', () => {
       socket.emit('join', `notification:${userId}`);
+      onSetSocket(socket);
     });
 
     socket.on('notification', notification => {
@@ -87,8 +89,7 @@ function App(props) {
       console.log(err.message); // prints the message associated with the error
     });
     return () => socket.disconnect();
-  }, [token, userId, onSetNewNotification]);
-
+  }, [token, userId, onSetNewNotification, onSetSocket]);
   return (
     <PaperProvider>
       <NavigationContainer onReady={() => RNBootSplash.hide()}>
@@ -146,6 +147,7 @@ const mapStateToProps = state => {
     authReducer: state.authReducer,
     snackbarReducer: state.snackbarReducer,
     loadingReducer: state.loadingReducer,
+    socketReducer: state.socketReducer,
   };
 };
 
@@ -154,6 +156,7 @@ const mapDispatchToProps = dispatch => {
     onSnackbarHide: () => dispatch(snackbarHide()),
     onSetIsLoading: value => dispatch(setIsLoading(value)),
     onSetNewNotification: value => dispatch(setNewNotification(value)),
+    onSetSocket: value => dispatch(setSocket(value)),
   };
 };
 
