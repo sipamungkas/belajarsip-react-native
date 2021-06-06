@@ -61,8 +61,8 @@ function App(props) {
   useEffect(() => {
     const notif = new NotifService();
 
-    const socket = io('ws://192.168.8.101:8000', {
-      timeout: 5000,
+    const socket = io(SOCKET_URL, {
+      // timeout: 5000,
       autoConnect: false,
       reconnectionDelay: 10000,
       query: {
