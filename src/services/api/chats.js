@@ -6,3 +6,9 @@ export const getChatList = token => {
     headers: {Authorization: `Bearer ${token}`},
   });
 };
+
+export const getUsers = token => {
+  return axios.get(`${API_URL}/v1/chats/users?page=1&limit=10`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+};

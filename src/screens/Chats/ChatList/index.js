@@ -104,7 +104,7 @@ export default function ChatList() {
         dispatch(snackbarError(msg));
       });
   }, [token, dispatch]);
-  console.log(chatList);
+
   const renderItem = ({item}) => (
     <ChatItem
       item={item}

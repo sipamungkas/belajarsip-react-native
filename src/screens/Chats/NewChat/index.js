@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import HeaderChoose from '../../../components/Chats/HeaderChoose';
 import FriendItem from '../../../components/Chats/FriendItem';
 
 import styles from './styles';
 import {useNavigation} from '@react-navigation/core';
+import {getUsers} from '../../../services/api/chats';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {errorFormatter} from '../../../utils/Error';
+import {snackbarError} from '../../../store/actions/snackbar';
 
 let id = 0;
 
@@ -54,7 +58,22 @@ const DATA = [
 
 export default function ChatList() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState([]);
+  const [users, setUsers] = useState([]);
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const {token} = authReducer.user;
+
+  useEffect(() => {
+    getUsers(token)
+      .then(res => {
+        setUsers(res.data.data);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
+      });
+  }, [token, dispatch]);
 
   const checklistHandler = userId => {
     if (selected.findIndex(index => index === userId) === -1) {
@@ -90,7 +109,7 @@ export default function ChatList() {
         onRightPress={() => navigation.goBack()}
       />
       <FlatList
-        data={DATA}
+        data={users}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selected}
