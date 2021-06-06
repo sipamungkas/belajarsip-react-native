@@ -1,7 +1,12 @@
-import React from 'react';
+import moment from 'moment';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../components/Notification/Header';
 import NotificationItem from '../../components/Notification/NotificationItem';
+import {getNotifications} from '../../services/api/notifications';
+import {snackbarError} from '../../store/actions/snackbar';
+import {errorFormatter} from '../../utils/Error';
 import styles from './styles';
 
 let id = 0;
@@ -60,22 +65,45 @@ const yesterday = [
 ];
 
 export default function Notification() {
+  const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState([]);
+  const authReducer = useSelector(state => state.authReducer);
+  const {token} = authReducer.user;
+
+  useEffect(() => {
+    getNotifications(token)
+      .then(res => {
+        console.log(res.data.data);
+        setNotifications(res.data.data);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        if (msg === 'jwt expired') {
+          dispatch(
+            snackbarError('Session Expired Please Logout and Login again!'),
+          );
+        } else {
+          snackbarError(msg);
+        }
+      });
+  }, [token, dispatch]);
+
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.subtitle}>Today</Text>
+        {/* <Text style={styles.subtitle}>Today</Text> */}
         <View style={styles.notificationContainer}>
-          {today.map((item, index) => (
+          {notifications.map((item, index) => (
             <NotificationItem
               key={index}
               content={item.content}
-              time={item.time}
+              time={moment(item.created_at).fromNow()}
               image={item.image}
             />
           ))}
         </View>
-        <Text style={styles.subtitle}>Yesterday</Text>
+        {/* <Text style={styles.subtitle}>Yesterday</Text>
         <View style={styles.notificationContainer}>
           {yesterday.map((item, index) => (
             <NotificationItem
@@ -96,7 +124,7 @@ export default function Notification() {
               image={item.image}
             />
           ))}
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );
