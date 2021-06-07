@@ -93,6 +93,7 @@ export default function ChatList() {
     <FriendItem
       checked={selected.findIndex(index => index === item.id) !== -1}
       item={item}
+      avatar={item?.avatar}
       name={item.name}
       onPress={() => {
         checklistHandler(item.id);
