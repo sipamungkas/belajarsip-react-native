@@ -75,20 +75,6 @@ export default function ChatList() {
       });
   }, [token, dispatch]);
 
-  const checklistHandler = userId => {
-    if (selected.findIndex(index => index === userId) === -1) {
-      setSelected(prevState => [...prevState, userId]);
-    } else {
-      let data = selected;
-
-      data.splice(
-        data.findIndex(index => index === userId),
-        1,
-      ),
-        setSelected([...data]);
-    }
-  };
-
   const renderItem = ({item}) => (
     <FriendItem
       checked={selected.findIndex(index => index === item.id) !== -1}
@@ -96,7 +82,7 @@ export default function ChatList() {
       avatar={item?.avatar}
       name={item.name}
       onPress={() => {
-        checklistHandler(item.id);
+        navigation.replace('Message', {roomId: item.id});
       }}
     />
   );

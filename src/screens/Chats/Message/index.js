@@ -4,8 +4,7 @@ import Header from '../../../components/Header';
 import MessageItem from '../../../components/Chats/MessageItem';
 import MessageInput from '../../../components/Chats/MessageInput';
 import styles from './styles';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
-import {useOrientation} from '../../../hooks/useOrientation';
+import {useRoute} from '@react-navigation/core';
 
 const messages = [
   {id: '1', content: 'lorem', from: '1', to: '2'},
@@ -18,6 +17,9 @@ const messages = [
 ];
 
 export default function Message() {
+  const route = useRoute();
+  const {roomId} = route.params;
+
   const renderItem = ({item}) => (
     <MessageItem item={item} isSender={item.from === '2'} />
   );

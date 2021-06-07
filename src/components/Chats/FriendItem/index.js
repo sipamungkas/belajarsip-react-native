@@ -7,7 +7,7 @@ import styles from './styles';
 export default function FriendItem(props) {
   const [avatarError, setAvatarError] = useState(false);
   return (
-    <Card elevation={0}>
+    <Card elevation={0} onPress={props.onPress}>
       <Card.Content style={styles.container}>
         {props?.avatar && !avatarError ? (
           <Image
