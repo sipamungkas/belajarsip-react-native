@@ -33,3 +33,9 @@ export const sendMessage = (token, data) => {
     headers: {Authorization: `Bearer ${token}`},
   });
 };
+
+export const createPrivateMessage = (token, data) => {
+  return axios.post(`${API_URL}/v1/chats/rooms/private`, data, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+};

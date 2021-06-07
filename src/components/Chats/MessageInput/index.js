@@ -4,7 +4,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 export default function MessageInput(props) {
-  console.log(props.isSending);
   return (
     <View style={styles.container}>
       <TextInput

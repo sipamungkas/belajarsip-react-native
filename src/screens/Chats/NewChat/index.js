@@ -8,99 +8,82 @@ import {useNavigation} from '@react-navigation/core';
 import {getUsers} from '../../../services/api/chats';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {errorFormatter} from '../../../utils/Error';
+import {setIsLoading} from '../../../store/actions/loading';
+
 import {snackbarError} from '../../../store/actions/snackbar';
-
-let id = 0;
-
-const DATA = [
-  {
-    id: id++,
-    name: 'Nissa Sabyan',
-  },
-  {
-    id: id++,
-    name: 'Rio Dewanto',
-  },
-  {
-    id: id++,
-    name: 'Deddy Corbuzier',
-  },
-  {
-    id: id++,
-    name: 'Isyana Sarasvati NO',
-  },
-  {
-    id: id++,
-    name: 'Tompi',
-  },
-  {
-    id: id++,
-    name: 'Peppy',
-  },
-  {
-    id: id++,
-    name: 'Prof. Winarto',
-  },
-  {
-    id: id++,
-    name: 'Prilly Latuconsina',
-  },
-
-  {
-    id: id++,
-    name: 'Isyana Sarasvati Taken',
-  },
-  {
-    id: id++,
-    name: 'Tompi Another',
-  },
-];
+import {createPrivateMessage} from '../../../services/api/chats';
+import {Card, ActivityIndicator} from 'react-native-paper';
 
 export default function ChatList() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [dataLoading, setDataLoading] = useState(false);
   const [selected, setSelected] = useState([]);
   const [users, setUsers] = useState([]);
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const {token} = authReducer.user;
 
   useEffect(() => {
+    setDataLoading(true);
     getUsers(token)
       .then(res => {
         setUsers(res.data.data);
+        setDataLoading(false);
       })
       .catch(err => {
         const msg = errorFormatter(err);
         dispatch(snackbarError(msg));
+        setDataLoading(false);
       });
   }, [token, dispatch]);
 
   const renderItem = ({item}) => (
     <FriendItem
-      checked={selected.findIndex(index => index === item.id) !== -1}
       item={item}
       avatar={item?.avatar}
       name={item.name}
       onPress={() => {
-        navigation.replace('Message', {roomId: item.id});
+        // console.log(item);
+        dispatch(setIsLoading(true));
+        createPrivateMessage(token, {members: [item.id]})
+          .then(res => {
+            dispatch(setIsLoading(false));
+            // console.log(res.data, res.status);
+            if (res.status === 200 || res.status === 201) {
+              navigation.replace('Message', {
+                roomId: res.data.data.room_id,
+                roomName: item.name,
+              });
+            }
+          })
+          .catch(err => {
+            dispatch(setIsLoading(false));
+            const msg = errorFormatter(err);
+            dispatch(snackbarError(msg));
+          });
       }}
     />
   );
 
   return (
     <View style={styles.container}>
-      <HeaderChoose
-        search
-        title="Choose friends"
-        rightText="Create"
-        onRightPress={() => navigation.goBack()}
-      />
+      <HeaderChoose search title="Choose friends" />
       <FlatList
+        ListEmptyComponent={
+          <Card>
+            <Card.Content>
+              {dataLoading ? (
+                <ActivityIndicator animated />
+              ) : (
+                <Text style={{textAlign: 'center'}}>No User found!</Text>
+              )}
+            </Card.Content>
+          </Card>
+        }
         contentContainerStyle={styles.flatList}
         data={users}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        extraData={selected}
       />
     </View>
   );

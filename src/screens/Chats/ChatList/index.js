@@ -9,83 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {errorFormatter} from '../../../utils/Error';
 import {snackbarError} from '../../../store/actions/snackbar';
 import moment from 'moment';
-
-let id = 0;
-
-const DATA = [
-  {
-    id: id++,
-    name: 'Nissa Sabyan',
-    content: 'How about number 3?',
-    time: '10.15 pm',
-  },
-  {
-    id: id++,
-    name: 'Rio Dewanto',
-    content: 'I’m hungry.',
-    time: '9.12 pm',
-  },
-  {
-    id: id++,
-    name: 'Discussion Group 21 (5)',
-    content: 'Nissa : Let’s finish the task for tomorrow morning',
-    time: '1.23 pm',
-  },
-  {
-    id: id++,
-    name: 'Isyana Sarasvati',
-    content: 'Thanks.',
-    time: 'Yesterday',
-  },
-  {
-    id: id++,
-    name: 'Tompi',
-    content: 'See you later!.',
-    time: 'Yesterday',
-  },
-  {
-    id: id++,
-    name: 'You, Tompi, Isyana Sarasvati, Peppy',
-    content: 'Haha. Yes, I heard it before that you and rossa..',
-    time: '8/10',
-  },
-  {
-    id: id++,
-    name: 'Nissa Sabyan',
-    content: 'How about number 3?',
-    time: '10.15 pm',
-  },
-  {
-    id: id++,
-    name: 'Rio Dewanto',
-    content: 'I’m hungry.',
-    time: '9.12 pm',
-  },
-  {
-    id: id++,
-    name: 'Discussion Group 21 (5)',
-    content: 'Nissa : Let’s finish the task for tomorrow morning',
-    time: '1.23 pm',
-  },
-  {
-    id: id++,
-    name: 'Isyana Sarasvati',
-    content: 'Thanks.',
-    time: 'Yesterday',
-  },
-  {
-    id: id++,
-    name: 'Tompi',
-    content: 'See you later!.',
-    time: 'Yesterday',
-  },
-  {
-    id: id++,
-    name: 'You, Tompi, Isyana Sarasvati, Peppy',
-    content: 'Haha. Yes, I heard it before that you and rossa..',
-    time: '8/10',
-  },
-];
+import {useIsFocused} from '@react-navigation/core';
 
 export default function ChatList() {
   const [create, setCreate] = useState(false);
@@ -93,6 +17,7 @@ export default function ChatList() {
   const dispatch = useDispatch();
   const authReducer = useSelector(state => state.authReducer);
   const {token} = authReducer.user;
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     getChatList(token)
@@ -103,7 +28,7 @@ export default function ChatList() {
         const msg = errorFormatter(err);
         dispatch(snackbarError(msg));
       });
-  }, [token, dispatch]);
+  }, [token, dispatch, isFocused]);
 
   const renderItem = ({item}) => (
     <ChatItem

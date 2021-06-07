@@ -9,8 +9,6 @@ import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {getRoomChats, sendMessage} from '../../../services/api/chats';
 import {errorFormatter} from '../../../utils/Error';
 import {snackbarError} from '../../../store/actions/snackbar';
-import {useIsFocused} from '@react-navigation/native';
-import moment from 'moment';
 
 export default function Message() {
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
@@ -30,9 +28,15 @@ export default function Message() {
     getRoomChats(token, roomId)
       .then(res => {
         setIsLoading(false);
-        setMessages(prev => {
-          return [...prev, ...res.data.data];
-        });
+        if (res.status === 404) {
+          setMessages([]);
+        } else {
+          if (res.data?.data?.info?.total !== 0) {
+            setMessages(prev => {
+              return [...prev, ...res.data.data];
+            });
+          }
+        }
       })
       .catch(err => {
         const msg = errorFormatter(err);
