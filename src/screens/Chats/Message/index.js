@@ -6,10 +6,11 @@ import MessageInput from '../../../components/Chats/MessageInput';
 import styles from './styles';
 import {useRoute} from '@react-navigation/core';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import {getRoomChats} from '../../../services/api/chats';
+import {getRoomChats, sendMessage} from '../../../services/api/chats';
 import {errorFormatter} from '../../../utils/Error';
 import {snackbarError} from '../../../store/actions/snackbar';
 import {useIsFocused} from '@react-navigation/native';
+import moment from 'moment';
 
 export default function Message() {
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
@@ -19,14 +20,16 @@ export default function Message() {
   const dispatch = useDispatch();
   const route = useRoute();
   const [isLoading, setIsLoading] = useState(false);
+  const [text, setText] = useState('');
   const [messages, setMessages] = useState([]);
   const {roomId, roomName} = route.params;
   const chatRef = useRef();
 
   useState(() => {
+    setIsLoading(true);
     getRoomChats(token, roomId)
       .then(res => {
-        setIsLoading(true);
+        setIsLoading(false);
         setMessages(prev => {
           return [...prev, ...res.data.data];
         });
@@ -34,12 +37,13 @@ export default function Message() {
       .catch(err => {
         const msg = errorFormatter(err);
         dispatch(snackbarError(msg));
+        setIsLoading(false);
       });
   }, [token, roomId]);
+
   useState(() => {
     socket.emit('join', `message:${roomId}`);
     socket.on('message', data => {
-      console.log(data);
       setMessages(prev => {
         return [data, ...prev];
       });
@@ -49,6 +53,30 @@ export default function Message() {
       socket.off();
     };
   }, []);
+
+  const sendHandler = () => {
+    if (!text || text.length === 0) {
+      dispatch(snackbarError('You can not send empty message!'));
+      return;
+    }
+    const data = {
+      room_id: roomId,
+      content: text,
+    };
+    setIsLoading(true);
+    sendMessage(token, data)
+      .then(res => {
+        if (res.status === 201) {
+          setText('');
+        }
+        setIsLoading(false);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
+        setIsLoading(false);
+      });
+  };
 
   const renderItem = ({item}) => (
     <MessageItem item={item} isSender={item.user_id === userId} />
@@ -67,7 +95,12 @@ export default function Message() {
         />
       </View>
       <View style={styles.inputContainer}>
-        <MessageInput />
+        <MessageInput
+          isSending={isLoading}
+          sendHandler={sendHandler}
+          text={text}
+          setText={setText}
+        />
       </View>
     </View>
   );

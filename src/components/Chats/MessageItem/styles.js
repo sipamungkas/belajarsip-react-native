@@ -1,8 +1,17 @@
 import {StyleSheet} from 'react-native';
+import Color from '../../../Color';
 
 export default StyleSheet.create({
   card: {
     marginVertical: 10,
+  },
+  sender: {
+    fontSize: 16,
+    color: Color.PRIMARY,
+    marginBottom: 10,
+  },
+  me: {
+    color: 'white',
   },
   content: {
     color: 'black',

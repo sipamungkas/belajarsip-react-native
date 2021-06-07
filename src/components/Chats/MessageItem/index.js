@@ -15,6 +15,7 @@ export default function MessageItem(props) {
       elevation={0}
       style={[styles.card, isSender && {backgroundColor: Color.PRIMARY}]}>
       <Card.Content>
+        {!isSender && <Text style={styles.sender}>{item?.name}</Text>}
         <Text style={[styles.content, isSender && styles.senderContent]}>
           {item.content}
         </Text>

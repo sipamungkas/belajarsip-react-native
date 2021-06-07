@@ -27,3 +27,9 @@ export const getRoomChats = (token, roomId) => {
     },
   );
 };
+
+export const sendMessage = (token, data) => {
+  return axios.post(`${API_URL}/v1/chats`, data, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+};
