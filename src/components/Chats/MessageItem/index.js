@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import {Text} from 'react-native';
 import {Card} from 'react-native-paper';
@@ -7,18 +8,20 @@ import Color from '../../../Color';
 import styles from './styles';
 
 export default function MessageItem(props) {
-  const {isSender} = props;
+  const {isSender, item} = props;
+  console.log(item);
   return (
     <Card
       elevation={0}
       style={[styles.card, isSender && {backgroundColor: Color.PRIMARY}]}>
       <Card.Content>
         <Text style={[styles.content, isSender && styles.senderContent]}>
-          Lorem ipsum loreeeemmmm ipsummmm
+          {item.content}
         </Text>
 
         <Text style={[styles.time, isSender && styles.timeSender]}>
-          2021-06-07 <Ionicons name="checkmark-outline" />
+          {moment(item.created_at).format('Y-MM-DD H:m:s')}
+          <Ionicons name="checkmark-outline" />
         </Text>
       </Card.Content>
     </Card>

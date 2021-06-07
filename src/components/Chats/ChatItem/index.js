@@ -8,7 +8,14 @@ import {useNavigation} from '@react-navigation/native';
 export default function ChatItem(props) {
   const navigation = useNavigation();
   return (
-    <Card elevation={0} onPress={() => navigation.navigate('Message', {id: 1})}>
+    <Card
+      elevation={0}
+      onPress={() =>
+        navigation.navigate('Message', {
+          roomId: props.item.id,
+          roomName: props.item.name,
+        })
+      }>
       <Card.Content style={styles.container}>
         {props?.avatar ? (
           <Avatar.Image

@@ -12,3 +12,18 @@ export const getUsers = token => {
     headers: {Authorization: `Bearer ${token}`},
   });
 };
+
+export const getRoomInformation = (token, roomId) => {
+  return axios.get(`${API_URL}v1/chats/rooms/${roomId}`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+};
+
+export const getRoomChats = (token, roomId) => {
+  return axios.get(
+    `${API_URL}/v1/chats/rooms/${roomId}/messages?page=1&limit=10`,
+    {
+      headers: {Authorization: `Bearer ${token}`},
+    },
+  );
+};
