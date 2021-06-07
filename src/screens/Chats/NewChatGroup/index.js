@@ -4,7 +4,7 @@ import HeaderChoose from '../../../components/Chats/HeaderChoose';
 import FriendItem from '../../../components/Chats/FriendItem';
 
 import styles from './styles';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {getUsers} from '../../../services/api/chats';
 import {errorFormatter} from '../../../utils/Error';
@@ -14,8 +14,10 @@ import {ActivityIndicator, Card} from 'react-native-paper';
 export default function ChatList() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const route = useRoute();
   const [dataLoading, setDataLoading] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const {participants} = route.params;
+  const [selected, setSelected] = useState(participants);
   const [users, setUsers] = useState([]);
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
   const {token, id: userId} = authReducer.user;

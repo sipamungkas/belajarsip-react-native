@@ -73,7 +73,9 @@ export default function Header(props) {
             </View>
             <View style={styles.icon}>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('NewChatGroup')}>
+                onPress={() =>
+                  navigation.navigate('NewChatGroup', {participants: []})
+                }>
                 <View style={styles.iconContainer}>
                   <NewGroupIcon />
                 </View>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, View, Text, TextInput} from 'react-native';
+import {Image, View, Text, TextInput, Pressable} from 'react-native';
 import {Card, Avatar} from 'react-native-paper';
 import HeaderChoose from '../../../components/Chats/HeaderChoose';
 import DefaultGroup from '../../../assets/icons/default-group.png';
@@ -99,16 +99,22 @@ export default function ChatList() {
                 </Text>
               </View>
             ))}
+
             <View style={styles.avatarContainer}>
-              <Avatar.Text
-                size={60}
-                label="+"
-                labelStyle={{color: 'black'}}
-                style={{backgroundColor: 'rgba(203, 203, 203, 1)'}}
-              />
-              <Text numberOfLines={2} style={styles.name}>
-                Add
-              </Text>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('NewChatGroup', {participants})
+                }>
+                <Avatar.Text
+                  size={60}
+                  label="+"
+                  labelStyle={{color: 'black'}}
+                  style={{backgroundColor: 'rgba(203, 203, 203, 1)'}}
+                />
+                <Text numberOfLines={2} style={styles.name}>
+                  Add
+                </Text>
+              </Pressable>
             </View>
           </View>
         </Card.Content>
