@@ -47,7 +47,7 @@ export default function ChatList() {
         setSelected([...data]);
     }
   };
-  console.log(selected);
+
   const renderItem = ({item}) => (
     <FriendItem
       checked={selected.findIndex(data => data.id === item.id) !== -1}
@@ -66,7 +66,9 @@ export default function ChatList() {
         right
         search
         title="Choose friends"
-        onRightPress={() => navigation.navigate('CreateGroup')}
+        onRightPress={() =>
+          navigation.navigate('CreateGroup', {participants: selected})
+        }
       />
       <FlatList
         ListEmptyComponent={

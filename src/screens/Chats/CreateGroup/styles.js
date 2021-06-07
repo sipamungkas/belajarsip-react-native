@@ -26,8 +26,9 @@ export default StyleSheet.create({
     fontSize: 16,
   },
   participantContainer: {
-    flexDirection: 'row',
     justifyContent: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   avatarContainer: {
     alignItems: 'center',
