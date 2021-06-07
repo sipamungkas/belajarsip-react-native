@@ -31,12 +31,14 @@ export default function FriendItem(props) {
             {props?.name || 'Anonymous'}
           </Text>
         </View>
-        <View style={styles.time}>
-          <Checkbox
-            onPress={props.onPress}
-            status={props.checked ? 'checked' : 'unchecked'}
-          />
-        </View>
+        {props.checkbox && (
+          <View style={styles.time}>
+            <Checkbox
+              onPress={props.onPress}
+              status={props.checked ? 'checked' : 'unchecked'}
+            />
+          </View>
+        )}
       </Card.Content>
     </Card>
   );

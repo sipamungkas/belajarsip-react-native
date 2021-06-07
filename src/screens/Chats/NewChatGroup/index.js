@@ -75,6 +75,7 @@ export default function ChatList() {
       checked={selected.findIndex(index => index === item.id) !== -1}
       item={item}
       name={item.name}
+      checkbox
       onPress={() => {
         checklistHandler(item.id);
       }}
@@ -84,6 +85,7 @@ export default function ChatList() {
   return (
     <View style={styles.container}>
       <HeaderChoose
+        right
         search
         title="Choose friends"
         onRightPress={() => navigation.navigate('CreateGroup')}

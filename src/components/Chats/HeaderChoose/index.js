@@ -25,9 +25,11 @@ export default function Header(props) {
           <Text numberOfLines={1} style={styles.title}>
             {title}
           </Text>
-          <TouchableNativeFeedback onPress={onRightPress}>
-            <Text style={styles.rightText}>{rightText || 'Next'}</Text>
-          </TouchableNativeFeedback>
+          {props.right && (
+            <TouchableNativeFeedback onPress={onRightPress}>
+              <Text style={styles.rightText}>{rightText || 'Next'}</Text>
+            </TouchableNativeFeedback>
+          )}
         </View>
         {props.search && (
           <Searchbar
