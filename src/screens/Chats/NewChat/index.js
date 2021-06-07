@@ -21,13 +21,14 @@ export default function ChatList() {
   const [selected, setSelected] = useState([]);
   const [users, setUsers] = useState([]);
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
-  const {token} = authReducer.user;
+  const {token, id: userId} = authReducer.user;
 
   useEffect(() => {
     setDataLoading(true);
     getUsers(token)
       .then(res => {
-        setUsers(res.data.data);
+        const data = res.data.data.filter(user => user.id !== userId);
+        setUsers(data);
         setDataLoading(false);
       })
       .catch(err => {
@@ -35,7 +36,7 @@ export default function ChatList() {
         dispatch(snackbarError(msg));
         setDataLoading(false);
       });
-  }, [token, dispatch]);
+  }, [token, dispatch, userId]);
 
   const renderItem = ({item}) => (
     <FriendItem

@@ -1,83 +1,61 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import HeaderChoose from '../../../components/Chats/HeaderChoose';
 import FriendItem from '../../../components/Chats/FriendItem';
 
 import styles from './styles';
 import {useNavigation} from '@react-navigation/core';
-
-let id = 0;
-
-const DATA = [
-  {
-    id: id++,
-    name: 'Nissa Sabyan',
-  },
-  {
-    id: id++,
-    name: 'Rio Dewanto',
-  },
-  {
-    id: id++,
-    name: 'Deddy Corbuzier',
-  },
-  {
-    id: id++,
-    name: 'Isyana Sarasvati NO',
-  },
-  {
-    id: id++,
-    name: 'Tompi',
-  },
-  {
-    id: id++,
-    name: 'Peppy',
-  },
-  {
-    id: id++,
-    name: 'Prof. Winarto',
-  },
-  {
-    id: id++,
-    name: 'Prilly Latuconsina',
-  },
-
-  {
-    id: id++,
-    name: 'Isyana Sarasvati Taken',
-  },
-  {
-    id: id++,
-    name: 'Tompi Another',
-  },
-];
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {getUsers} from '../../../services/api/chats';
+import {errorFormatter} from '../../../utils/Error';
+import {snackbarError} from '../../../store/actions/snackbar';
+import {ActivityIndicator, Card} from 'react-native-paper';
 
 export default function ChatList() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [dataLoading, setDataLoading] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [users, setUsers] = useState([]);
+  const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const {token, id: userId} = authReducer.user;
 
-  const checklistHandler = userId => {
-    if (selected.findIndex(index => index === userId) === -1) {
-      setSelected(prevState => [...prevState, userId]);
+  useEffect(() => {
+    setDataLoading(true);
+    getUsers(token)
+      .then(res => {
+        const data = res.data.data.filter(user => user.id !== userId);
+        setUsers(data);
+        setDataLoading(false);
+      })
+      .catch(err => {
+        const msg = errorFormatter(err);
+        dispatch(snackbarError(msg));
+        setDataLoading(false);
+      });
+  }, [token, dispatch, userId]);
+
+  const checklistHandler = item => {
+    if (selected.findIndex(data => data.id === item.id) === -1) {
+      setSelected(prevState => [...prevState, item]);
     } else {
       let data = selected;
-
       data.splice(
-        data.findIndex(index => index === userId),
+        data.findIndex(data => data.id === item.id),
         1,
       ),
         setSelected([...data]);
     }
   };
-
+  console.log(selected);
   const renderItem = ({item}) => (
     <FriendItem
-      checked={selected.findIndex(index => index === item.id) !== -1}
+      checked={selected.findIndex(data => data.id === item.id) !== -1}
       item={item}
       name={item.name}
       checkbox
       onPress={() => {
-        checklistHandler(item.id);
+        checklistHandler(item);
       }}
     />
   );
@@ -91,7 +69,18 @@ export default function ChatList() {
         onRightPress={() => navigation.navigate('CreateGroup')}
       />
       <FlatList
-        data={DATA}
+        ListEmptyComponent={
+          <Card>
+            <Card.Content>
+              {dataLoading ? (
+                <ActivityIndicator animated />
+              ) : (
+                <Text style={{textAlign: 'center'}}>No User found!</Text>
+              )}
+            </Card.Content>
+          </Card>
+        }
+        data={users}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selected}
