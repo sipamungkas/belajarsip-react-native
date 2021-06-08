@@ -9,9 +9,6 @@ export const getCourseWithFilter = (
   limit,
   price,
 ) => {
-  console.log(
-    `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}&price=${price}`,
-  );
   return axios.get(
     `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}&price=${price}`,
     {
@@ -23,6 +20,7 @@ export const getCourseWithFilter = (
 };
 
 export const getCourseById = (token, id) => {
+  console.log(id);
   return axios.get(`${API_URL}/v1/courses/${id}`, {
     headers: {Authorization: `Bearer ${token}`},
   });

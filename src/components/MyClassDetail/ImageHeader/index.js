@@ -27,7 +27,11 @@ export default function ImageHeader(props) {
   const orientation = useOrientation();
   let progress = 0;
   if (course.progress) {
-    progress = course?.progress / 100 || 0;
+    if (course?.progress > 0) {
+      progress = course?.progress / 100 || 0;
+    } else {
+      progress = 0;
+    }
   }
   if (course?.subcourses_done) {
     progress = course.subcourses_done / course.subcourses_total;
@@ -95,7 +99,8 @@ export default function ImageHeader(props) {
               </Text>
               <ProgressBar
                 indeterminate={false}
-                progress={progress}
+                // progress={progress || 0}
+                progress={0}
                 color={Color.PRIMARY}
               />
             </View>

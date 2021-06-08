@@ -52,13 +52,14 @@ export default function MyClassDetail(props) {
     getCourseById(token, courseId)
       .then(res => {
         setCourse(res.data.data);
+        console.log(res.data.data);
       })
       .catch(err => {
         const msg = errorFormatter(err);
         dispatch(snackbarError(msg));
       });
   }, [token, courseId, dispatch]);
-
+  // console.log(courseId, courseId, courseName, course);
   return (
     <View style={{flex: 1, backgroundColor: Color.DEFAULT_BACKGROUND}}>
       <Header back title={courseName} {...props} />

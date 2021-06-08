@@ -8,7 +8,7 @@ import styles from './styles';
 
 export default function MyClassItem(props) {
   const {course} = props;
-
+  console.log(course.id);
   return (
     <Card
       style={{marginVertical: 2}}
