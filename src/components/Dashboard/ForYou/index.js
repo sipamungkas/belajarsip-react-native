@@ -36,7 +36,7 @@ function ForYou(props) {
         })
         .catch(err => {
           const msg = errorFormatter(err);
-          dispatch(snackbarError(msg));
+          // dispatch(snackbarError(msg));
           setIsLoading(false);
         });
     }
@@ -79,7 +79,7 @@ function ForYou(props) {
                   color="#3399FF"
                   shadowColor="#fff"
                   bgColor="#fff">
-                  <Text style={{fontSize: 14}}>{`${item.progress || 0}%`}</Text>
+                  <Text style={{fontSize: 12}}>{`${item.progress || 0}%`}</Text>
                 </ProgressCircle>
               </View>
             </TouchableOpacity>

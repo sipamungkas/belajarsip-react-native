@@ -32,7 +32,7 @@ export default function MyClassItem(props) {
             color="#3399FF"
             shadowColor="#fff"
             bgColor="#fff">
-            <Text style={{fontSize: 14}}>{`${course?.progress || 0}%`}</Text>
+            <Text style={{fontSize: 12}}>{`${course?.progress || 0}%`}</Text>
           </ProgressCircle>
         </View>
         <View style={{flex: 1, alignItems: 'center'}}>

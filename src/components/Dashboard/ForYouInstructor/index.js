@@ -40,7 +40,7 @@ function ForYou(props) {
         })
         .catch(err => {
           const msg = errorFormatter(err);
-          dispatch(snackbarError(msg));
+          // dispatch(snackbarError(msg));
           setIsLoading(false);
         });
     }
