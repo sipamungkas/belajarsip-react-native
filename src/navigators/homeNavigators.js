@@ -1,4 +1,5 @@
 import React from 'react';
+import {TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, shallowEqual} from 'react-redux';
@@ -11,12 +12,18 @@ import DashboardNavigators from './dashboardNavigators';
 import ChatNavigators from './chatNavigators';
 import ActivityIconInactive from '../assets/icons/activity-icon-inactive.svg';
 import ActivityIconActive from '../assets/icons/activity-icon-active.svg';
-
+import {Badge} from 'react-native-paper';
+import styles from './styles';
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   const authReducer = useSelector(state => state.authReducer, shallowEqual);
+  const notificationReducer = useSelector(
+    state => state.notificationReducer,
+    shallowEqual,
+  );
   const {role_id: roleId} = authReducer.user;
+  const {newMsgNotification} = notificationReducer;
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -28,9 +35,22 @@ export default function TabNavigator() {
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person-circle' : 'person-circle-outline';
           } else if (route.name === 'Chat') {
-            iconName = focused
-              ? 'chatbox-ellipses'
-              : 'chatbox-ellipses-outline';
+            return (
+              <View>
+                <Ionicons
+                  name={
+                    focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline'
+                  }
+                  size={size}
+                  color={color}
+                />
+                {newMsgNotification && (
+                  <View style={styles.notificationContainer}>
+                    <Badge size={9} />
+                  </View>
+                )}
+              </View>
+            );
           } else if (route.name === 'Activity') {
             if (focused) {
               return (

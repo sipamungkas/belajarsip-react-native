@@ -10,6 +10,7 @@ import {errorFormatter} from '../../../utils/Error';
 import {snackbarError} from '../../../store/actions/snackbar';
 import moment from 'moment';
 import {useIsFocused} from '@react-navigation/core';
+import {setNewMsgNotification} from '../../../store/actions/notification';
 
 export default function ChatList() {
   const [create, setCreate] = useState(false);
@@ -18,6 +19,10 @@ export default function ChatList() {
   const authReducer = useSelector(state => state.authReducer);
   const {token} = authReducer.user;
   const isFocused = useIsFocused();
+
+  useEffect(() => {
+    dispatch(setNewMsgNotification(false));
+  }, [dispatch, isFocused]);
 
   useEffect(() => {
     getChatList(token)

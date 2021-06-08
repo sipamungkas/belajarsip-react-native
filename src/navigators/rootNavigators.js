@@ -7,6 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {
   NavigationContainer,
   getFocusedRouteNameFromRoute,
+  useRoute,
 } from '@react-navigation/native';
 
 import {connect} from 'react-redux';
@@ -30,7 +31,10 @@ import {setIsLoading} from '../store/actions/loading';
 import {io} from 'socket.io-client';
 import {SOCKET_URL} from '@env';
 import NotifService from '../services/notifications/NotifService';
-import {setNewNotification} from '../store/actions/notification';
+import {
+  setNewMsgNotification,
+  setNewNotification,
+} from '../store/actions/notification';
 import {setSocket} from '../store/actions/socket';
 
 function getHeaderTitle(route) {
@@ -57,8 +61,13 @@ function App(props) {
   const {token, id: userId} = props.authReducer.user;
   const {isLoading, msg: isLoadingMsg} = props.loadingReducer;
   const {snackbar, msg, danger} = props.snackbarReducer;
-  const {onSetNewNotification, onSetSocket} = props;
-
+  const {
+    onSetNewNotification,
+    onSetSocket,
+    onSetNewMessageNotification,
+  } = props;
+  // const route = useRoute();
+  // console.log(route.name);
   useEffect(() => {
     const notif = new NotifService();
 
@@ -74,6 +83,7 @@ function App(props) {
 
     socket.on('connect', () => {
       socket.emit('join', `notification:${userId}`);
+      socket.emit('join', `msgNotification:${userId}`);
       onSetSocket(socket);
     });
 
@@ -85,11 +95,26 @@ function App(props) {
       onSetNewNotification(true);
     });
 
+    socket.on('message-notification', notification => {
+      console.log('msg-notif', notification);
+      notif.localNotif(
+        notification.title || 'New Notification',
+        notification.content,
+      );
+      onSetNewMessageNotification(true);
+    });
+
     socket.on('connect_error', err => {
       console.log(err.message); // prints the message associated with the error
     });
     return () => socket.disconnect();
-  }, [token, userId, onSetNewNotification, onSetSocket]);
+  }, [
+    token,
+    userId,
+    onSetNewNotification,
+    onSetSocket,
+    onSetNewMessageNotification,
+  ]);
   return (
     <PaperProvider>
       <NavigationContainer onReady={() => RNBootSplash.hide()}>
@@ -156,6 +181,8 @@ const mapDispatchToProps = dispatch => {
     onSnackbarHide: () => dispatch(snackbarHide()),
     onSetIsLoading: value => dispatch(setIsLoading(value)),
     onSetNewNotification: value => dispatch(setNewNotification(value)),
+    onSetNewMessageNotification: value =>
+      dispatch(setNewMsgNotification(value)),
     onSetSocket: value => dispatch(setSocket(value)),
   };
 };
