@@ -7,9 +7,13 @@ export const getCourseWithFilter = (
   sort,
   currentPage,
   limit,
+  price,
 ) => {
+  console.log(
+    `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}&price=${price}`,
+  );
   return axios.get(
-    `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}`,
+    `${API_URL}/v1/courses?search=${search}&sort=${sort}&page=${currentPage}&limit=${limit}&price=${price}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

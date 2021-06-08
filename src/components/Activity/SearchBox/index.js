@@ -9,12 +9,10 @@ import styles from './styles';
 
 export default function SearchBox(props) {
   const [thisSearch, setThisSearch] = useState('');
-  const [catFilter, setCatFilter] = useState();
-  const [levelFilter, setLevelFilter] = useState();
-  const [priceFilter, setPriceFilter] = useState();
   const [showCat, setShowCat] = useState(false);
   const [showLevel, setShowLevel] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
+  const [showPriceFilter, setShowPriceFilter] = useState(false);
 
   const searchHandler = () => {
     props.setSearch(thisSearch);
@@ -122,6 +120,39 @@ export default function SearchBox(props) {
               setShowPrice(false);
             }}
             title="Highest Price"
+          />
+        </Menu>
+        <Menu
+          visible={showPriceFilter}
+          onDismiss={() => setShowPriceFilter(false)}
+          anchor={
+            <Text
+              onPress={() => setShowPriceFilter(true)}
+              style={styles.filterItem}>
+              {props.price || 'Price Filter'}
+              <Ionicons name="chevron-down" />
+            </Text>
+          }>
+          <Menu.Item
+            onPress={() => {
+              props.setPrice('free');
+              setShowPriceFilter(false);
+            }}
+            title="Free"
+          />
+          <Menu.Item
+            onPress={() => {
+              props.setPrice('paid');
+              setShowPriceFilter(false);
+            }}
+            title="Paid"
+          />
+          <Menu.Item
+            onPress={() => {
+              props.setPrice('all');
+              setShowPriceFilter(false);
+            }}
+            title="All"
           />
         </Menu>
       </View>

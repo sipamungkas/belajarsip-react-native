@@ -30,6 +30,7 @@ export default function AvailableClassList(props) {
   const [availableCourses, setAvailableCourses] = useState();
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
+  const [price, setPrice] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [info, setInfo] = useState({});
   const [totalPage, setTotalPage] = useState(0);
@@ -64,7 +65,7 @@ export default function AvailableClassList(props) {
   useEffect(() => {
     setAvailableCourses([]);
     setItemLoading(true);
-    getCourseWithFilter(token, search, sort, currentPage, limit)
+    getCourseWithFilter(token, search, sort, currentPage, limit, price)
       .then(res => {
         setAvailableCourses(res.data.data);
         setInfo(res.data.info);
@@ -76,7 +77,7 @@ export default function AvailableClassList(props) {
         dispatch(snackbarError(msg));
         setItemLoading(false);
       });
-  }, [token, currentPage, search, sort, dispatch]);
+  }, [token, currentPage, search, sort, dispatch, price]);
 
   const notif = new NotifService();
 
@@ -110,6 +111,8 @@ export default function AvailableClassList(props) {
         setSort={setSort}
         search={search}
         setSearch={setSearch}
+        price={price}
+        setPrice={setPrice}
       />
       <View style={styles.courseList}>
         {!availableCourses && (
