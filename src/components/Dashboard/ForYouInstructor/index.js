@@ -26,22 +26,24 @@ function ForYou(props) {
 
   useEffect(() => {
     setMyClassData([]);
-    setIsLoading(true);
-    axios
-      .get(`${API_URL}/v1/dashboard/${date}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(res => {
-        setMyClassData(res.data.data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        const msg = errorFormatter(err);
-        dispatch(snackbarError(msg));
-        setIsLoading(false);
-      });
+    if (token) {
+      setIsLoading(true);
+      axios
+        .get(`${API_URL}/v1/dashboard/${date}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(res => {
+          setMyClassData(res.data.data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          const msg = errorFormatter(err);
+          dispatch(snackbarError(msg));
+          setIsLoading(false);
+        });
+    }
   }, [token, date, dispatch]);
 
   return (
