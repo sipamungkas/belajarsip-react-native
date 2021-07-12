@@ -69,8 +69,8 @@ $ npx react-native run-ios //run in ios
 
 <div style="text-align:center">
 
-<img src="docs/images/belajarsip-student-schedule.png" alt="Belajarsip Student Schedule Preview" style="width:200px;"/>
-<img src="docs/images/belajarsip-class-progress.png" alt="Belajarsip Student Class Progress Preview" style="width:200px;"/>
-<img src="docs/images/belajarsip-chats.png" alt="Belajarsip Chats Preview" style="width:200px;"/>
-<img src="docs/images/belajarsip-profile.png" alt="Belajarsip Profile Preview" style="width:200px;"/>
+<img src="docs/images/belajarsip-student-schedule.png" alt="Belajarsip Student Schedule Preview" width="200"/>
+<img src="docs/images/belajarsip-class-progress.png" alt="Belajarsip Student Class Progress Preview" width="200"/>
+<img src="docs/images/belajarsip-chats.png" alt="Belajarsip Chats Preview" width="200"/>
+<img src="docs/images/belajarsip-profile.png" alt="Belajarsip Profile Preview" width="200"/>
 </div>
