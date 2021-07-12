@@ -6,6 +6,7 @@
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Screenshots](#screenshots)
 
 ## Description
 
@@ -63,3 +64,13 @@ $ npx react-native run-ios //run in ios
 - [Publishing for Google Play](https://reactnative.dev/docs/signed-apk-android)
 
 - [Publishing for Apple Store](https://reactnative.dev/docs/publishing-to-app-store)
+
+## Screenshots
+
+<div style="text-align:center">
+
+<img src="docs/images/belajarsip-student-schedule.png" alt="Belajarsip Student Schedule Preview" style="width:200px;"/>
+<img src="docs/images/belajarsip-class-progress.png" alt="Belajarsip Student Class Progress Preview" style="width:200px;"/>
+<img src="docs/images/belajarsip-chats.png" alt="Belajarsip Chats Preview" style="width:200px;"/>
+<img src="docs/images/belajarsip-profile.png" alt="Belajarsip Profile Preview" style="width:200px;"/>
+</div>
